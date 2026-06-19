@@ -1,0 +1,10 @@
+# Masthead navigation links
+main:
+  - title: "About"
+    url: /
+  - title: "Research"
+    url: /publications/
+  - title: "Projects"
+    url: /projects/
+  - title: "CV"
+    url: /cv/
