@@ -1,0 +1,518 @@
+{
+  "dropped_for_missing_values": 0,
+  "first_activity": "2025-09-23",
+  "forecast_settings": {
+    "bands": [
+      80,
+      95
+    ],
+    "bootstrap_replicates": 500,
+    "future_effort": {
+      "distance_km": 3.234,
+      "total_elevation_gain": 27.0
+    },
+    "seed": 0,
+    "steps": 6
+  },
+  "generated_at": "2026-08-25T04:08:23+00:00",
+  "last_activity": "2026-08-21",
+  "metric": "pace_min_per_km",
+  "metric_label": "Pace (min/km)",
+  "models": [
+    {
+      "bic_grid": [
+        {
+          "bic": 33.449,
+          "converged": true,
+          "delta": 0.0,
+          "p": 0,
+          "q": 1,
+          "selected": true
+        },
+        {
+          "bic": 34.551,
+          "converged": true,
+          "delta": 1.102,
+          "p": 0,
+          "q": 0,
+          "selected": false
+        },
+        {
+          "bic": 35.515,
+          "converged": true,
+          "delta": 2.066,
+          "p": 0,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 35.627,
+          "converged": true,
+          "delta": 2.178,
+          "p": 1,
+          "q": 1,
+          "selected": false
+        },
+        {
+          "bic": 35.913,
+          "converged": true,
+          "delta": 2.464,
+          "p": 1,
+          "q": 0,
+          "selected": false
+        },
+        {
+          "bic": 37.446,
+          "converged": false,
+          "delta": 3.997,
+          "p": 2,
+          "q": 0,
+          "selected": false
+        },
+        {
+          "bic": 38.787,
+          "converged": true,
+          "delta": 5.338,
+          "p": 1,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 41.14,
+          "converged": true,
+          "delta": 7.691,
+          "p": 2,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 41.455,
+          "converged": true,
+          "delta": 8.006,
+          "p": 2,
+          "q": 1,
+          "selected": false
+        }
+      ],
+      "bootstrap_failures": 0,
+      "fit": {
+        "aic": 28.813,
+        "bic": 33.449,
+        "loglik": -8.407
+      },
+      "fitted": [
+        null,
+        4.6464,
+        4.9014,
+        5.22,
+        6.6265,
+        6.1704,
+        5.4096,
+        4.6359,
+        4.4205,
+        5.2289,
+        5.6033,
+        5.7675,
+        5.9144,
+        5.6999,
+        6.0875,
+        5.7666
+      ],
+      "fitted_label": "Fitted (one step ahead)",
+      "forecast": [
+        {
+          "boot_median": 5.9694,
+          "hi80": 6.7718,
+          "hi95": 7.2082,
+          "lo80": 4.9137,
+          "lo95": 3.9779,
+          "mean": 5.8945,
+          "step": 1
+        },
+        {
+          "boot_median": 5.7938,
+          "hi80": 6.6899,
+          "hi95": 7.2617,
+          "lo80": 4.9714,
+          "lo95": 4.5875,
+          "mean": 5.7736,
+          "step": 2
+        },
+        {
+          "boot_median": 5.7868,
+          "hi80": 6.6287,
+          "hi95": 7.2964,
+          "lo80": 4.9562,
+          "lo95": 4.5313,
+          "mean": 5.7851,
+          "step": 3
+        },
+        {
+          "boot_median": 5.7871,
+          "hi80": 6.6554,
+          "hi95": 7.3205,
+          "lo80": 4.9152,
+          "lo95": 4.2774,
+          "mean": 5.7961,
+          "step": 4
+        },
+        {
+          "boot_median": 5.8005,
+          "hi80": 6.5749,
+          "hi95": 7.2991,
+          "lo80": 4.9789,
+          "lo95": 4.4542,
+          "mean": 5.8065,
+          "step": 5
+        },
+        {
+          "boot_median": 5.8217,
+          "hi80": 6.6473,
+          "hi95": 7.1212,
+          "lo80": 4.9894,
+          "lo95": 4.3274,
+          "mean": 5.8164,
+          "step": 6
+        }
+      ],
+      "key": "log_arma",
+      "label": "Log trend, ARMA(0,1) errors",
+      "ljung_box": {
+        "lags": 3,
+        "p_value": 0.924,
+        "statistic": 0.477
+      },
+      "order": {
+        "p": 0,
+        "q": 1
+      },
+      "parameters": [
+        {
+          "ci_lower": 3.8985,
+          "ci_upper": 10.2248,
+          "estimate": 7.0617,
+          "name": "intercept",
+          "p_value": 1.21e-05,
+          "std_err": 1.6139,
+          "z": 4.3755
+        },
+        {
+          "ci_lower": -0.1672,
+          "ci_upper": 0.5945,
+          "estimate": 0.2136,
+          "name": "log_t",
+          "p_value": 0.272,
+          "std_err": 0.1943,
+          "z": 1.0995
+        },
+        {
+          "ci_lower": -2.5514,
+          "ci_upper": -0.0589,
+          "estimate": -1.3051,
+          "name": "distance_km",
+          "p_value": 0.0401,
+          "std_err": 0.6358,
+          "z": -2.0526
+        },
+        {
+          "ci_lower": 0.032,
+          "ci_upper": 0.1395,
+          "estimate": 0.0858,
+          "name": "total_elevation_gain",
+          "p_value": 0.00176,
+          "std_err": 0.0274,
+          "z": 3.1279
+        },
+        {
+          "ci_lower": -15.0839,
+          "ci_upper": 13.1076,
+          "estimate": -0.9881,
+          "name": "ma.L1",
+          "p_value": 0.891,
+          "std_err": 7.1919,
+          "z": -0.1374
+        },
+        {
+          "ci_lower": -1.7643,
+          "ci_upper": 2.0479,
+          "estimate": 0.1418,
+          "name": "sigma2",
+          "p_value": 0.884,
+          "std_err": 0.9725,
+          "z": 0.1458
+        }
+      ],
+      "selected_by": "BIC",
+      "specification": "y_t = mu + beta*log(t) + gamma'x_t + u_t,  u_t ~ ARMA(p,q)"
+    },
+    {
+      "bootstrap_failures": 0,
+      "final_state": {
+        "level": 5.0697,
+        "slope": -0.04388
+      },
+      "fit": {
+        "aic": 39.069,
+        "bic": 42.265,
+        "loglik": -14.535
+      },
+      "fitted": [
+        4.7921,
+        4.5864,
+        4.9352,
+        4.7386,
+        5.8538,
+        6.3326,
+        5.365,
+        4.8895,
+        4.9231,
+        5.5348,
+        5.3908,
+        5.8881,
+        5.8593,
+        5.3037,
+        6.0386,
+        5.9734
+      ],
+      "fitted_label": "Smoothed trend + effort",
+      "forecast": [
+        {
+          "boot_median": 5.8141,
+          "hi80": 6.4487,
+          "hi95": 6.7751,
+          "lo80": 5.0117,
+          "lo95": 4.6564,
+          "mean": 5.7319,
+          "step": 1
+        },
+        {
+          "boot_median": 5.7474,
+          "hi80": 6.4834,
+          "hi95": 6.9424,
+          "lo80": 4.9708,
+          "lo95": 4.5811,
+          "mean": 5.688,
+          "step": 2
+        },
+        {
+          "boot_median": 5.7779,
+          "hi80": 6.558,
+          "hi95": 7.0031,
+          "lo80": 4.7691,
+          "lo95": 4.1234,
+          "mean": 5.6441,
+          "step": 3
+        },
+        {
+          "boot_median": 5.7702,
+          "hi80": 6.6241,
+          "hi95": 7.0899,
+          "lo80": 4.6055,
+          "lo95": 3.6806,
+          "mean": 5.6003,
+          "step": 4
+        },
+        {
+          "boot_median": 5.7907,
+          "hi80": 6.6378,
+          "hi95": 7.1397,
+          "lo80": 4.3954,
+          "lo95": 3.2217,
+          "mean": 5.5564,
+          "step": 5
+        },
+        {
+          "boot_median": 5.8096,
+          "hi80": 6.7175,
+          "hi95": 7.2281,
+          "lo80": 4.0649,
+          "lo95": 2.8842,
+          "mean": 5.5125,
+          "step": 6
+        }
+      ],
+      "key": "local_linear_trend",
+      "label": "Local linear trend",
+      "ljung_box": {
+        "lags": 3,
+        "p_value": 0.787,
+        "statistic": 1.059
+      },
+      "parameters": [
+        {
+          "ci_lower": -0.0006,
+          "ci_upper": 0.4693,
+          "estimate": 0.2343,
+          "name": "sigma2.irregular",
+          "p_value": 0.0506,
+          "std_err": 0.1199,
+          "z": 1.9546
+        },
+        {
+          "ci_lower": -0.4355,
+          "ci_upper": 0.4355,
+          "estimate": 0.0,
+          "name": "sigma2.level",
+          "p_value": 1.0,
+          "std_err": 0.2222,
+          "z": 0.0
+        },
+        {
+          "ci_lower": -0.0261,
+          "ci_upper": 0.0307,
+          "estimate": 0.0023,
+          "name": "sigma2.trend",
+          "p_value": 0.876,
+          "std_err": 0.0145,
+          "z": 0.1555
+        },
+        {
+          "ci_lower": -1.91,
+          "ci_upper": 1.0409,
+          "estimate": -0.4346,
+          "name": "beta.distance_km",
+          "p_value": 0.564,
+          "std_err": 0.7528,
+          "z": -0.5773
+        },
+        {
+          "ci_lower": 0.0167,
+          "ci_upper": 0.1397,
+          "estimate": 0.0782,
+          "name": "beta.total_elevation_gain",
+          "p_value": 0.0127,
+          "std_err": 0.0314,
+          "z": 2.492
+        }
+      ],
+      "selected_by": null,
+      "specification": "y_t = level_t + gamma'x_t + eps_t;  level_{t+1} = level_t + slope_t + eta_t;  slope_{t+1} = slope_t + zeta_t"
+    }
+  ],
+  "n_observations": 16,
+  "observed": [
+    {
+      "date": "2025-09-23",
+      "distance_km": 2.824,
+      "elevation_m": 15.1,
+      "step": 1,
+      "value": 4.669
+    },
+    {
+      "date": "2025-09-26",
+      "distance_km": 2.648,
+      "elevation_m": 10.4,
+      "step": 2,
+      "value": 4.645
+    },
+    {
+      "date": "2025-10-03",
+      "distance_km": 2.795,
+      "elevation_m": 14.6,
+      "step": 3,
+      "value": 4.335
+    },
+    {
+      "date": "2025-11-13",
+      "distance_km": 2.627,
+      "elevation_m": 10.1,
+      "step": 4,
+      "value": 4.326
+    },
+    {
+      "date": "2026-01-11",
+      "distance_km": 2.715,
+      "elevation_m": 23.9,
+      "step": 5,
+      "value": 7.19
+    },
+    {
+      "date": "2026-04-08",
+      "distance_km": 2.443,
+      "elevation_m": 27.8,
+      "step": 6,
+      "value": 5.907
+    },
+    {
+      "date": "2026-05-02",
+      "distance_km": 2.907,
+      "elevation_m": 17.5,
+      "step": 7,
+      "value": 5.52
+    },
+    {
+      "date": "2026-06-17",
+      "distance_km": 2.828,
+      "elevation_m": 10.7,
+      "step": 8,
+      "value": 5.132
+    },
+    {
+      "date": "2026-07-04",
+      "distance_km": 2.742,
+      "elevation_m": 10.6,
+      "step": 9,
+      "value": 5.222
+    },
+    {
+      "date": "2026-08-03",
+      "distance_km": 2.28,
+      "elevation_m": 16.0,
+      "step": 10,
+      "value": 5.344
+    },
+    {
+      "date": "2026-08-05",
+      "distance_km": 2.435,
+      "elevation_m": 15.3,
+      "step": 11,
+      "value": 5.38
+    },
+    {
+      "date": "2026-08-07",
+      "distance_km": 3.329,
+      "elevation_m": 27.0,
+      "step": 12,
+      "value": 5.678
+    },
+    {
+      "date": "2026-08-09",
+      "distance_km": 3.031,
+      "elevation_m": 25.4,
+      "step": 13,
+      "value": 5.581
+    },
+    {
+      "date": "2026-08-11",
+      "distance_km": 2.895,
+      "elevation_m": 18.0,
+      "step": 14,
+      "value": 5.579
+    },
+    {
+      "date": "2026-08-14",
+      "distance_km": 3.234,
+      "elevation_m": 29.8,
+      "step": 15,
+      "value": 6.272
+    },
+    {
+      "date": "2026-08-21",
+      "distance_km": 3.265,
+      "elevation_m": 29.7,
+      "step": 16,
+      "value": 5.625
+    }
+  ],
+  "regressors": [
+    "distance_km",
+    "total_elevation_gain"
+  ],
+  "schema_version": 1,
+  "sport_types": [
+    "Run"
+  ],
+  "time_index": "activity",
+  "unit_kind": "pace_min_per_km",
+  "warning": "Fitted to 16 activities. Below about 30 the BIC ordering, the ARMA coefficients and the state-space variances are all weakly identified. Read the intervals, not the point estimates."
+}
