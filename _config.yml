@@ -34,6 +34,21 @@ author:
 
 # Build settings
 markdown: kramdown
+
+# Math rendering (MathJax 3, vendored at assets/js/lib/mathjax/tex-svg.js and
+# wired up in _includes/head/custom.html).
+#
+# kramdown's mathjax engine is what turns $$...$$ into the \( \) and \[ \]
+# delimiters the head include is configured to look for. Setting it to anything
+# else (or to none) stops math rendering. It is already kramdown's default --
+# written out so a future edit does not silently drop it.
+kramdown:
+  math_engine: mathjax
+
+# Uncomment to stop loading MathJax site-wide (per page: `mathjax: false` in
+# that page's front matter).
+# mathjax: false
+
 plugins:
   - jekyll-feed
   - jekyll-include-cache
