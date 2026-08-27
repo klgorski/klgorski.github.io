@@ -1,0 +1,63 @@
+{%- comment -%}
+  MathJax 3 — LaTeX rendering for the whole site.
+
+  Minimal Mistakes pulls this file into <head> on every page (it overrides the
+  theme's empty stub of the same name).
+
+  The delimiters below are not a preference, they are the contract with
+  kramdown. Since kramdown 2.2 the mathjax engine writes `\( ... \)` for inline
+  math and `\[ ... \]` for a math block straight into the HTML — no wrapper
+  element, no `<script type="math/tex">` (that was kramdown <= 2.1, aimed at
+  MathJax 2, which MathJax 3 would ignore outright). GitHub Pages pins kramdown
+  2.4.0 and the Gemfile pins the same github-pages gem, so those two delimiter
+  pairs are exactly what reaches the browser. Remove either one and markdown
+  math silently stops rendering.
+
+  Single $...$ is deliberately NOT a delimiter. Kramdown parses `_` and `*`
+  inside single dollars as emphasis before MathJax ever sees them, so `$x_i$`
+  in markdown would arrive mangled, and a plain dollar amount on a page would
+  start swallowing text. Use $$...$$ in markdown (kramdown's own convention,
+  inline or display) and \( \) / \[ \] in raw HTML.
+
+  Turn it off for one page with `mathjax: false` in that page's front matter, or
+  site-wide with `mathjax: false` in _config.yml.
+{%- endcomment -%}
+{%- if page.mathjax != false and site.mathjax != false -%}
+<style>
+  /* Long display equations scroll inside their own box instead of forcing the
+     page to scroll sideways on a phone. */
+  mjx-container[jax="SVG"][display="true"] {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding: 0.25em 0;
+  }
+  /* Defensive: keep the equation at its natural size inside that scroller if a
+     theme or page stylesheet ever applies a blanket svg max-width. Minimal
+     Mistakes 4.26.2 does not (its max-width rule is scoped to img), so today
+     this changes nothing. */
+  mjx-container[jax="SVG"] svg {
+    max-width: none;
+  }
+</style>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams'
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'annotation', 'annotation-xml'],
+      ignoreHtmlClass: 'no-mathjax',
+      processHtmlClass: 'mathjax'
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script defer id="MathJax-script" src="{{ '/assets/js/lib/mathjax/tex-svg.js' | relative_url }}"></script>
+{%- endif -%}
