@@ -59,8 +59,9 @@ A few rules worth knowing:
   inside an element with `class="no-mathjax"`.
 - To skip loading MathJax on one page, add `mathjax: false` to its front
   matter; to switch it off site-wide, uncomment `mathjax: false` in
-  `_config.yml`. Nothing sets it today, so every page loads it — `/running/`
-  is the one page carrying the weight for no math.
+  `_config.yml`. Nothing sets it today, so every page loads it. `/fitness/`
+  needs it: the fitted model equations are typeset from the published
+  coefficients at runtime.
 - Only math present when the page loads is typeset. Anything a script writes
   into the page afterwards needs a `MathJax.typesetPromise()` call of its own.
 
