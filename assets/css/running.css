@@ -407,3 +407,363 @@
     animation: none !important;
   }
 }
+
+/* ======================================================================
+   Design pass: masthead, the two-column top band, and the card furniture
+   the dashboard picked up from it.
+
+   Everything below reuses the tokens at the top of this file. The one new
+   colour is a neutral -- a fourth *hue* would need the palette validator
+   re-run, a fourth grey does not, because it separates from the three
+   series by lightness rather than by hue.
+   ====================================================================== */
+
+.viz-root {
+  --series-neutral: #7a7873;
+
+  /* Warmer than --surface-2, so a callout and a TeX fallback read as insets
+     rather than as the page showing through. */
+  --inset: #f4f2ee;
+
+  --ok-surface: rgba(27, 175, 122, 0.13);
+  --ok-ink: #116b4b;
+  --idle-surface: #f0efeb;
+}
+
+/* -- masthead ----------------------------------------------------------- */
+
+/* Sits directly under the theme's own page title, which is why there is no
+   heading here: two h1s would be two h1s. */
+.viz-headline {
+  margin: -0.5em 0 0;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+/* -- the top band ------------------------------------------------------- */
+
+/* A fixed-width log beside a flexible column: the log's rows are short and
+   would only get looser with more width, while the chart beside it uses
+   everything it is given. Below 900px the two stack rather than squeeze. */
+.viz-band {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 1.25em;
+  align-items: start;
+  margin-bottom: 2em;
+}
+
+.viz-band-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25em;
+  min-width: 0;
+}
+
+/* The band owns the spacing between its cards; the cards' own bottom margin
+   would double it. */
+.viz-band .viz-figure {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .viz-band {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* -- card furniture ----------------------------------------------------- */
+
+.viz-figure-foot {
+  border-top: 1px solid var(--border);
+  padding: 0.65em 1.1em;
+  font-size: 0.78em;
+  color: var(--text-muted);
+}
+
+/* Title on the left, legend on the right, wrapping to two rows when the card
+   is too narrow to hold both. */
+.viz-figure-headrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1.4em;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+/* Chart.js draws its own legend for the canvases it owns. This one is for the
+   charts whose series carry a line style as well as a colour -- a swatch
+   square cannot say "dashed". */
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em 1em;
+  align-items: center;
+  font-size: 0.78em;
+  color: var(--text-secondary);
+}
+
+.viz-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.viz-legend-item svg {
+  flex: none;
+}
+
+.viz-legend-aside {
+  color: var(--text-muted);
+}
+
+/* -- the activity log --------------------------------------------------- */
+
+.viz-log {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25em 1.1em 0;
+  flex-grow: 1;
+}
+
+.viz-log-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.62em 0;
+  border-bottom: 1px solid var(--gridline);
+}
+
+.viz-log-row:last-child {
+  border-bottom: 0;
+}
+
+/* Sport identity as an edge rather than a dot: it has to survive being read
+   at a glance down a column of ten. */
+.viz-log-bar {
+  display: inline-block;
+  width: 3px;
+  align-self: stretch;
+  border-radius: 2px;
+  background: var(--text-muted);
+}
+
+.viz-log-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.viz-log-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.viz-log-sport {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.viz-log-pace {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.viz-log-when,
+.viz-log-meta {
+  font-size: 0.72em;
+  color: var(--text-muted);
+}
+
+.viz-log-meta {
+  font-variant-numeric: tabular-nums;
+}
+
+.viz-log-empty {
+  padding: 1.2em 1.1em;
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+/* -- flat tables -------------------------------------------------------- */
+
+/* The table twins under the charts hide behind a <details> because there the
+   chart is the answer and the table is the audit trail. These tables ARE the
+   answer, so they are shown, and they scroll sideways rather than down. */
+.viz-matrix {
+  padding: 0 0.5em 0.4em;
+  overflow-x: auto;
+}
+
+.viz-matrix table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82em;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.viz-matrix th {
+  padding: 0.55em 0.7em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--baseline);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.viz-matrix td {
+  padding: 0.55em 0.7em;
+  border-bottom: 1px solid var(--gridline);
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: top;
+}
+
+.viz-matrix th:first-child,
+.viz-matrix td:first-child {
+  text-align: left;
+}
+
+.viz-matrix td:first-child {
+  color: var(--text-primary);
+}
+
+.viz-matrix tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* The one number in the row the eye should land on. */
+.viz-matrix .is-lead {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* A sport with no activities yet keeps its row so the reader can see it is
+   tracked and empty, rather than wonder whether it is missing. */
+.viz-matrix .is-absent td {
+  color: var(--text-muted);
+}
+
+/* A group label spanning several rows closes its group with the heavier
+   rule, so the groups read as blocks without a second border colour. */
+.viz-matrix .is-group {
+  color: var(--text-primary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--baseline);
+}
+
+/* Text columns read left, number columns read right. The default in this
+   table is right, because most of its columns are numbers. */
+.viz-matrix th.is-text,
+.viz-matrix td.is-text {
+  text-align: left;
+}
+
+.viz-matrix td.is-wrap {
+  white-space: normal;
+  text-align: left;
+}
+
+.viz-pill {
+  display: inline-block;
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  font-size: 0.85em;
+  font-weight: 600;
+  background: var(--idle-surface);
+  color: var(--text-muted);
+}
+
+.viz-pill.is-pass {
+  background: var(--ok-surface);
+  color: var(--ok-ink);
+}
+
+/* -- typeset models ----------------------------------------------------- */
+
+.viz-equations {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6em;
+  padding: 0.4em 1.1em 1.3em;
+}
+
+.viz-equation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+  min-width: 0;
+}
+
+.viz-equation-label {
+  font-size: 0.72em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* An equation too wide for the card scrolls inside its own box. Without this
+   it widens the page instead, and the whole dashboard gets a horizontal
+   scrollbar because of one long line of algebra. */
+.viz-equation-body {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* The specification above, the fitted numbers below, told apart by size and
+   ink rather than by a second heading. */
+.viz-equation-body.is-fitted {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.viz-equation-rule {
+  height: 1px;
+  background: var(--gridline);
+}
+
+/* The TeX source, shown only while MathJax has not typeset the block -- a
+   reader whose browser never ran the vendored script gets the algebra as
+   source rather than a blank card. renderEquations() removes these once
+   typesetting resolves. */
+.viz-tex {
+  margin: 0;
+  padding: 0.8em 0.9em;
+  border-radius: 6px;
+  background: var(--inset);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72em;
+  line-height: 1.6;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* -- section rule ------------------------------------------------------- */
+
+/* The forecast is a different kind of claim from the training log above it --
+   modelled rather than measured -- so it opens on a rule instead of on just
+   another heading. */
+.viz-section {
+  border-top: 2px solid var(--text-primary);
+  padding-top: 0.6em;
+  margin-top: 2.5em;
+}
+
+.viz-section > h2 {
+  margin-top: 0.4em;
+}
+
+/* Warmer inset than the plain page surface, matching the design pass. */
+.viz-callout {
+  background: var(--inset);
+}

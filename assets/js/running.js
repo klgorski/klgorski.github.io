@@ -36,27 +36,78 @@
   // shorter range must never repaint the survivors.
   var SPORT_COLORS = {};
 
+  /* The design pass fixed which sport wears which slot, so the same hue means
+     the same sport across the log, the tables and every chart. Swimming holds
+     the blue because it is the series that sits on its own axis, and hiking
+     takes the neutral -- a fourth *hue* would need the palette validator
+     re-run, a fourth grey separates by lightness and does not.
+
+     A sport not named here still gets a colour: the leftover slots are handed
+     out most-frequent-first, exactly as they were before this table existed. */
+  var SPORT_SLOTS = {
+    Run: "series2",
+    Walk: "series3",
+    Hike: "neutral",
+    Swim: "series1",
+  };
+
+  var SLOT_ORDER = ["series1", "series2", "series3", "neutral"];
+
   function assignSportColors(activities) {
-    var slots = [C.series1, C.series2, C.series3];
+    var counts = {};
     var seen = [];
     activities.forEach(function (a) {
       if (seen.indexOf(a.sport) === -1) seen.push(a.sport);
-    });
-    // Most-frequent first, so the commonest sport gets slot 1 and the order is
-    // stable across days rather than following whatever was recorded first.
-    var counts = {};
-    activities.forEach(function (a) {
       counts[a.sport] = (counts[a.sport] || 0) + 1;
     });
+    // Most-frequent first, so the leftover slots are handed out in an order
+    // that is stable across days rather than following whatever was recorded
+    // first.
     seen.sort(function (a, b) {
       return counts[b] - counts[a] || a.localeCompare(b);
     });
-    seen.forEach(function (sport, i) {
-      // Past three sports the palette's all-pairs guarantee runs out, so the
+
+    // Named sports claim their slot before anything else is placed, so a
+    // leftover can only ever be given a slot no named sport is using.
+    var taken = {};
+    seen.forEach(function (sport) {
+      var slot = SPORT_SLOTS[sport];
+      if (!slot) return;
+      SPORT_COLORS[sport] = C[slot];
+      taken[slot] = true;
+    });
+    var spare = SLOT_ORDER.filter(function (slot) { return !taken[slot]; });
+    seen.forEach(function (sport) {
+      if (SPORT_COLORS[sport]) return;
+      // Past four sports the palette's all-pairs guarantee runs out, so the
       // tail folds into one "Other" color rather than inventing a ninth hue.
-      SPORT_COLORS[sport] = i < slots.length ? slots[i] : C.muted;
+      SPORT_COLORS[sport] = spare.length ? C[spare.shift()] : C.muted;
     });
     return seen;
+  }
+
+  /* Sports that have never been recorded still need a colour, because the
+     mean-performance table keeps a row for them. Falls back to the named slot
+     rather than to muted, so a reserved row is drawn in the colour it will
+     keep on the day the first activity of that kind arrives. */
+  function sportColor(sport) {
+    if (SPORT_COLORS[sport]) return SPORT_COLORS[sport];
+    if (SPORT_SLOTS[sport] && C[SPORT_SLOTS[sport]]) return C[SPORT_SLOTS[sport]];
+    return C.muted;
+  }
+
+  /* Sports the mean-performance table keeps a row for even when nothing has
+     been recorded: an empty row says "tracked, none yet", a missing one says
+     nothing at all. */
+  var RESERVED_SPORTS = ["Swim"];
+
+  /* Swimming pace lives on a different scale from running pace -- minutes per
+     100 m against minutes per km -- so it gets the right-hand axis of the
+     performance chart instead of flattening the land series into a band. */
+  var POOL_SPORTS = ["Swim"];
+
+  function isPool(sport) {
+    return POOL_SPORTS.indexOf(sport) !== -1;
   }
 
   // -- units --------------------------------------------------------------
@@ -388,10 +439,9 @@
   }
 
   function chip(sport) {
-    // SPORT_COLORS is a fixed lookup, but an unrecognised sport would put the
-    // literal "undefined" into a style attribute; fall back to the muted token.
-    var color = SPORT_COLORS[sport] || "var(--text-muted)";
-    return "<span class=\"viz-chip\" style=\"background:" + esc(color) + "\"></span>" + esc(sport);
+    // sportColor() never returns undefined, which matters because the value
+    // goes straight into a style attribute.
+    return "<span class=\"viz-chip\" style=\"background:" + esc(sportColor(sport)) + "\"></span>" + esc(sport);
   }
 
   // -- rendering ----------------------------------------------------------
@@ -801,14 +851,487 @@
     );
   }
 
+  // -- the top band -------------------------------------------------------
+
+  /* Swim pace is quoted per 100 m, or per 100 yd once the toggle is on miles.
+     summary.json publishes one pace field for every sport -- minutes per km --
+     so the conversion belongs here rather than in the published file. */
+  var KM_PER_100YD = 0.09144;
+
+  function toPoolPace(minPerKm) {
+    return state.unit === "mi" ? minPerKm * KM_PER_100YD : minPerKm / 10;
+  }
+
+  function poolPaceUnit() {
+    return state.unit === "mi" ? "/100 yd" : "/100 m";
+  }
+
+  function paceOf(activity) {
+    if (!activity.pace_min_per_km) return null;
+    return isPool(activity.sport)
+      ? toPoolPace(activity.pace_min_per_km)
+      : toPace(activity.pace_min_per_km);
+  }
+
+  function paceUnitOf(sport) {
+    return isPool(sport) ? poolPaceUnit() : paceUnit();
+  }
+
+  /* mm:ss, or h:mm:ss once a session runs past the hour. duration() reads
+     better in prose ("1h 05m"); a column of times reads better aligned. */
+  function clock(minutes) {
+    if (!minutes || !isFinite(minutes)) return "–";
+    var total = Math.round(minutes * 60);
+    var h = Math.floor(total / 3600);
+    var m = Math.floor((total % 3600) / 60);
+    var s = total % 60;
+    return (h ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+  function weekdayDate(iso) {
+    var d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+  }
+
+  function renderHeadline(scoped) {
+    var t = totals(scoped);
+    var parts = [
+      t.count + (t.count === 1 ? " activity" : " activities"),
+      num(toDistance(t.distanceKm), 1) + " " + distanceUnit(),
+    ];
+    parts.push(generatedAt
+      ? "synced from Strava, last updated " +
+        generatedAt.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
+      : "synced from Strava");
+    setText("viz-headline", parts.join(" · "));
+  }
+
+  function renderRecent(scoped) {
+    var host = document.getElementById("recent-log");
+    if (!host) return;
+
+    var rows = scoped.slice(-10).reverse();
+    host.innerHTML = rows.length
+      ? rows.map(function (a) {
+          var p = paceOf(a);
+          return "<div class=\"viz-log-row\">" +
+            "<span class=\"viz-log-bar\" style=\"background:" + esc(sportColor(a.sport)) + "\"></span>" +
+            "<span class=\"viz-log-main\">" +
+              "<span class=\"viz-log-sport\">" + esc(a.sport) + "</span>" +
+              "<span class=\"viz-log-when\">" + esc(weekdayDate(a.date)) +
+                (a.time ? " · " + esc(a.time) : "") + "</span>" +
+            "</span>" +
+            "<span class=\"viz-log-side\">" +
+              "<span class=\"viz-log-pace\">" + (p === null ? "–" : pace(p) +
+                "<span class=\"viz-unit\"> " + paceUnitOf(a.sport) + "</span>") + "</span>" +
+              "<span class=\"viz-log-meta\">" + num(toDistance(a.distance_km), 2) + " " +
+                distanceUnit() + " · " + clock(a.moving_time_min) + "</span>" +
+            "</span>" +
+          "</div>";
+        }).join("")
+      : "<p class=\"viz-log-empty\">No activities in this range.</p>";
+
+    var link = document.getElementById("recent-all-link");
+    if (link) {
+      link.textContent = "All " + scoped.length +
+        (scoped.length === 1 ? " activity" : " activities") + " ↓";
+    }
+  }
+
+  function renderSportMeans(scoped, sports) {
+    var host = document.getElementById("table-sport-means");
+    if (!host) return;
+
+    var listed = sports.slice();
+    RESERVED_SPORTS.forEach(function (sport) {
+      if (listed.indexOf(sport) === -1) listed.push(sport);
+    });
+
+    var body = listed.map(function (sport) {
+      var subset = scoped.filter(function (a) { return a.sport === sport; });
+      if (!subset.length) {
+        return "<tr class=\"is-absent\"><td>" + chip(sport) +
+          "</td><td>0</td><td>–</td><td>–</td><td>–</td></tr>";
+      }
+      var t = totals(subset);
+      // Ratio of sums, the same definition totals() uses everywhere else --
+      // and the only one that makes the row multiply out. A reader who divides
+      // the mean time in this row by the mean distance beside it has to land
+      // on the pace at the end of it; the mean of the per-activity paces would
+      // not, and the discrepancy would look like an arithmetic error.
+      var shown = t.paceMinPerKm === null
+        ? null
+        : (isPool(sport) ? toPoolPace(t.paceMinPerKm) : toPace(t.paceMinPerKm));
+      return "<tr>" +
+        "<td>" + chip(sport) + "</td>" +
+        "<td>" + subset.length + "</td>" +
+        "<td class=\"is-lead\">" + clock(t.movingMin / subset.length) + "</td>" +
+        "<td>" + num(toDistance(t.distanceKm / subset.length), 2) + " " + distanceUnit() + "</td>" +
+        "<td>" + (shown === null ? "–" : pace(shown) +
+          "<span class=\"viz-unit\"> " + paceUnitOf(sport) + "</span>") + "</td>" +
+        "</tr>";
+    }).join("");
+
+    host.innerHTML =
+      "<table><thead><tr>" +
+        "<th scope=\"col\">Sport</th>" +
+        "<th scope=\"col\">Activities</th>" +
+        "<th scope=\"col\">Mean moving time <span class=\"viz-unit\">mm:ss</span></th>" +
+        "<th scope=\"col\">Mean distance</th>" +
+        "<th scope=\"col\">Mean pace</th>" +
+      "</tr></thead><tbody>" + body + "</tbody></table>";
+  }
+
+  // -- the performance chart ----------------------------------------------
+
+  var DEGREE_NAMES = { 1: "Linear", 2: "Quadratic", 3: "Cubic" };
+
+  /* Least squares against a Vandermonde in x rescaled to [0, 1]. The rescale
+     is not cosmetic: on raw epoch-day numbers the cubic normal equations are
+     ill-conditioned enough that the solve comes back as noise.
+
+     Returns null rather than a line when there is not enough data, and drops
+     the degree before it drops the line. The rule is at least two observations
+     per coefficient: a cubic through seven points still fits, but it fits the
+     noise, and it says so by whipping upward at the last point. So a cubic
+     wants eight runs, a quadratic six, a straight line four. */
+  function polyfit(xs, ys, degree) {
+    var n = xs.length;
+    while (degree > 1 && n < 2 * (degree + 1)) degree -= 1;
+    if (degree < 1 || n < 2 * (degree + 1)) return null;
+
+    var lo = Math.min.apply(null, xs);
+    var hi = Math.max.apply(null, xs);
+    var span = hi - lo;
+    if (!span) return null;
+
+    var m = degree + 1;
+    var t = xs.map(function (x) { return (x - lo) / span; });
+
+    // Normal equations (X'X)b = X'y, assembled straight from power sums, with
+    // the right-hand side carried as an extra column.
+    var A = [];
+    var i, j, k, s;
+    for (i = 0; i < m; i++) {
+      A[i] = [];
+      for (j = 0; j < m; j++) {
+        s = 0;
+        for (k = 0; k < n; k++) s += Math.pow(t[k], i + j);
+        A[i][j] = s;
+      }
+      s = 0;
+      for (k = 0; k < n; k++) s += Math.pow(t[k], i) * ys[k];
+      A[i][m] = s;
+    }
+
+    // Gauss-Jordan with partial pivoting.
+    for (var c = 0; c < m; c++) {
+      var pivot = c;
+      for (var r = c + 1; r < m; r++) {
+        if (Math.abs(A[r][c]) > Math.abs(A[pivot][c])) pivot = r;
+      }
+      if (Math.abs(A[pivot][c]) < 1e-12) return null;
+      var swap = A[c]; A[c] = A[pivot]; A[pivot] = swap;
+      for (var r2 = 0; r2 < m; r2++) {
+        if (r2 === c) continue;
+        var f = A[r2][c] / A[c][c];
+        for (var c2 = c; c2 <= m; c2++) A[r2][c2] -= f * A[c][c2];
+      }
+    }
+
+    var coef = [];
+    for (i = 0; i < m; i++) coef[i] = A[i][m] / A[i][i];
+
+    function at(x) {
+      var u = (x - lo) / span;
+      var out = 0;
+      for (var d = m - 1; d >= 0; d--) out = out * u + coef[d];
+      return out;
+    }
+
+    var mean = ys.reduce(function (acc, v) { return acc + v; }, 0) / n;
+    var ssTot = 0, ssRes = 0;
+    for (k = 0; k < n; k++) {
+      ssTot += Math.pow(ys[k] - mean, 2);
+      ssRes += Math.pow(ys[k] - at(xs[k]), 2);
+    }
+    return { degree: degree, at: at, r2: ssTot > 0 ? 1 - ssRes / ssTot : null };
+  }
+
+  var MS_PER_DAY = 86400000;
+
+  function dayValue(iso) {
+    return parseDay(iso).getTime() / MS_PER_DAY;
+  }
+
+  function dayDate(value) {
+    return new Date(Math.round(value * MS_PER_DAY));
+  }
+
+  /* Month boundaries inside the visible span. Built from local Date arithmetic
+     rather than by adding a fixed number of days, so months keep their real
+     lengths and a DST change does not walk the ticks off the first. */
+  function monthTicks(minDay, maxDay) {
+    var first = dayDate(minDay);
+    var cursor = new Date(first.getFullYear(), first.getMonth(), 1);
+    if (cursor.getTime() / MS_PER_DAY < minDay) {
+      cursor = new Date(first.getFullYear(), first.getMonth() + 1, 1);
+    }
+    var out = [];
+    while (cursor.getTime() / MS_PER_DAY <= maxDay && out.length < 200) {
+      out.push(cursor.getTime() / MS_PER_DAY);
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+    }
+    return out;
+  }
+
+  function dayLabel(value) {
+    var d = dayDate(value);
+    // A tick on the 1st is a month boundary, and the month alone names it --
+    // with the year attached in January, where the reader needs it.
+    if (d.getDate() === 1) {
+      return d.getMonth() === 0
+        ? d.toLocaleDateString(undefined, { month: "short", year: "2-digit" })
+        : d.toLocaleDateString(undefined, { month: "short" });
+    }
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+
+  function legendItem(label, color, aside, solid) {
+    var stroke = esc(color);
+    var line = solid
+      ? "<line x1=\"0\" y1=\"5\" x2=\"26\" y2=\"5\" stroke=\"" + stroke + "\" stroke-width=\"2.4\"/>"
+      : "<line x1=\"0\" y1=\"5\" x2=\"26\" y2=\"5\" stroke=\"" + stroke + "\" stroke-width=\"2.4\" stroke-dasharray=\"4 3\" opacity=\"0.45\"/>";
+    var dot = solid
+      ? "<circle cx=\"13\" cy=\"5\" r=\"4\" fill=\"" + stroke + "\" stroke=\"" + esc(C.surface) + "\" stroke-width=\"1.5\"/>"
+      : "<circle cx=\"13\" cy=\"5\" r=\"4\" fill=\"" + esc(C.surface) + "\" stroke=\"" + stroke + "\" stroke-width=\"1.6\"/>";
+    return "<span class=\"viz-legend-item\">" +
+      "<svg width=\"26\" height=\"10\" viewBox=\"0 0 26 10\" aria-hidden=\"true\">" + line + dot + "</svg>" +
+      esc(label) + " <span class=\"viz-legend-aside\">· " + esc(aside) + "</span></span>";
+  }
+
+  function renderPerformance(scoped, sports) {
+    if (!document.getElementById("chart-performance")) return;
+
+    var land = sports.filter(function (s) { return !isPool(s); });
+    var pool = sports.filter(isPool);
+    RESERVED_SPORTS.forEach(function (sport) {
+      if (isPool(sport) && pool.indexOf(sport) === -1) pool.push(sport);
+    });
+
+    /* Only the primary land sport goes on the left axis. sports arrives
+       most-frequent-first, so that is the sport the page is mostly about.
+       Putting a 15 min/km hike on the same scale as a 5 min/km run squashes
+       the runs into an unreadable band -- the chart that does show every sport
+       at once plots pace against distance instead, further down the page. */
+    var leftSport = land.length ? land[0] : null;
+    var rightSport = pool.length ? pool[0] : null;
+
+    var datasets = [];
+    var notes = [];
+    var hasRight = false;
+
+    function addSeries(sport, axis) {
+      var points = scoped
+        .filter(function (a) { return a.sport === sport && a.pace_min_per_km; })
+        .map(function (a) {
+          return { x: dayValue(a.date), y: paceOf(a), raw: a };
+        })
+        .sort(function (p, q) { return p.x - q.x; });
+      if (!points.length) return false;
+
+      var xs = points.map(function (p) { return p.x; });
+      var ys = points.map(function (p) { return p.y; });
+      var fit = polyfit(xs, ys, 3);
+
+      // Pushed before the marks so the marks draw over the line: with equal
+      // `order`, Chart.js draws datasets in the order they are given.
+      if (fit) {
+        var lo = xs[0];
+        var hi = xs[xs.length - 1];
+        var line = [];
+        for (var i = 0; i <= 60; i++) {
+          var x = lo + ((hi - lo) * i) / 60;
+          line.push({ x: x, y: fit.at(x) });
+        }
+        datasets.push({
+          label: sport + " trend",
+          data: line,
+          yAxisID: axis,
+          showLine: true,
+          borderColor: sportColor(sport),
+          borderWidth: 2.4,
+          borderCapStyle: "round",
+          pointRadius: 0,
+          pointHitRadius: 0,
+          tension: 0,
+        });
+        notes.push(
+          DEGREE_NAMES[fit.degree] + " trend fitted on " + points.length + " " +
+          sport.toLowerCase() + (points.length === 1 ? "" : "s") + " against date" +
+          (fit.r2 === null ? "" : ", R² = " + num(fit.r2, 2))
+        );
+      } else {
+        notes.push(
+          "Too few " + sport.toLowerCase() + "s in this range to fit a trend line"
+        );
+      }
+
+      datasets.push({
+        label: sport,
+        data: points,
+        yAxisID: axis,
+        showLine: false,
+        backgroundColor: sportColor(sport),
+        borderColor: C.surface,
+        borderWidth: 1.5,
+        pointRadius: 4.2,
+        pointHoverRadius: 6,
+        pointHitRadius: 12,
+      });
+      return true;
+    }
+
+    if (leftSport) addSeries(leftSport, "y");
+    if (rightSport) hasRight = addSeries(rightSport, "y2");
+
+    /* With nothing swum, the right axis has no data to scale it. Pinning it to
+       a plausible pool range keeps the reserved axis legible instead of
+       collapsing it onto a single value -- and the step is pinned too, because
+       an auto-chosen step lands on values that read as ragged once pace()
+       turns them into mm:ss. A quarter of a minute is 15 seconds. */
+    var idleMin = state.unit === "mi" ? 1.25 : 1.5;
+    var idleMax = state.unit === "mi" ? 2.75 : 3;
+    var idleStep = 0.25;
+
+    var legendHtml = [];
+    if (leftSport) {
+      legendHtml.push(legendItem(leftSport, sportColor(leftSport), "left axis", true));
+    }
+    if (rightSport) {
+      legendHtml.push(legendItem(
+        rightSport,
+        sportColor(rightSport),
+        "right axis" + (hasRight ? "" : ", no data yet"),
+        hasRight
+      ));
+    }
+    setText("legend-performance", legendHtml.join(""));
+
+    if (rightSport && !hasRight) {
+      notes.push("No " + rightSport + " activities recorded yet — the right axis is reserved");
+    }
+    setText("fit-performance", notes.length ? esc(notes.join(" · ")) + "." : "");
+
+    draw("chart-performance", {
+      type: "scatter",
+      data: { datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "nearest", intersect: false },
+        scales: {
+          x: axisX({
+            type: "linear",
+            ticks: {
+              color: C.muted,
+              font: { size: 11 },
+              maxRotation: 0,
+              autoSkip: true,
+              autoSkipPadding: 8,
+              callback: function (v) { return dayLabel(v); },
+            },
+            afterBuildTicks: function (axis) {
+              // Only take the months over when there are enough of them to
+              // read as an axis; on a 30-day range Chart.js's own tick
+              // placement says more than one lonely month boundary would.
+              var months = monthTicks(axis.min, axis.max);
+              if (months.length >= 3) {
+                axis.ticks = months.map(function (v) { return { value: v }; });
+              }
+            },
+          }),
+          y: axisY("min" + paceUnit(), {
+            beginAtZero: false,
+            // Faster is a smaller number, so up means quicker on both axes.
+            reverse: true,
+            display: !!leftSport,
+            // The axis title carries its series' colour: with two axes on two
+            // scales, that is what tells a reader which points belong to which
+            // one without reading the legend first.
+            title: leftSport
+              ? { display: true, text: "min" + paceUnit(), color: sportColor(leftSport), font: { size: 11, weight: "600" } }
+              : undefined,
+            ticks: {
+              color: C.muted,
+              font: { size: 11 },
+              padding: 8,
+              callback: function (v) { return pace(v); },
+            },
+          }),
+          y2: axisY("min" + poolPaceUnit(), {
+            beginAtZero: false,
+            reverse: true,
+            display: !!rightSport,
+            position: "right",
+            title: rightSport
+              ? { display: true, text: "min" + poolPaceUnit(), color: sportColor(rightSport), font: { size: 11, weight: "600" } }
+              : undefined,
+            // One set of horizontal gridlines, owned by the left axis.
+            grid: { drawOnChartArea: false, drawTicks: false },
+            min: hasRight ? undefined : idleMin,
+            max: hasRight ? undefined : idleMax,
+            ticks: {
+              color: C.muted,
+              font: { size: 11 },
+              padding: 8,
+              stepSize: hasRight ? undefined : idleStep,
+              callback: function (v) { return pace(v); },
+            },
+          }),
+        },
+        plugins: {
+          // The HTML legend beside the title carries the line styles, which a
+          // Chart.js swatch square cannot.
+          legend: legend(false),
+          tooltip: tooltip({
+            filter: function (item) {
+              return item.dataset.label.indexOf(" trend") === -1;
+            },
+            title: function (items) {
+              var a = items[0].raw.raw;
+              return a && a.name ? a.name : items[0].dataset.label;
+            },
+            label: function (item) {
+              var a = item.raw.raw;
+              if (!a) return "";
+              return [
+                longDate(a.date),
+                num(toDistance(a.distance_km), 2) + " " + distanceUnit() +
+                  " in " + clock(a.moving_time_min),
+                pace(paceOf(a)) + " " + paceUnitOf(a.sport),
+              ];
+            },
+          }),
+        },
+      },
+    });
+  }
+
   // -- wiring -------------------------------------------------------------
 
   var summary = null;
   var sportOrder = [];
+  var generatedAt = null;
 
   function renderAll() {
     var scoped = inRange(summary.activities);
     var lastDay = summary.last_day || (summary.activities.length ? summary.activities[summary.activities.length - 1].date : null);
+
+    renderHeadline(scoped);
+    renderRecent(scoped);
+    renderSportMeans(scoped, sportOrder);
+    renderPerformance(scoped, sportOrder);
 
     renderTiles(scoped, lastDay);
     renderWeekly(scoped, sportOrder);
@@ -867,6 +1390,7 @@
       series1: token("--series-1", "#2a78d6"),
       series2: token("--series-2", "#eb6834"),
       series3: token("--series-3", "#1baf7a"),
+      neutral: token("--series-neutral", "#7a7873"),
     };
 
     if (typeof Chart === "undefined") {
@@ -904,10 +1428,9 @@
         }
         sportOrder = assignSportColors(summary.activities);
 
-        var generated = summary.generated_at ? new Date(summary.generated_at) : null;
-        setText("viz-generated", generated
-          ? "Data last synced " + generated.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
-          : "");
+        // The sync date is part of the masthead line rather than a standalone
+        // paragraph, so renderHeadline() -- not this -- writes it out.
+        generatedAt = summary.generated_at ? new Date(summary.generated_at) : null;
 
         ready = true;
         renderAll();
