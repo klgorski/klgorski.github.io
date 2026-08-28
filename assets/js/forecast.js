@@ -456,12 +456,24 @@
     );
   }
 
+  /* The grid is optional in the published file, and the <details> that wraps
+     this table is unconditional markup. Bailing out early used to leave the
+     expander in place over an empty div -- "Show the BIC order selection"
+     opening onto nothing. Hide the wrapper instead, the same way
+     renderEquations() hides its card. */
   function bicTable(id, model) {
-    if (!model.bic_grid) return;
+    var host = document.getElementById(id);
+    var toggle = host && host.closest ? host.closest("details") : null;
+    var grid = model.bic_grid && model.bic_grid.length ? model.bic_grid : null;
+    if (toggle) toggle.hidden = !grid;
+    if (!grid) {
+      if (host) host.innerHTML = "";
+      return;
+    }
     renderTable(
       id,
       ["Order (p, q)", "BIC", "ΔBIC", "Converged"],
-      model.bic_grid.map(function (row) {
+      grid.map(function (row) {
         var name = "ARMA(" + row.p + ", " + row.q + ")" + (row.selected ? " — selected" : "");
         return [
           row.selected ? "<strong>" + name + "</strong>" : name,
