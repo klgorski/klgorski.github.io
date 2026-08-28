@@ -12,32 +12,43 @@
  * does not depend on it.
  *
  * Independent of running.js on purpose -- these are separate files that fail
- * separately. The one thing they share is the km/miles toggle, which both bind
- * to by listening for the same click rather than by talking to each other.
+ * separately, and either can be deleted without the other noticing. The one
+ * piece of page state they share is the km/miles toggle, which both bind to by
+ * listening for the same click rather than by talking to each other. They also
+ * both load viz-core.js, but that is a dependency they have in common rather
+ * than one on each other -- the same relationship they have with Chart.js.
  */
 (function () {
   "use strict";
 
   var DATA_URL = document.currentScript && document.currentScript.dataset.src;
   var SCHEMA = 1;
-  var KM_PER_MI = 1.609344;
+
+  /* Formatting, escaping, the table builder and the chart chrome live in
+     viz-core.js, which running.js loads too. Without it this section has
+     nothing to draw with and simply stays hidden, as it does for a missing
+     or unreadable forecast.json. */
+  var core = window.VizCore;
+  if (!core) return;
+
+  var KM_PER_MI = core.KM_PER_MI;
+  var esc = core.esc;
+  var setText = core.setText;
+  var renderTable = core.renderTable;
+  var draw = core.draw;
+  var num = core.num;
+  var clock = core.mmss;
+  var shortDate = core.shortDate;
+  var longDate = core.longDate;
 
   var C = {};
   var payload = null;
   // payload is assigned before the schema/shape checks run, so "assigned" is
   // not the same as "usable". renderAll() waits on this instead.
   var ready = false;
-  var charts = {};
   var unit = "km";
 
   // -- palette ------------------------------------------------------------
-
-  function token(name, fallback) {
-    var root = document.querySelector(".viz-root");
-    if (!root) return fallback;
-    var value = getComputedStyle(root).getPropertyValue(name);
-    return (value && value.trim()) || fallback;
-  }
 
   /* The bands are the model's own hue at low opacity, not a separate color:
      they are the same entity as the forecast line, drawn less certainly. */
@@ -94,22 +105,6 @@
 
   // -- formatting ---------------------------------------------------------
 
-  function num(value, digits) {
-    if (value === null || value === undefined || isNaN(value)) return "–";
-    return Number(value).toLocaleString(undefined, {
-      minimumFractionDigits: digits === undefined ? 2 : digits,
-      maximumFractionDigits: digits === undefined ? 2 : digits,
-    });
-  }
-
-  function clock(minutes) {
-    if (minutes === null || minutes === undefined || !isFinite(minutes)) return "–";
-    var total = Math.round(minutes * 60);
-    var m = Math.floor(total / 60);
-    var s = total % 60;
-    return m + ":" + (s < 10 ? "0" : "") + s;
-  }
-
   /* Paces read as mm:ss; everything else reads as a number. */
   function value(v, digits) {
     if (v === null || v === undefined) return "–";
@@ -125,21 +120,6 @@
     if (p === null || p === undefined) return "–";
     if (p < 0.001) return "<0.001";
     return num(p, 3);
-  }
-
-  function shortDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  }
-
-  function longDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-  }
-
-  function setText(id, html) {
-    var node = document.getElementById(id);
-    if (node) node.innerHTML = html;
   }
 
   // -- coefficient names --------------------------------------------------
@@ -168,14 +148,6 @@
   // Parameter names come from statsmodels, not from anything a person typed,
   // but the unmapped fallback returns them verbatim into an innerHTML table --
   // so escape there rather than rely on that staying true.
-  var ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" };
-
-  function esc(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
-      return ESCAPES[c];
-    });
-  }
-
   function paramLabel(name) {
     var bare = name.indexOf("beta.") === 0 ? name.slice(5) : name;
     if (PARAM_LABELS[bare]) return PARAM_LABELS[bare];
@@ -193,41 +165,9 @@
 
   // -- chart chrome -------------------------------------------------------
 
+  // C is populated in start(), so the palette is read at call time.
   function tooltip(callbacks) {
-    return {
-      backgroundColor: C.textPrimary,
-      titleColor: "#ffffff",
-      bodyColor: "#ffffff",
-      borderWidth: 0,
-      padding: 10,
-      cornerRadius: 6,
-      displayColors: true,
-      boxWidth: 10,
-      boxHeight: 10,
-      boxPadding: 4,
-      callbacks: callbacks || {},
-    };
-  }
-
-  function draw(id, config) {
-    var canvas = document.getElementById(id);
-    if (!canvas) return;
-    if (charts[id]) charts[id].destroy();
-    charts[id] = new Chart(canvas.getContext("2d"), config);
-  }
-
-  function renderTable(id, columns, rows) {
-    var host = document.getElementById(id);
-    if (!host) return;
-    var head = "<thead><tr>" + columns.map(function (c) {
-      return "<th scope=\"col\">" + c + "</th>";
-    }).join("") + "</tr></thead>";
-    var body = "<tbody>" + rows.map(function (row) {
-      return "<tr>" + row.map(function (cell, i) {
-        return i === 0 ? "<th scope=\"row\">" + cell + "</th>" : "<td>" + cell + "</td>";
-      }).join("") + "</tr>";
-    }).join("") + "</tbody>";
-    host.innerHTML = "<div class=\"viz-table-scroll\"><table>" + head + body + "</table></div>";
+    return core.tooltip(C, callbacks);
   }
 
   // -- the fan chart ------------------------------------------------------
@@ -974,16 +914,7 @@
 
     if (typeof Chart === "undefined") return hide("Chart.js did not load.");
 
-    C = {
-      surface: token("--surface-1", "#ffffff"),
-      textPrimary: token("--text-primary", "#0b0b0b"),
-      textSecondary: token("--text-secondary", "#52514e"),
-      muted: token("--text-muted", "#898781"),
-      gridline: token("--gridline", "#e1e0d9"),
-      baseline: token("--baseline", "#c3c2b7"),
-      series1: token("--series-1", "#2a78d6"),
-      series2: token("--series-2", "#eb6834"),
-    };
+    C = core.palette();
 
     // Bound before the fetch, not after it: running.js owns the toggle's
     // pressed state and binds on its own schedule, so a click during the
@@ -992,11 +923,7 @@
     unit = currentUnit();
     bindUnits();
 
-    fetch(DATA_URL, { cache: "no-cache" })
-      .then(function (response) {
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return response.json();
-      })
+    core.loadJSON(DATA_URL)
       .then(function (json) {
         payload = json;
         if (payload.schema_version !== SCHEMA) {
@@ -1017,9 +944,5 @@
       });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  core.onReady(start);
 })();

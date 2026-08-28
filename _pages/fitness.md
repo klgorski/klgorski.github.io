@@ -395,5 +395,6 @@ classes: wide
 </div>
 
 <script src="{{ '/assets/js/lib/chart.umd.min.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/viz-core.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/running.js' | relative_url }}" data-src="{{ '/assets/data/summary.json' | relative_url }}"></script>
 <script src="{{ '/assets/js/forecast.js' | relative_url }}" data-src="{{ '/assets/data/forecast.json' | relative_url }}"></script>

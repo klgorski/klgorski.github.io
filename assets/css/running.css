@@ -394,15 +394,6 @@
   margin-top: 2em;
 }
 
-/* Held at reduced opacity during a refresh rather than replaced by a skeleton,
-   so nothing jumps. */
-.viz-root.is-loading .viz-tiles,
-.viz-root.is-loading .viz-figure,
-.viz-root.is-loading .viz-records {
-  opacity: 0.55;
-  transition: opacity 120ms ease-out;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .viz-root * {
     transition: none !important;

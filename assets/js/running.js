@@ -5,25 +5,44 @@
  * and carries no coordinates, routes, timezones or profile data.
  *
  * Everything on screen is computed here from summary.activities -- the atomic
- * records -- so the filter row can rescope all of it at once. The precomputed
- * aggregates in the JSON (totals, weekly, daily, by_sport, ...) are the
- * published dataset for anyone else reading the file; they are deliberately
- * not the source for these charts, because a filtered view has to be
- * recomputed anyway and two aggregation paths would eventually disagree.
+ * records -- so the filter row can rescope all of it at once. Schema 2 stopped
+ * publishing the derived series (daily, weekly, monthly, the histograms,
+ * streaks, records) for that reason: a filtered view has to be recomputed
+ * anyway, so the published copies were four fifths of a file committed once a
+ * day that nothing read, and a second aggregation path that could disagree
+ * with this one. `totals` and `by_sport` are still published -- they cost
+ * almost nothing and they are what a person opening the file wants first --
+ * but this file does not read them either.
  */
 (function () {
   "use strict";
 
   var DATA_URL = document.currentScript && document.currentScript.dataset.src;
+  var SCHEMA = 2;
 
-  // Read the palette from the stylesheet rather than repeating the hexes, so
-  // there is one place to change a color.
-  function token(name, fallback) {
-    var root = document.querySelector(".viz-root");
-    if (!root) return fallback;
-    var value = getComputedStyle(root).getPropertyValue(name);
-    return (value && value.trim()) || fallback;
+  /* Formatting, escaping, the table builder and the chart chrome live in
+     viz-core.js, which forecast.js loads too. Without it there is nothing to
+     draw with, so say so rather than throwing on the first property read. */
+  var core = window.VizCore;
+  if (!core) {
+    var missing = document.getElementById("viz-status");
+    if (missing) {
+      missing.hidden = false;
+      missing.textContent = "A script this page needs did not load, so the charts are unavailable.";
+    }
+    return;
   }
+
+  var esc = core.esc;
+  var setText = core.setText;
+  var renderTable = core.renderTable;
+  var draw = core.draw;
+  var num = core.num;
+  var pace = core.mmss;
+  var clock = core.clock;
+  var parseDay = core.parseDay;
+  var shortDate = core.shortDate;
+  var longDate = core.longDate;
 
   var C = {};
   // Set once summary.json has loaded AND validated. The unit toggle is bound
@@ -112,7 +131,7 @@
 
   // -- units --------------------------------------------------------------
 
-  var KM_PER_MI = 1.609344;
+  var KM_PER_MI = core.KM_PER_MI;
 
   var state = { unit: "km", range: "all" };
 
@@ -132,46 +151,7 @@
     return state.unit === "mi" ? minPerKm * KM_PER_MI : minPerKm;
   }
 
-  // -- formatting ---------------------------------------------------------
-
-  function num(value, digits) {
-    if (value === null || value === undefined || isNaN(value)) return "–";
-    return value.toLocaleString(undefined, {
-      minimumFractionDigits: digits === undefined ? 1 : digits,
-      maximumFractionDigits: digits === undefined ? 1 : digits,
-    });
-  }
-
-  function pace(minPerUnit) {
-    if (!minPerUnit || !isFinite(minPerUnit)) return "–";
-    var total = Math.round(minPerUnit * 60);
-    var m = Math.floor(total / 60);
-    var s = total % 60;
-    return m + ":" + (s < 10 ? "0" : "") + s;
-  }
-
-  function duration(minutes) {
-    if (!minutes) return "0m";
-    var h = Math.floor(minutes / 60);
-    var m = Math.round(minutes % 60);
-    return h ? h + "h " + (m < 10 ? "0" : "") + m + "m" : m + "m";
-  }
-
-  function shortDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  }
-
-  function longDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-  }
-
   // -- date helpers -------------------------------------------------------
-
-  function parseDay(iso) {
-    return new Date(iso + "T00:00:00");
-  }
 
   function dayKey(date) {
     var m = date.getMonth() + 1;
@@ -185,6 +165,15 @@
     var offset = (copy.getDay() + 6) % 7;
     copy.setDate(copy.getDate() - offset);
     return copy;
+  }
+
+  /* "1h 05m" -- reads better in prose than core.clock()'s aligned h:mm:ss,
+     and this file uses it in tooltips and tile values. */
+  function duration(minutes) {
+    if (!minutes) return "0m";
+    var h = Math.floor(minutes / 60);
+    var m = Math.round(minutes % 60);
+    return h ? h + "h " + (m < 10 ? "0" : "") + m + "m" : m + "m";
   }
 
   // -- aggregation --------------------------------------------------------
@@ -385,58 +374,12 @@
     };
   }
 
+  // C is populated in start(), so the palette is read at call time.
   function tooltip(callbacks) {
-    return {
-      backgroundColor: C.textPrimary,
-      titleColor: "#ffffff",
-      bodyColor: "#ffffff",
-      borderWidth: 0,
-      padding: 10,
-      cornerRadius: 6,
-      displayColors: true,
-      boxWidth: 10,
-      boxHeight: 10,
-      boxPadding: 4,
-      callbacks: callbacks || {},
-    };
-  }
-
-  var charts = {};
-
-  function draw(id, config) {
-    var canvas = document.getElementById(id);
-    if (!canvas) return;
-    if (charts[id]) charts[id].destroy();
-    charts[id] = new Chart(canvas.getContext("2d"), config);
+    return core.tooltip(C, callbacks);
   }
 
   // -- table twins --------------------------------------------------------
-
-  // Table cells and tiles are assembled as HTML strings (chip() and the unit
-  // spans are real markup), so anything that came out of the JSON as free text
-  // has to be escaped at the point it goes in. Activity names are the only
-  // genuinely free-text values on the page.
-  var ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" };
-
-  function esc(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
-      return ESCAPES[c];
-    });
-  }
-
-  function renderTable(id, columns, rows) {
-    var host = document.getElementById(id);
-    if (!host) return;
-    var head = "<thead><tr>" + columns.map(function (c) {
-      return "<th scope=\"col\">" + c + "</th>";
-    }).join("") + "</tr></thead>";
-    var body = "<tbody>" + rows.map(function (row) {
-      return "<tr>" + row.map(function (cell, i) {
-        return i === 0 ? "<th scope=\"row\">" + cell + "</th>" : "<td>" + cell + "</td>";
-      }).join("") + "</tr>";
-    }).join("") + "</tbody>";
-    host.innerHTML = "<div class=\"viz-table-scroll\"><table>" + head + body + "</table></div>";
-  }
 
   function chip(sport) {
     // sportColor() never returns undefined, which matters because the value
@@ -445,11 +388,6 @@
   }
 
   // -- rendering ----------------------------------------------------------
-
-  function setText(id, html) {
-    var node = document.getElementById(id);
-    if (node) node.innerHTML = html;
-  }
 
   function renderTiles(scoped, lastDay) {
     var t = totals(scoped);
@@ -888,20 +826,8 @@
     return isPool(sport) ? poolPaceUnit() : paceUnit();
   }
 
-  /* mm:ss, or h:mm:ss once a session runs past the hour. duration() reads
-     better in prose ("1h 05m"); a column of times reads better aligned. */
-  function clock(minutes) {
-    if (!minutes || !isFinite(minutes)) return "–";
-    var total = Math.round(minutes * 60);
-    var h = Math.floor(total / 3600);
-    var m = Math.floor((total % 3600) / 60);
-    var s = total % 60;
-    return (h ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s;
-  }
-
   function weekdayDate(iso) {
-    var d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+    return parseDay(iso).toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
   }
 
   function renderHeadline(scoped) {
@@ -1391,18 +1317,7 @@
   }
 
   function start() {
-    C = {
-      surface: token("--surface-1", "#ffffff"),
-      textPrimary: token("--text-primary", "#0b0b0b"),
-      textSecondary: token("--text-secondary", "#52514e"),
-      muted: token("--text-muted", "#898781"),
-      gridline: token("--gridline", "#e1e0d9"),
-      baseline: token("--baseline", "#c3c2b7"),
-      series1: token("--series-1", "#2a78d6"),
-      series2: token("--series-2", "#eb6834"),
-      series3: token("--series-3", "#1baf7a"),
-      neutral: token("--series-neutral", "#7a7873"),
-    };
+    C = core.palette();
 
     if (typeof Chart === "undefined") {
       fail("The charting library did not load, so the charts are unavailable. The data tables below each chart are unaffected on a reload.");
@@ -1422,19 +1337,15 @@
     bindSegmented("#filter-range", "range");
     bindSegmented("#filter-unit", "unit");
 
-    fetch(DATA_URL, { cache: "no-cache" })
-      .then(function (response) {
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return response.json();
-      })
+    core.loadJSON(DATA_URL)
       .then(function (json) {
         summary = json;
         if (!summary.activities || !summary.activities.length) {
           fail("No activities have been published yet. The daily sync writes this file; it will fill in on the next run.");
           return;
         }
-        if (summary.schema_version !== 1) {
-          fail("This page reads schema version 1, but the data file is version " + summary.schema_version + ". The page needs updating.");
+        if (summary.schema_version !== SCHEMA) {
+          fail("This page reads schema version " + SCHEMA + ", but the data file is version " + summary.schema_version + ". The page needs updating.");
           return;
         }
         sportOrder = assignSportColors(summary.activities);
@@ -1451,9 +1362,5 @@
       });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start);
-  } else {
-    start();
-  }
+  core.onReady(start);
 })();
