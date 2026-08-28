@@ -9,237 +9,286 @@
     "bootstrap_replicates": 500,
     "future_effort": {
       "distance_km": 3.234,
-      "total_elevation_gain": 27.0
+      "total_elevation_gain": 18.0
     },
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-08-25T04:08:23+00:00",
-  "last_activity": "2026-08-21",
+  "generated_at": "2026-08-28T05:31:02+00:00",
+  "last_activity": "2026-08-26",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
   "models": [
     {
       "bic_grid": [
         {
-          "bic": 33.449,
+          "bic": 38.172,
           "converged": true,
           "delta": 0.0,
           "p": 0,
-          "q": 1,
+          "q": 0,
           "selected": true
         },
         {
-          "bic": 34.551,
+          "bic": 39.379,
           "converged": true,
-          "delta": 1.102,
+          "delta": 1.207,
           "p": 0,
-          "q": 0,
+          "q": 1,
           "selected": false
         },
         {
-          "bic": 35.515,
+          "bic": 39.7,
           "converged": true,
-          "delta": 2.066,
-          "p": 0,
-          "q": 2,
-          "selected": false
-        },
-        {
-          "bic": 35.627,
-          "converged": true,
-          "delta": 2.178,
+          "delta": 1.529,
           "p": 1,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 35.913,
+          "bic": 39.869,
           "converged": true,
-          "delta": 2.464,
+          "delta": 1.697,
+          "p": 0,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 40.009,
+          "converged": true,
+          "delta": 1.837,
           "p": 1,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 37.446,
+          "bic": 42.202,
+          "converged": true,
+          "delta": 4.03,
+          "p": 2,
+          "q": 0,
+          "selected": false
+        },
+        {
+          "bic": 42.664,
+          "converged": true,
+          "delta": 4.492,
+          "p": 0,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "bic": 42.912,
+          "converged": true,
+          "delta": 4.74,
+          "p": 2,
+          "q": 1,
+          "selected": false
+        },
+        {
+          "bic": 42.981,
+          "converged": true,
+          "delta": 4.809,
+          "p": 1,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 45.091,
           "converged": false,
-          "delta": 3.997,
-          "p": 2,
+          "delta": 6.919,
+          "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 38.787,
+          "bic": 45.318,
           "converged": true,
-          "delta": 5.338,
+          "delta": 7.146,
+          "p": 2,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 45.51,
+          "converged": true,
+          "delta": 7.338,
           "p": 1,
-          "q": 2,
+          "q": 3,
           "selected": false
         },
         {
-          "bic": 41.14,
+          "bic": 45.585,
           "converged": true,
-          "delta": 7.691,
-          "p": 2,
-          "q": 2,
-          "selected": false
-        },
-        {
-          "bic": 41.455,
-          "converged": true,
-          "delta": 8.006,
-          "p": 2,
+          "delta": 7.413,
+          "p": 3,
           "q": 1,
+          "selected": false
+        },
+        {
+          "bic": 47.757,
+          "converged": true,
+          "delta": 9.585,
+          "p": 3,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 49.058,
+          "converged": false,
+          "delta": 10.886,
+          "p": 2,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "bic": 49.945,
+          "converged": true,
+          "delta": 11.773,
+          "p": 3,
+          "q": 3,
           "selected": false
         }
       ],
       "bootstrap_failures": 0,
       "fit": {
-        "aic": 28.813,
-        "bic": 33.449,
-        "loglik": -8.407
+        "aic": 33.72,
+        "bic": 38.172,
+        "loglik": -11.86
       },
       "fitted": [
         null,
-        4.6464,
-        4.9014,
-        5.22,
-        6.6265,
-        6.1704,
-        5.4096,
-        4.6359,
-        4.4205,
-        5.2289,
-        5.6033,
-        5.7675,
-        5.9144,
-        5.6999,
-        6.0875,
-        5.7666
+        4.6574,
+        4.9592,
+        4.8682,
+        5.6257,
+        5.9663,
+        5.3445,
+        5.0591,
+        5.117,
+        5.5675,
+        5.5153,
+        5.8803,
+        5.912,
+        5.5939,
+        6.1241,
+        6.1302,
+        4.9803,
+        5.4614
       ],
       "fitted_label": "Fitted (one step ahead)",
       "forecast": [
         {
-          "boot_median": 5.9694,
-          "hi80": 6.7718,
-          "hi95": 7.2082,
-          "lo80": 4.9137,
-          "lo95": 3.9779,
-          "mean": 5.8945,
+          "boot_median": 5.5209,
+          "hi80": 6.2222,
+          "hi95": 7.2084,
+          "lo80": 4.9957,
+          "lo95": 4.6861,
+          "mean": 5.5896,
           "step": 1
         },
         {
-          "boot_median": 5.7938,
-          "hi80": 6.6899,
-          "hi95": 7.2617,
-          "lo80": 4.9714,
-          "lo95": 4.5875,
-          "mean": 5.7736,
+          "boot_median": 5.5754,
+          "hi80": 6.2221,
+          "hi95": 7.2187,
+          "lo80": 5.046,
+          "lo95": 4.7553,
+          "mean": 5.6058,
           "step": 2
         },
         {
-          "boot_median": 5.7868,
-          "hi80": 6.6287,
-          "hi95": 7.2964,
-          "lo80": 4.9562,
-          "lo95": 4.5313,
-          "mean": 5.7851,
+          "boot_median": 5.572,
+          "hi80": 6.1756,
+          "hi95": 7.2615,
+          "lo80": 4.9592,
+          "lo95": 4.6411,
+          "mean": 5.6213,
           "step": 3
         },
         {
-          "boot_median": 5.7871,
-          "hi80": 6.6554,
-          "hi95": 7.3205,
-          "lo80": 4.9152,
-          "lo95": 4.2774,
-          "mean": 5.7961,
+          "boot_median": 5.5855,
+          "hi80": 6.1468,
+          "hi95": 7.1533,
+          "lo80": 5.0248,
+          "lo95": 4.7864,
+          "mean": 5.6361,
           "step": 4
         },
         {
-          "boot_median": 5.8005,
-          "hi80": 6.5749,
-          "hi95": 7.2991,
-          "lo80": 4.9789,
-          "lo95": 4.4542,
-          "mean": 5.8065,
+          "boot_median": 5.5746,
+          "hi80": 6.3793,
+          "hi95": 7.2368,
+          "lo80": 5.0055,
+          "lo95": 4.7793,
+          "mean": 5.6502,
           "step": 5
         },
         {
-          "boot_median": 5.8217,
-          "hi80": 6.6473,
-          "hi95": 7.1212,
-          "lo80": 4.9894,
-          "lo95": 4.3274,
-          "mean": 5.8164,
+          "boot_median": 5.6316,
+          "hi80": 6.2754,
+          "hi95": 7.2499,
+          "lo80": 5.0653,
+          "lo95": 4.8598,
+          "mean": 5.6637,
           "step": 6
         }
       ],
       "key": "log_arma",
-      "label": "Log trend, ARMA(0,1) errors",
+      "label": "Log trend, ARMA(0,0) errors",
       "ljung_box": {
         "lags": 3,
-        "p_value": 0.924,
-        "statistic": 0.477
+        "p_value": 0.703,
+        "statistic": 1.412
       },
       "order": {
         "p": 0,
-        "q": 1
+        "q": 0
       },
       "parameters": [
         {
-          "ci_lower": 3.8985,
-          "ci_upper": 10.2248,
-          "estimate": 7.0617,
+          "ci_lower": 0.3305,
+          "ci_upper": 9.0516,
+          "estimate": 4.6911,
           "name": "intercept",
-          "p_value": 1.21e-05,
-          "std_err": 1.6139,
-          "z": 4.3755
+          "p_value": 0.035,
+          "std_err": 2.2248,
+          "z": 2.1085
         },
         {
-          "ci_lower": -0.1672,
-          "ci_upper": 0.5945,
-          "estimate": 0.2136,
+          "ci_lower": -0.3973,
+          "ci_upper": 1.0322,
+          "estimate": 0.3174,
           "name": "log_t",
-          "p_value": 0.272,
-          "std_err": 0.1943,
-          "z": 1.0995
+          "p_value": 0.384,
+          "std_err": 0.3647,
+          "z": 0.8704
         },
         {
-          "ci_lower": -2.5514,
-          "ci_upper": -0.0589,
-          "estimate": -1.3051,
+          "ci_lower": -2.1663,
+          "ci_upper": 1.5689,
+          "estimate": -0.2987,
           "name": "distance_km",
-          "p_value": 0.0401,
-          "std_err": 0.6358,
-          "z": -2.0526
+          "p_value": 0.754,
+          "std_err": 0.9529,
+          "z": -0.3135
         },
         {
-          "ci_lower": 0.032,
-          "ci_upper": 0.1395,
-          "estimate": 0.0858,
+          "ci_lower": 0.0076,
+          "ci_upper": 0.0957,
+          "estimate": 0.0517,
           "name": "total_elevation_gain",
-          "p_value": 0.00176,
-          "std_err": 0.0274,
-          "z": 3.1279
+          "p_value": 0.0214,
+          "std_err": 0.0225,
+          "z": 2.3005
         },
         {
-          "ci_lower": -15.0839,
-          "ci_upper": 13.1076,
-          "estimate": -0.9881,
-          "name": "ma.L1",
-          "p_value": 0.891,
-          "std_err": 7.1919,
-          "z": -0.1374
-        },
-        {
-          "ci_lower": -1.7643,
-          "ci_upper": 2.0479,
-          "estimate": 0.1418,
+          "ci_lower": 0.0533,
+          "ci_upper": 0.3841,
+          "estimate": 0.2187,
           "name": "sigma2",
-          "p_value": 0.884,
-          "std_err": 0.9725,
-          "z": 0.1458
+          "p_value": 0.00957,
+          "std_err": 0.0844,
+          "z": 2.5909
         }
       ],
       "selected_by": "BIC",
@@ -248,86 +297,88 @@
     {
       "bootstrap_failures": 0,
       "final_state": {
-        "level": 5.0697,
-        "slope": -0.04388
+        "level": 5.718,
+        "slope": 0.0419
       },
       "fit": {
-        "aic": 39.069,
-        "bic": 42.265,
-        "loglik": -14.535
+        "aic": 42.926,
+        "bic": 46.789,
+        "loglik": -16.463
       },
       "fitted": [
-        4.7921,
-        4.5864,
-        4.9352,
-        4.7386,
-        5.8538,
-        6.3326,
-        5.365,
-        4.8895,
-        4.9231,
-        5.5348,
-        5.3908,
-        5.8881,
-        5.8593,
-        5.3037,
-        6.0386,
-        5.9734
+        4.9037,
+        4.7456,
+        4.9697,
+        4.8199,
+        5.5905,
+        5.9363,
+        5.2596,
+        4.9541,
+        5.0189,
+        5.5097,
+        5.462,
+        5.8517,
+        5.904,
+        5.5843,
+        6.1624,
+        6.1886,
+        4.988,
+        5.5409
       ],
       "fitted_label": "Smoothed trend + effort",
       "forecast": [
         {
-          "boot_median": 5.8141,
-          "hi80": 6.4487,
-          "hi95": 6.7751,
-          "lo80": 5.0117,
-          "lo95": 4.6564,
-          "mean": 5.7319,
+          "boot_median": 5.7049,
+          "hi80": 6.3853,
+          "hi95": 6.796,
+          "lo80": 4.972,
+          "lo95": 4.6623,
+          "mean": 5.6821,
           "step": 1
         },
         {
-          "boot_median": 5.7474,
-          "hi80": 6.4834,
-          "hi95": 6.9424,
-          "lo80": 4.9708,
-          "lo95": 4.5811,
-          "mean": 5.688,
+          "boot_median": 5.7623,
+          "hi80": 6.424,
+          "hi95": 6.96,
+          "lo80": 5.037,
+          "lo95": 4.6508,
+          "mean": 5.724,
           "step": 2
         },
         {
-          "boot_median": 5.7779,
-          "hi80": 6.558,
-          "hi95": 7.0031,
-          "lo80": 4.7691,
-          "lo95": 4.1234,
-          "mean": 5.6441,
+          "boot_median": 5.7729,
+          "hi80": 6.5348,
+          "hi95": 7.1819,
+          "lo80": 5.0296,
+          "lo95": 4.5326,
+          "mean": 5.7659,
           "step": 3
         },
         {
-          "boot_median": 5.7702,
-          "hi80": 6.6241,
-          "hi95": 7.0899,
-          "lo80": 4.6055,
-          "lo95": 3.6806,
-          "mean": 5.6003,
+          "boot_median": 5.8104,
+          "hi80": 6.6483,
+          "hi95": 7.2157,
+          "lo80": 4.9915,
+          "lo95": 4.5617,
+          "mean": 5.8078,
           "step": 4
         },
         {
-          "boot_median": 5.7907,
-          "hi80": 6.6378,
-          "hi95": 7.1397,
-          "lo80": 4.3954,
-          "lo95": 3.2217,
-          "mean": 5.5564,
+          "boot_median": 5.8566,
+          "hi80": 6.6314,
+          "hi95": 7.3718,
+          "lo80": 4.9644,
+          "lo95": 4.2638,
+          "mean": 5.8497,
           "step": 5
         },
         {
-          "boot_median": 5.8096,
-          "hi80": 6.7175,
-          "hi95": 7.2281,
-          "lo80": 4.0649,
-          "lo95": 2.8842,
-          "mean": 5.5125,
+          "boot_median": 5.9481,
+          "hi80": 6.8393,
+          "hi95": 7.4588,
+          "lo80": 5.0135,
+          "lo95": 4.3689,
+          "mean": 5.8916,
           "step": 6
         }
       ],
@@ -335,61 +386,61 @@
       "label": "Local linear trend",
       "ljung_box": {
         "lags": 3,
-        "p_value": 0.787,
-        "statistic": 1.059
+        "p_value": 0.911,
+        "statistic": 0.537
       },
       "parameters": [
         {
-          "ci_lower": -0.0006,
-          "ci_upper": 0.4693,
-          "estimate": 0.2343,
+          "ci_lower": 0.0217,
+          "ci_upper": 0.4983,
+          "estimate": 0.26,
           "name": "sigma2.irregular",
-          "p_value": 0.0506,
-          "std_err": 0.1199,
-          "z": 1.9546
+          "p_value": 0.0325,
+          "std_err": 0.1216,
+          "z": 2.1383
         },
         {
-          "ci_lower": -0.4355,
-          "ci_upper": 0.4355,
+          "ci_lower": -0.3009,
+          "ci_upper": 0.3009,
           "estimate": 0.0,
           "name": "sigma2.level",
           "p_value": 1.0,
-          "std_err": 0.2222,
+          "std_err": 0.1535,
           "z": 0.0
         },
         {
-          "ci_lower": -0.0261,
-          "ci_upper": 0.0307,
-          "estimate": 0.0023,
+          "ci_lower": -0.0098,
+          "ci_upper": 0.0098,
+          "estimate": 0.0,
           "name": "sigma2.trend",
-          "p_value": 0.876,
-          "std_err": 0.0145,
-          "z": 0.1555
+          "p_value": 1.0,
+          "std_err": 0.005,
+          "z": 0.0
         },
         {
-          "ci_lower": -1.91,
-          "ci_upper": 1.0409,
-          "estimate": -0.4346,
+          "ci_lower": -1.8753,
+          "ci_upper": 1.2159,
+          "estimate": -0.3297,
           "name": "beta.distance_km",
-          "p_value": 0.564,
-          "std_err": 0.7528,
-          "z": -0.5773
+          "p_value": 0.676,
+          "std_err": 0.7886,
+          "z": -0.4181
         },
         {
-          "ci_lower": 0.0167,
-          "ci_upper": 0.1397,
-          "estimate": 0.0782,
+          "ci_lower": 0.0137,
+          "ci_upper": 0.0961,
+          "estimate": 0.0549,
           "name": "beta.total_elevation_gain",
-          "p_value": 0.0127,
-          "std_err": 0.0314,
-          "z": 2.492
+          "p_value": 0.00894,
+          "std_err": 0.021,
+          "z": 2.6142
         }
       ],
       "selected_by": null,
       "specification": "y_t = level_t + gamma'x_t + eps_t;  level_{t+1} = level_t + slope_t + eta_t;  slope_{t+1} = slope_t + zeta_t"
     }
   ],
-  "n_observations": 16,
+  "n_observations": 18,
   "observed": [
     {
       "date": "2025-09-23",
@@ -502,6 +553,20 @@
       "elevation_m": 29.7,
       "step": 16,
       "value": 5.625
+    },
+    {
+      "date": "2026-08-24",
+      "distance_km": 3.253,
+      "elevation_m": 7.0,
+      "step": 17,
+      "value": 5.486
+    },
+    {
+      "date": "2026-08-26",
+      "distance_km": 1.703,
+      "elevation_m": 7.0,
+      "step": 18,
+      "value": 5.499
     }
   ],
   "regressors": [
@@ -514,5 +579,5 @@
   ],
   "time_index": "activity",
   "unit_kind": "pace_min_per_km",
-  "warning": "Fitted to 16 activities. Below about 30 the BIC ordering, the ARMA coefficients and the state-space variances are all weakly identified. Read the intervals, not the point estimates."
+  "warning": "Fitted to 18 activities. Below about 30 the BIC ordering, the ARMA coefficients and the state-space variances are all weakly identified. Read the intervals, not the point estimates."
 }
