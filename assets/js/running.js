@@ -832,21 +832,32 @@
     fill("record-climb", climb ? num(climb.elevation_m, 0) + " m" : "–", climb);
   }
 
+  /* Activity names are opt-in on the publisher side: publish_site.sh defaults
+     STRAVA_PUBLISH_NAMES to false, because a name like "Glider port run" is a
+     location the key allowlist cannot catch -- it screens key names, not
+     values. So summary.json usually has no `name` anywhere, and an unguarded
+     Activity column is a header over a full column of dashes. Show the column
+     only when something in scope actually has a name to put in it. */
   function renderActivities(scoped) {
     var unit = distanceUnit();
+    var named = scoped.some(function (a) { return a.name; });
+    var columns = ["Date", "Sport"];
+    if (named) columns.push("Activity");
+    columns.push("Distance (" + unit + ")", "Time", "Pace (" + paceUnit() + ")", "Elev (m)");
+
     renderTable(
       "table-activities",
-      ["Date", "Sport", "Activity", "Distance (" + unit + ")", "Time", "Pace (" + paceUnit() + ")", "Elev (m)"],
+      columns,
       scoped.slice().reverse().map(function (a) {
-        return [
-          longDate(a.date),
-          chip(a.sport),
-          a.name ? esc(a.name) : "–",
+        var row = [longDate(a.date), chip(a.sport)];
+        if (named) row.push(a.name ? esc(a.name) : "–");
+        row.push(
           num(toDistance(a.distance_km), 2),
           duration(a.moving_time_min),
           a.pace_min_per_km ? pace(toPace(a.pace_min_per_km)) : "–",
-          num(a.elevation_m, 0),
-        ];
+          num(a.elevation_m, 0)
+        );
+        return row;
       })
     );
   }
