@@ -478,7 +478,7 @@
         return [
           row.selected ? "<strong>" + name + "</strong>" : name,
           num(row.bic, 2),
-          row.delta ? "+" + num(row.delta, 2) : "–",
+          signed(row.delta, 2),
           row.converged ? "yes" : "no",
         ];
       })
