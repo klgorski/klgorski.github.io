@@ -327,9 +327,6 @@
         },
       ]);
 
-    // Named so the legend and the tooltip can both keep the band edges out.
-    var SHOWN = ["Observed", model.fitted_label, "Forecast", "80% interval", "95% interval"];
-
     var unitLabel = responseUnit();
 
     draw(id, {
@@ -363,19 +360,12 @@
         },
         plugins: {
           legend: {
-            display: true,
-            position: "top",
-            align: "end",
-            labels: {
-              color: C.textSecondary,
-              boxWidth: 10,
-              boxHeight: 10,
-              borderRadius: 2,
-              useBorderRadius: true,
-              font: { size: 12 },
-              padding: 12,
-              filter: function (item) { return SHOWN.indexOf(item.text) !== -1; },
-            },
+            /* Off, in favour of the HTML legend beside the card title. A
+               Chart.js swatch is a filled square, and four of these five
+               series are told apart by line style -- solid against dashed,
+               band against band -- which a square cannot show. The tooltip
+               keeps its own filter; it never listed the band edges either. */
+            display: false,
           },
           tooltip: tooltip({
             // Seven datasets share every index; only three of them are a value
@@ -485,17 +475,40 @@
 
   // -- headline numbers ---------------------------------------------------
 
+  /* The tile carries the unit as a suffix on the number, so it wants the short
+     form: "5:54 /km", not "5:54 min/km". Everywhere the unit stands on its own
+     -- axis titles, interval ranges -- still uses responseUnit(). */
+  function compactUnit() {
+    if (isPace()) return unit === "mi" ? "/mi" : "/km";
+    return responseUnit();
+  }
+
   function renderHeadline() {
     var arma = byKey("log_arma");
-    var llt = byKey("local_linear_trend");
     var u = responseUnit();
+
+    var next = arma && arma.forecast[0];
+    if (next) {
+      setText(
+        "forecast-next",
+        value(convert(next.mean), 2) + "<span class=\"viz-tile-unit\">" + esc(compactUnit()) + "</span>"
+      );
+      // The 80% band, not the 95%: the wider one is on the chart and in the
+      // table, and a tile that has room for one interval should show the one a
+      // reader will actually plan around.
+      setText(
+        "forecast-next-meta",
+        "80% interval " + value(convert(next.lo80), 2) + " – " +
+        value(convert(next.hi80), 2) + " " + esc(u)
+      );
+    }
 
     var trend = arma && arma.parameters.filter(function (p) { return p.name === "log_t"; })[0];
     if (trend) {
       setText("forecast-trend", signed(trend.estimate, 3));
       setText(
         "forecast-trend-meta",
-        "per log-session, p = " + pvalue(trend.p_value) +
+        nativeUnit() + " per log-session · p = " + pvalue(trend.p_value) +
         (trend.p_value !== null && trend.p_value < 0.05 ? "" : " — not distinguishable from no trend")
       );
     }
@@ -505,27 +518,313 @@
     })[0];
     if (climb) {
       setText("forecast-climb", signed(climb.estimate, 3));
-      setText("forecast-climb-meta", nativeUnit() + " per metre climbed, p = " + pvalue(climb.p_value));
+      setText("forecast-climb-meta", nativeUnit() + " per metre climbed · p = " + pvalue(climb.p_value));
     }
 
-    if (llt && llt.final_state) {
-      setText("forecast-level", value(convert(llt.final_state.level), 2));
-      setText(
-        "forecast-level-meta",
-        llt.final_state.slope === null
-          ? "current level, no slope in this form"
-          : "current level; slope " + signed(convert(llt.final_state.slope), 3) + " " + u + " per session"
-      );
-    }
+    setText("forecast-sample", String(payload.n_observations));
+    setText(
+      "forecast-sample-meta",
+      esc(payload.sport_types.join("/").toLowerCase()) +
+      (payload.n_observations === 1 ? "" : "s") + " in the fitting window"
+    );
+  }
 
-    var next = arma && arma.forecast[0];
-    if (next) {
-      setText("forecast-next", value(convert(next.mean), 2));
-      setText(
-        "forecast-next-meta",
-        "next session, 95% " + value(convert(next.lo95), 2) + " – " + value(convert(next.hi95), 2)
-      );
+  // -- the fan-chart legend -----------------------------------------------
+
+  function swatch(inner) {
+    return "<svg width=\"24\" height=\"10\" viewBox=\"0 0 24 10\" aria-hidden=\"true\">" + inner + "</svg>";
+  }
+
+  /* The band opacities repeat the two constants bandPair() is called with. They
+     are not read from the datasets because a legend swatch is flat colour on
+     the page background, while the chart's bands sit on the plot area -- the
+     numbers agreeing is what makes them look like the same ink. */
+  function fanLegend(id, model) {
+    var obs = esc(C.series1);
+    var fit = esc(C.series2);
+    var bg = esc(C.surface);
+    var items = [
+      [swatch(
+        "<line x1=\"0\" y1=\"5\" x2=\"24\" y2=\"5\" stroke=\"" + obs + "\" stroke-width=\"1.4\" opacity=\"0.5\"/>" +
+        "<circle cx=\"12\" cy=\"5\" r=\"3.6\" fill=\"" + obs + "\" stroke=\"" + bg + "\" stroke-width=\"1.4\"/>"
+      ), "Observed"],
+      [swatch(
+        "<line x1=\"0\" y1=\"5\" x2=\"24\" y2=\"5\" stroke=\"" + fit + "\" stroke-width=\"2\"/>"
+      ), model.fitted_label],
+      [swatch(
+        "<line x1=\"0\" y1=\"5\" x2=\"24\" y2=\"5\" stroke=\"" + fit + "\" stroke-width=\"2\" stroke-dasharray=\"5 3\"/>"
+      ), "Forecast"],
+      [swatch("<rect x=\"0\" y=\"1\" width=\"24\" height=\"8\" fill=\"" + fit + "\" fill-opacity=\"0.26\"/>"), "80%"],
+      [swatch("<rect x=\"0\" y=\"1\" width=\"24\" height=\"8\" fill=\"" + fit + "\" fill-opacity=\"0.14\"/>"), "95%"],
+    ];
+    setText(id, items.map(function (item) {
+      return "<span class=\"viz-legend-item\">" + item[0] + esc(item[1]) + "</span>";
+    }).join(""));
+  }
+
+  // -- the models, typeset ------------------------------------------------
+
+  /* Typeset specifications, keyed by model, and deliberately NOT derived from
+     model.specification: that field is a plain-text summary written for a
+     human, and reverse-engineering LaTeX out of a string would eventually
+     typeset a model that was never fitted. A key this file has not seen gets
+     no equation block at all -- the monospace spec line under the chart title
+     still describes it. */
+
+  var TEX_REGRESSOR = {
+    distance_km: "\\mathrm{dist}_t",
+    total_elevation_gain: "\\mathrm{elev}_t",
+  };
+
+  function texRegressor(name) {
+    // A name from the JSON reaches a TeX string, where a stray backslash or
+    // brace is a syntax error rather than an injection -- strip both.
+    return TEX_REGRESSOR[name] || "\\mathrm{" + String(name).replace(/[^A-Za-z0-9 ]/g, " ") + "}_t";
+  }
+
+  function fixed(v, digits) {
+    return Number(v).toFixed(digits === undefined ? 4 : digits);
+  }
+
+  function term(coef, symbol) {
+    return (coef < 0 ? " - " : " + ") + fixed(Math.abs(coef)) + "\\," + symbol;
+  }
+
+  function findParam(model, names) {
+    for (var i = 0; i < model.parameters.length; i++) {
+      var p = model.parameters[i];
+      var bare = p.name.indexOf("beta.") === 0 ? p.name.slice(5) : p.name;
+      if (names.indexOf(p.name) !== -1 || names.indexOf(bare) !== -1) return p;
     }
+    return null;
+  }
+
+  function lagParams(model, prefix) {
+    var re = new RegExp("^" + prefix + "\\.L(\\d+)$");
+    return model.parameters.filter(function (p) { return re.test(p.name); });
+  }
+
+  function lagIndex(name) {
+    return name.slice(name.indexOf(".L") + 2);
+  }
+
+  function armaSpec(model) {
+    var p = model.order ? model.order.p : lagParams(model, "ar").length;
+    var q = model.order ? model.order.q : lagParams(model, "ma").length;
+    var errors = "u_t = \\varepsilon_t";
+    if (p) errors += " + \\sum_{i=1}^{" + p + "} \\phi_i u_{t-i}";
+    if (q) errors += " + \\sum_{j=1}^{" + q + "} \\theta_j \\varepsilon_{t-j}";
+    return "\\[ y_t = \\mu + \\beta \\log t + \\gamma' x_t + u_t, \\qquad " + errors +
+      ", \\qquad \\varepsilon_t \\sim \\mathrm{WN}(0, \\sigma^2) \\]";
+  }
+
+  function armaFitted(model) {
+    var mu = findParam(model, ["intercept", "const"]);
+    var beta = findParam(model, ["log_t"]);
+    if (!mu || !beta) return null;
+
+    var body = "\\hat{y}_t = " + fixed(mu.estimate) + term(beta.estimate, "\\log t");
+    (payload.regressors || []).forEach(function (name) {
+      var p = findParam(model, [name, "beta." + name]);
+      if (p) body += term(p.estimate, texRegressor(name));
+    });
+    body += " + \\hat{u}_t";
+
+    var tail = [];
+    lagParams(model, "ar").forEach(function (p) {
+      tail.push("\\hat{\\phi}_{" + lagIndex(p.name) + "} = " + fixed(p.estimate));
+    });
+    lagParams(model, "ma").forEach(function (p) {
+      tail.push("\\hat{\\theta}_{" + lagIndex(p.name) + "} = " + fixed(p.estimate));
+    });
+    var s2 = findParam(model, ["sigma2"]);
+    if (s2) tail.push("\\hat{\\sigma}^2 = " + fixed(s2.estimate));
+
+    return "\\[ " + body + (tail.length ? ", \\qquad " + tail.join(", \\qquad ") : "") + " \\]";
+  }
+
+  function lltSpec() {
+    return "\\[ \\begin{aligned}" +
+      " y_t &= \\mu_t + \\gamma' x_t + \\varepsilon_t, & \\varepsilon_t &\\sim N(0, \\sigma^2_\\varepsilon) \\\\" +
+      " \\mu_{t+1} &= \\mu_t + \\nu_t + \\eta_t, & \\eta_t &\\sim N(0, \\sigma^2_\\eta) \\\\" +
+      " \\nu_{t+1} &= \\nu_t + \\zeta_t, & \\zeta_t &\\sim N(0, \\sigma^2_\\zeta)" +
+      " \\end{aligned} \\]";
+  }
+
+  function lltFitted(model) {
+    var parts = [];
+    var VARIANCES = [
+      ["sigma2.irregular", "\\hat{\\sigma}^2_\\varepsilon"],
+      ["sigma2.level", "\\hat{\\sigma}^2_\\eta"],
+      ["sigma2.trend", "\\hat{\\sigma}^2_\\zeta"],
+    ];
+    VARIANCES.forEach(function (pair) {
+      var p = findParam(model, [pair[0]]);
+      if (p) parts.push(pair[1] + " = " + fixed(p.estimate));
+    });
+
+    var gammas = [];
+    (payload.regressors || []).forEach(function (name) {
+      var p = findParam(model, [name, "beta." + name]);
+      if (p) gammas.push(fixed(p.estimate));
+    });
+    if (gammas.length) parts.push("\\hat{\\gamma} = (" + gammas.join(",\\; ") + ")'");
+
+    return parts.length ? "\\[ " + parts.join(", \\qquad ") + " \\]" : null;
+  }
+
+  var EQUATIONS = {
+    log_arma: { spec: armaSpec, fitted: armaFitted },
+    local_linear_trend: { spec: lltSpec, fitted: lltFitted },
+  };
+
+  /* MathJax is loaded with `defer`, so on a fast fetch this can run before it
+     exists. Waiting for `load` and then for MathJax's own startup promise is
+     the difference between typeset algebra and a card full of raw backslashes.
+     If it never arrives, the blocks are restyled as TeX source rather than
+     left looking like a rendering that failed. */
+  function typeset(node) {
+    function degrade() {
+      var bodies = node.querySelectorAll(".viz-equation-body");
+      for (var i = 0; i < bodies.length; i++) bodies[i].classList.add("viz-tex");
+    }
+    function attempt() {
+      var mj = window.MathJax;
+      if (!mj || !mj.typesetPromise || !mj.startup || !mj.startup.promise) return degrade();
+      mj.startup.promise
+        .then(function () { return mj.typesetPromise([node]); })
+        .catch(degrade);
+    }
+    if (document.readyState === "complete") attempt();
+    else window.addEventListener("load", attempt, { once: true });
+  }
+
+  function renderEquations() {
+    var host = document.getElementById("model-equations");
+    if (!host) return;
+
+    var blocks = payload.models.map(function (model) {
+      var builder = EQUATIONS[model.key];
+      if (!builder) return "";
+      var spec = builder.spec(model);
+      if (!spec) return "";
+      var fitted = builder.fitted(model);
+      return "<div class=\"viz-equation\">" +
+        "<span class=\"viz-equation-label\">" + esc(model.label) + "</span>" +
+        "<div class=\"viz-equation-body\">" + spec + "</div>" +
+        (fitted
+          ? "<div class=\"viz-equation-rule\"></div>" +
+            "<div class=\"viz-equation-body is-fitted\">" + fitted + "</div>"
+          : "") +
+        "</div>";
+    }).filter(function (html) { return html; });
+
+    host.innerHTML = blocks.join("");
+
+    // Hides the card, not the section: an unrecognised model key means there
+    // is no algebra to typeset, not that the forecast is broken.
+    var card = host.closest ? host.closest(".viz-figure") : null;
+    if (card) card.hidden = !blocks.length;
+    if (blocks.length) typeset(host);
+  }
+
+  // -- assumption checks --------------------------------------------------
+
+  /* The modulus of the root of the MA lag polynomial. Worth a closed form only
+     at degree one, where 1 + theta*L has its root at -1/theta; a longer
+     polynomial needs a root finder, and this page would rather report "not
+     run" than a number it guessed at. */
+  function maRootModulus(model) {
+    var ma = lagParams(model, "ma");
+    if (ma.length !== 1) return null;
+    var theta = ma[0].estimate;
+    if (theta === null || theta === undefined || !theta) return null;
+    return Math.abs(1 / theta);
+  }
+
+  /* Only the checks the daily fit actually publishes carry a number. The rest
+     are listed as "not run" rather than dropped: a reader has to be able to
+     see that normality was never tested, not merely fail to see that it was. */
+  function assumptionGroups(model) {
+    var lb = model.ljung_box;
+    var modulus = maRootModulus(model);
+    return [
+      { group: "Stationarity", tests: [
+        { test: "Augmented Dickey–Fuller", basis: "Unit root" },
+        { test: "KPSS", basis: "Stationarity" },
+        { test: "Phillips–Perron", basis: "Unit root, robust to serial correlation" },
+        { test: "Elliott–Rothenberg–Stock", basis: "Unit root, GLS-detrended" },
+      ] },
+      { group: "No residual autocorrelation", tests: [{
+        test: "Ljung–Box Q",
+        basis: lb ? "No autocorrelation to lag " + lb.lags : "No autocorrelation in the residuals",
+        statistic: lb ? num(lb.statistic, 3) : null,
+        p: lb ? pvalue(lb.p_value) : null,
+        pass: lb && lb.p_value !== null ? lb.p_value >= 0.05 : null,
+      }] },
+      { group: "Homoskedasticity", tests: [
+        { test: "Engle ARCH LM", basis: "No ARCH effects" },
+      ] },
+      { group: "Normality of residuals", tests: [
+        { test: "Jarque–Bera", basis: "Normal residuals" },
+        { test: "Shapiro–Wilk", basis: "Normal residuals" },
+      ] },
+      { group: "Invertibility of the MA root", tests: [{
+        test: "Root modulus",
+        basis: "Criterion: modulus > 1",
+        statistic: modulus === null ? null : num(modulus, 3),
+        p: null,
+        pass: modulus === null ? null : modulus > 1,
+      }] },
+      { group: "Parameter stability", tests: [
+        { test: "CUSUM", basis: "Coefficients constant" },
+      ] },
+      { group: "No influential outliers", tests: [
+        { test: "Cook's distance", basis: "Criterion: max D < 4/n" },
+      ] },
+    ];
+  }
+
+  function renderAssumptions() {
+    var host = document.getElementById("table-assumptions");
+    if (!host) return;
+
+    // The residual diagnostics belong to one fit, and the ARMA model is the one
+    // that publishes them. The foot line says so rather than leaving a reader
+    // to assume the table covers both.
+    var model = byKey("log_arma") || payload.models[0];
+
+    var body = "";
+    assumptionGroups(model).forEach(function (group) {
+      group.tests.forEach(function (t, i) {
+        var known = t.pass === true || t.pass === false;
+        var pill = known
+          ? "<span class=\"viz-pill" + (t.pass ? " is-pass" : "") + "\">" + (t.pass ? "Pass" : "Fail") + "</span>"
+          : "<span class=\"viz-pill\">Not run</span>";
+        body += "<tr" + (known ? "" : " class=\"is-absent\"") + ">" +
+          (i === 0
+            ? "<td class=\"is-group\" rowspan=\"" + group.tests.length + "\">" + esc(group.group) + "</td>"
+            : "") +
+          "<td class=\"is-text\">" + esc(t.test) + "</td>" +
+          "<td class=\"is-wrap\">" + esc(t.basis) + "</td>" +
+          "<td>" + (t.statistic || "–") + "</td>" +
+          "<td>" + (t.p || "–") + "</td>" +
+          "<td>" + pill + "</td>" +
+          "</tr>";
+      });
+    });
+
+    host.innerHTML =
+      "<table><thead><tr>" +
+        "<th scope=\"col\">Assumption</th>" +
+        "<th scope=\"col\" class=\"is-text\">Test</th>" +
+        "<th scope=\"col\" class=\"is-text\">Null / criterion</th>" +
+        "<th scope=\"col\">Statistic</th>" +
+        "<th scope=\"col\">p</th>" +
+        "<th scope=\"col\">Status</th>" +
+      "</tr></thead><tbody>" + body + "</tbody></table>";
+
+    setText("assumptions-note", "Residual diagnostics are on the " + esc(model.label) + " fit.");
   }
 
   function byKey(key) {
@@ -547,6 +846,8 @@
 
     fanChart("chart-forecast-arma", arma);
     fanChart("chart-forecast-llt", llt);
+    fanLegend("legend-arma", arma);
+    fanLegend("legend-llt", llt);
 
     forecastTable("table-forecast-arma", arma);
     forecastTable("table-forecast-llt", llt);
@@ -557,11 +858,17 @@
     bicTable("table-bic", arma);
 
     renderHeadline();
+    renderEquations();
+    renderAssumptions();
 
     setText(
       "fit-arma",
       "log-likelihood " + num(arma.fit.loglik, 2) + " · AIC " + num(arma.fit.aic, 2) +
       " · BIC " + num(arma.fit.bic, 2) +
+      (arma.bic_grid && arma.bic_grid.length
+        ? " · order chosen by " + esc(arma.selected_by || "BIC") + " over " +
+          arma.bic_grid.length + " candidate orders"
+        : "") +
       (arma.ljung_box
         ? " · Ljung–Box(" + arma.ljung_box.lags + ") " + num(arma.ljung_box.statistic, 2) +
           ", p = " + pvalue(arma.ljung_box.p_value)
