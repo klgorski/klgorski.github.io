@@ -1,6 +1,6 @@
 # Site settings
-title: "Your Name"
-name: "Your Name"
+title: "Karl Gorski"
+name: "Karl Gorski"
 description: "Personal academic website — research, publications, and teaching."
 url: "https://klgorski.github.io"
 baseurl: ""
@@ -13,7 +13,7 @@ minimal_mistakes_skin: "default" # "air", "contrast", "dark", "dirt", "neon", "m
 
 # Author profile (shown in the sidebar)
 author:
-  name: "Your Name"
+  name: "Karl Gorski"
   avatar: "/assets/images/avatar.png"
   bio: "Undergraduate at UC San Diego studying [your major]. Interested in [your research area]."
   location: "San Diego, CA"
@@ -52,6 +52,7 @@ kramdown:
 plugins:
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-redirect-from
   - jekyll-remote-theme
 
 # Reading files
