@@ -52,6 +52,7 @@ kramdown:
 plugins:
   - jekyll-feed
   - jekyll-include-cache
+  - jekyll-redirect-from
   - jekyll-remote-theme
 
 # Reading files
