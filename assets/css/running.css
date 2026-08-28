@@ -26,9 +26,11 @@
   --baseline: #c3c2b7;
   --border: rgba(11, 11, 11, 0.1);
 
-  --series-1: #2a78d6; /* Run */
-  --series-2: #eb6834; /* Walk */
-  --series-3: #1baf7a; /* Ride, if it ever appears */
+  /* Which sport lands on which slot is pinned by SPORT_SLOTS in running.js,
+     not by this file. Keep these labels in step with that table. */
+  --series-1: #2a78d6; /* Swim */
+  --series-2: #eb6834; /* Run */
+  --series-3: #1baf7a; /* Walk */
 
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
@@ -733,8 +735,8 @@
 
 /* The TeX source, shown only while MathJax has not typeset the block -- a
    reader whose browser never ran the vendored script gets the algebra as
-   source rather than a blank card. renderEquations() removes these once
-   typesetting resolves. */
+   source rather than a blank card. The class is only ever added, and only on
+   the degrade path -- a block MathJax typesets never carries it. */
 .viz-tex {
   margin: 0;
   padding: 0.8em 0.9em;

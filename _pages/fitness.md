@@ -2,6 +2,9 @@
 layout: single
 title: "Fitness"
 permalink: /fitness/
+# This page lived at /running/ until it grew past running.
+redirect_from:
+  - /running/
 author_profile: false
 classes: wide
 ---
@@ -266,7 +269,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">Distance per week</h2>
+    <h3 class="viz-figure-title">Distance per week</h3>
     <p class="viz-figure-note">Weeks with no activity are shown as gaps rather than skipped, so a break in training reads as one.</p>
   </div>
   <div class="viz-canvas-wrap">
@@ -280,7 +283,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">Seven-day rolling average</h2>
+    <h3 class="viz-figure-title">Seven-day rolling average</h3>
     <p class="viz-figure-note">Daily distance smoothed over a trailing week. The line starts once a full week of data is behind it.</p>
   </div>
   <div class="viz-canvas-wrap">
@@ -296,7 +299,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">By sport</h2>
+    <h3 class="viz-figure-title">By sport</h3>
   </div>
   <div class="viz-canvas-wrap is-short">
     <canvas id="chart-sports" role="img" aria-label="Bar chart of total distance by sport. The same values are in the data table below."></canvas>
@@ -309,7 +312,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">By day of week</h2>
+    <h3 class="viz-figure-title">By day of week</h3>
   </div>
   <div class="viz-canvas-wrap is-short">
     <canvas id="chart-weekday" role="img" aria-label="Bar chart of how many activities fall on each weekday. The same values are in the data table below."></canvas>
@@ -324,7 +327,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">Time of day</h2>
+    <h3 class="viz-figure-title">Time of day</h3>
     <p class="viz-figure-note">Local start time, in whatever time zone the activity was recorded.</p>
   </div>
   <div class="viz-canvas-wrap is-short">
@@ -338,7 +341,7 @@ classes: wide
 
 <figure class="viz-figure">
   <div class="viz-figure-head">
-    <h2 class="viz-figure-title">Pace against distance</h2>
+    <h3 class="viz-figure-title">Pace against distance</h3>
     <p class="viz-figure-note">Every sport on one pair of axes, which the chart in the band above deliberately is not. Faster is higher — the pace axis is reversed so that up means quicker.</p>
   </div>
   <div class="viz-canvas-wrap is-tall">
