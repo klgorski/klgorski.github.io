@@ -5,11 +5,11 @@ permalink: /cv/
 author_profile: true
 ---
 
-A PDF version of my CV is available [here](/assets/cv.pdf).
+A PDF version of my CV is available [here](/assets/Karl Gorski-Resume.pdf).
 
 ## Education
 
-- **B.S. in Mathematics and Economics**, University of California, San Diego — *expected 2017* \\
+- **B.S. in Mathematics and Economics**, University of California, San Diego — *expected 2027* \\
   Relevant coursework: Econometrics, Data Science, Intermediate Microeconomics and Macroeconomics, Real Analysis, GPA: 3.826.
 
 ## Research Interests
