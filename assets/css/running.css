@@ -187,10 +187,87 @@
 
 /* -- figures ------------------------------------------------------------ */
 
+/* Two charts to a row, so the pairs that are meant to be read against each
+   other sit side by side. Strictly two columns rather than auto-fit: the point
+   is the pairing, and an auto-fit track count would reshuffle which chart
+   lands next to which as the viewport changes. Below 900px -- the same
+   breakpoint the band stacks at -- they go one per row. */
 .viz-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5em;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Column gap only. Each of these grids holds a single row of cards, so a row
+     gap would do nothing here -- and the subgrid below inherits it, where it
+     would open 1.5em of air between a card's head, its plot and its
+     disclosure row. */
+  column-gap: 1.5em;
+  row-gap: 0;
+  margin-bottom: 2em;
+}
+
+@media (max-width: 900px) {
+  .viz-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1.5em;
+  }
+}
+
+/* The grid owns the spacing between its cards; the cards' own bottom margin
+   would double it. Each card is a column so the canvas can take the slack:
+   the row is as tall as its tallest card, and without this the shorter card
+   would keep its canvas at the minimum and leave dead space under it. */
+.viz-grid > .viz-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.viz-grid .viz-canvas-wrap {
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 300px;
+}
+
+/* height: auto again on each, because .viz-canvas-wrap.is-short/.is-tall are
+   declared further down the file at the same specificity and would otherwise
+   win on source order and pin the plot to a fixed height. */
+.viz-grid .viz-canvas-wrap.is-short {
+  height: auto;
+  min-height: 240px;
+}
+
+.viz-grid .viz-canvas-wrap.is-tall {
+  height: auto;
+  min-height: 340px;
+}
+
+/* Pinned to the bottom edge so the disclosure rows line up across a pair even
+   when one card carries a note line the other does not. */
+.viz-grid > .viz-figure > .viz-table-toggle {
+  margin-top: auto;
+}
+
+/* Better still where it is supported: hand the two cards the same three row
+   tracks, so the plots start and end on the same lines rather than merely
+   ending up in equally tall boxes. Without this a card whose note wraps to a
+   second line pushes its chart down past its neighbour's. The flex rules above
+   remain the fallback -- they are already correct, they just let the canvas
+   absorb the difference instead of removing it. */
+@media (min-width: 901px) {
+  @supports (grid-template-rows: subgrid) {
+    .viz-grid {
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .viz-grid > .viz-figure {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+    }
+
+    .viz-grid > .viz-figure > .viz-table-toggle {
+      margin-top: 0;
+    }
+  }
 }
 
 .viz-figure {

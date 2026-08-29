@@ -259,6 +259,14 @@ classes: wide
   </div>
 </div>
 
+<!--
+  Six charts, three rows of two. The pairing is the point: weekly totals beside
+  the rolling average reads as one series smoothed against its raw form, and
+  the three distribution charts sit beside the things they are most often read
+  against. The grid drops to one column below 900px.
+-->
+<div class="viz-grid">
+
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Distance per week</h3>
@@ -286,6 +294,8 @@ classes: wide
     <div id="table-rolling"></div>
   </details>
 </figure>
+
+</div>
 
 <div class="viz-grid">
 
@@ -317,6 +327,8 @@ classes: wide
 
 </div>
 
+<div class="viz-grid">
+
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Time of day</h3>
@@ -340,6 +352,8 @@ classes: wide
     <canvas id="chart-pace" role="img" aria-label="Scatter plot of pace against distance, one point per activity, coloured by sport. Every activity is listed in the table at the foot of the page."></canvas>
   </div>
 </figure>
+
+</div>
 
 <h2>Records</h2>
 
