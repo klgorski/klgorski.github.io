@@ -137,11 +137,7 @@ classes: wide
       <div class="viz-legend" id="legend-arma"></div>
     </div>
     <p class="viz-figure-note">
-      A learning curve — fast improvement early, flattening later — with correlated
-      errors, both controlling for how far and how hilly each session was. The ARMA
-      order is chosen by BIC over the whole grid. The fan opens from the last fitted
-      value; the shaded areas are bootstrapped, not assumed. Fitted to every run, so
-      the date range above does not rescope it.
+      Models improvement as a log trend with strong initial improvement but diminishing returns. ARMA components represent the relationship between previous performances and the current performance. Multiple high performance days may predict a low performance recovery days; previous innovations are important for predicting performance. Distance and elevation are also included as predictors in this model.  
     </p>
     <p class="viz-spec" id="spec-arma"></p>
   </div>
