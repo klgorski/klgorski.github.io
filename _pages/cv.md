@@ -5,7 +5,7 @@ permalink: /cv/
 author_profile: true
 ---
 
-A PDF version of my CV is available [here](/assets/Karl%20Gorski%20-%20Resume.pdf).
+A PDF version of my CV is available [here](/assets/Resume.pdf).
 
 ## Education
 

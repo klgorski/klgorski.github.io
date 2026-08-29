@@ -11,8 +11,7 @@
 # snippet. A true "noindex" on a PDF needs an X-Robots-Tag response
 # header, which GitHub Pages does not let us set.
 User-agent: *
-Disallow: /assets/Karl%20Gorski%20-%20Resume.pdf
-Disallow: /assets/Karl Gorski - Resume.pdf
+Disallow: /assets/Resume.pdf
 
 # --- AI / LLM training & scraping bots: disallowed everywhere ---
 User-agent: GPTBot
