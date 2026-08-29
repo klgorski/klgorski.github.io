@@ -1,7 +1,7 @@
 # Site settings
 title: "Karl Gorski"
 name: "Karl Gorski"
-description: "Personal academic website — research, publications, and teaching."
+description: "Personal academic website."
 url: "https://klgorski.github.io"
 baseurl: ""
 locale: "en-US"
@@ -22,15 +22,9 @@ author:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       url: "mailto:kgorski@ucsd.edu"
-    - label: "Google Scholar"
-      icon: "fas fa-fw fa-graduation-cap"
-      url: "https://scholar.google.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/klgorski"
-    - label: "ORCID"
-      icon: "fab fa-fw fa-orcid"
-      url: "https://orcid.org/"
 
 # Build settings
 markdown: kramdown
@@ -59,12 +53,6 @@ plugins:
 include:
   - _pages
 
-# Collections
-collections:
-  publications:
-    output: true
-    permalink: /:collection/:path/
-
 # Defaults
 defaults:
   # _posts
@@ -84,14 +72,6 @@ defaults:
     values:
       layout: single
       author_profile: true
-  # _publications
-  - scope:
-      path: ""
-      type: publications
-    values:
-      layout: single
-      author_profile: true
-      share: true
 
 # Outputting
 permalink: /:categories/:title/

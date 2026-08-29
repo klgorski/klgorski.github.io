@@ -11,8 +11,6 @@ Most content lives in plain Markdown:
 | What | Where |
 |------|-------|
 | Homepage / About | `index.md` |
-| Research | `_pages/publications.md` |
-| Projects | `_pages/projects.md` |
 | CV | `_pages/cv.md` |
 | Navigation bar | `_data/navigation.yml` |
 | Site config, author profile, links | `_config.yml` |
