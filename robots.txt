@@ -3,15 +3,9 @@
 # Search-engine indexing is allowed. AI/LLM training and content-scraping
 # bots are disallowed from all content below.
 
-# --- Default: allow conventional search crawlers to index the site, ---
-# --- except the resume PDF (personal contact details).               ---
-#
-# Note: this stops compliant crawlers from FETCHING the file; it cannot
-# stop a URL that is linked from /cv/ being listed in results without a
-# snippet. A true "noindex" on a PDF needs an X-Robots-Tag response
-# header, which GitHub Pages does not let us set.
+# --- Default: allow conventional search crawlers to index the site ---
 User-agent: *
-Disallow: /assets/Resume.pdf
+Disallow:
 
 # --- AI / LLM training & scraping bots: disallowed everywhere ---
 User-agent: GPTBot
