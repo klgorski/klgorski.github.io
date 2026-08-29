@@ -27,6 +27,7 @@ Compiled data use and licensing documentation for various datasets
 ## Activities & Leadership
 
 - Asayake Taiko Administrative Director 2025-2026
+- TaikoVentures Fellow 2026
 
 ## Skills
 
