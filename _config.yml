@@ -17,7 +17,6 @@ author:
   avatar: "/assets/images/avatar.png"
   bio: "4th year Mathematics and Economics student at UC San Diego."
   location: "San Diego, CA"
-  email: "kgorski@ucsd.edu"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
