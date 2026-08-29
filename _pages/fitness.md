@@ -170,9 +170,7 @@ classes: wide
       <div class="viz-legend" id="legend-llt"></div>
     </div>
     <p class="viz-figure-note">
-      The same series with the trend left as a random walk rather than given a
-      shape, so it can flatten or reverse on its own. The band widens with every
-      step because the level itself is uncertain, not only the next observation.
+      Instead of modeling fitness as a deterministic function of time, performance is modeled as a level of fitness, covariates, and a random white noise process. The level of fitness series is itself comprised of the previous level plus the pace of improvement and a white noise process; the pace of improvement is a moving average process. 
     </p>
     <p class="viz-spec" id="spec-llt"></p>
   </div>
@@ -210,9 +208,7 @@ classes: wide
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Assumption checks</h3>
     <p class="viz-figure-note">
-      What has to hold for the intervals above to mean what they claim. A test
-      marked <em>not run</em> is one the daily fit does not publish — it is not a
-      test that passed quietly.
+      
     </p>
   </div>
   <div class="viz-matrix" id="table-assumptions"></div>
@@ -280,7 +276,7 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Seven-day rolling average</h3>
-    <p class="viz-figure-note">Daily distance smoothed over a trailing week. The line starts once a full week of data is behind it.</p>
+    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap">
     <canvas id="chart-rolling" role="img" aria-label="Line chart of the seven-day rolling average of daily distance. The same values are in the data table below."></canvas>
@@ -324,7 +320,7 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Time of day</h3>
-    <p class="viz-figure-note">Local start time, in whatever time zone the activity was recorded.</p>
+    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap is-short">
     <canvas id="chart-hour" role="img" aria-label="Bar chart of how many activities start in each hour of the day. The same values are in the data table below."></canvas>
@@ -338,7 +334,7 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Pace against distance</h3>
-    <p class="viz-figure-note">Every sport on one pair of axes, which the chart in the band above deliberately is not. Faster is higher — the pace axis is reversed so that up means quicker.</p>
+    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap is-tall">
     <canvas id="chart-pace" role="img" aria-label="Scatter plot of pace against distance, one point per activity, coloured by sport. Every activity is listed in the table at the foot of the page."></canvas>
