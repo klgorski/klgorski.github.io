@@ -12,6 +12,41 @@
  * dark steps are chosen for the dark surface, never an automatic flip.
  */
 
+/* -- reclaim the sidebar gutter ----------------------------------------
+ *
+ * Minimal Mistakes reserves a fixed column for the author sidebar:
+ *
+ *   @media (min-width: 64em) { .page { float: right; width: calc(100% - 200px); padding-right: 200px } }
+ *   @media (min-width: 80em) { .page {              width: calc(100% - 300px); padding-right: 300px } }
+ *
+ * `classes: wide` in the front matter only zeroes the padding-right -- the
+ * narrowed width and the float survive. This page sets `author_profile: false`,
+ * so no sidebar is rendered and that reserved column is simply empty space to
+ * the left of the content, with the dashboard squeezed into what is left (the
+ * wide tables were the first thing to overflow).
+ *
+ * Taking the width back is safe here precisely because there is no sidebar to
+ * collide with. Both breakpoints are overridden: the 64em rule is what sets
+ * the float. This file is linked from _pages/fitness.md rather than the site
+ * stylesheet, so it applies to this page only -- other pages keep their
+ * sidebar layout untouched.
+ */
+
+@media (min-width: 64em) {
+  .page {
+    float: none;
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 80em) {
+  .page {
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
 .viz-root {
   color-scheme: light;
 
