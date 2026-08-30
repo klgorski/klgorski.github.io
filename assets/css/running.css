@@ -219,6 +219,12 @@
   margin: 0;
   display: flex;
   flex-direction: column;
+  /* Both undo the theme's figure rule, which otherwise reaches into this
+     layout: align-items: flex-start stops the canvas wrap from filling the
+     card's width, and justify-content: space-between spreads the head, plot
+     and disclosure row apart down the card. */
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .viz-grid .viz-canvas-wrap {
@@ -260,6 +266,13 @@
 
     .viz-grid > .viz-figure {
       display: grid;
+      /* Explicit, because the card's single column would otherwise be an
+         implicit `auto` track -- and an auto track only stretches to the
+         container while justify-content is normal. The theme sets
+         space-between and the flex fallback above sets flex-start, either of
+         which leaves the track at content width: a canvas with no intrinsic
+         width, i.e. 300px. */
+      grid-template-columns: minmax(0, 1fr);
       grid-template-rows: subgrid;
       grid-row: span 3;
     }
@@ -270,7 +283,16 @@
   }
 }
 
+/* display:block is load-bearing. Minimal Mistakes styles every <figure> in
+   page content as `display: flex; flex-wrap: wrap; align-items: flex-start;
+   justify-content: space-between`. Under that, .viz-canvas-wrap is a
+   shrink-to-fit flex item, and a <canvas> has no intrinsic width to shrink to
+   -- so it lands on the HTML default of 300px and Chart.js, being responsive,
+   obligingly draws a 300px chart inside a 1100px card. Every chart on this
+   page was doing exactly that. As a block, the theme's flex properties are
+   inert and the wrap fills the card. */
 .viz-figure {
+  display: block;
   margin: 0 0 2em;
   padding: 0;
   border: 1px solid var(--border);
@@ -574,16 +596,8 @@
   display: grid;
   grid-template-columns: 340px minmax(0, 1fr);
   gap: 1.25em;
+  align-items: start;
   margin-bottom: 2em;
-}
-
-/* The log runs ten rows and the means table four, so the two cards are nowhere
-   near the same natural height. Stretching the short one leaves the slack
-   inside a card rather than as a ragged hole in the layout beside it, and the
-   table's own rows take the space rather than sitting in a block at the top. */
-.viz-band > .viz-figure {
-  display: flex;
-  flex-direction: column;
 }
 
 /* The band owns the spacing between its cards; the cards' own bottom margin
