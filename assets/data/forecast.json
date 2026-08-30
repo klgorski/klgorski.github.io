@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-08-30T20:59:28+00:00",
+  "generated_at": "2026-08-30T21:09:17+00:00",
   "last_activity": "2026-08-29",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -97,7 +97,7 @@
           },
           {
             "basis": "Criterion: modulus > 1",
-            "detail": "smallest of 1 MA root(s)",
+            "detail": "smallest of 1 MA root(s), effectively on the unit circle: the estimator constrains invertibility and this fit is sitting on the constraint, so read the MA coefficient as weakly identified rather than as a finding",
             "group": "Invertibility of the MA root",
             "p_value": null,
             "statistic": 1.003,
