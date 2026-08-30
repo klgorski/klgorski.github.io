@@ -633,17 +633,30 @@
   /* MathJax is loaded with `defer`, so on a fast fetch this can run before it
      exists. Waiting for `load` and then for MathJax's own startup promise is
      the difference between typeset algebra and a card full of raw backslashes.
-     If it never arrives, the blocks are restyled as TeX source rather than
-     left looking like a rendering that failed. */
-  function typeset(node) {
+     If it never arrives, the block degrades rather than being left looking
+     like a rendering that failed.
+
+     Every call is *chained onto* MathJax.startup.promise by reassigning it,
+     not merely started once it resolves. Measured with the vendored MathJax
+     3.2.2: a typesetPromise() made outside that chain resolves having done
+     nothing at all -- on a freshly created node, long after startup, and for a
+     whole-document sweep alike -- while the identical call chained onto
+     startup.promise renders. Take the reassignment out and the algebra on this
+     page quietly turns back into ASCII.
+
+     The catch sits inside the chain, so a block that fails to typeset degrades
+     only itself and the queue carries on, rather than poisoning the promise
+     every later call is waiting on. */
+  function typeset(node, onFail) {
     function degrade() {
+      if (onFail) return onFail();
       var bodies = node.querySelectorAll(".viz-equation-body");
       for (var i = 0; i < bodies.length; i++) bodies[i].classList.add("viz-tex");
     }
     function attempt() {
       var mj = window.MathJax;
       if (!mj || !mj.typesetPromise || !mj.startup || !mj.startup.promise) return degrade();
-      mj.startup.promise
+      mj.startup.promise = mj.startup.promise
         .then(function () { return mj.typesetPromise([node]); })
         .catch(degrade);
     }
@@ -779,6 +792,31 @@
     setText("assumptions-note", "Residual diagnostics are on the " + esc(model.label) + " fit.");
   }
 
+  /* The specification under a chart title, as typeset algebra rather than the
+     ASCII forecast.json ships. It is built by the same armaSpec/lltSpec the
+     "What the models say" card uses, so the line under the chart and the line
+     in that card can never drift apart.
+
+     The fallback is the publisher's own `specification` string -- what this
+     element showed before -- because a reader whose browser never ran MathJax
+     is better served by readable ASCII than by a paragraph of backslashes.
+     That is a different degrade path from the equations card, which has no
+     ASCII twin to fall back to and shows its TeX source instead. */
+  function specLine(id, tex, ascii) {
+    var node = document.getElementById(id);
+    if (!node) return;
+    if (!tex) {
+      node.textContent = ascii || "";
+      return;
+    }
+    node.innerHTML = tex;
+    node.classList.add("is-math");
+    typeset(node, function () {
+      node.classList.remove("is-math");
+      node.textContent = ascii || "";
+    });
+  }
+
   function byKey(key) {
     var found = payload.models.filter(function (m) { return m.key === key; });
     return found.length ? found[0] : null;
@@ -793,8 +831,8 @@
 
     setText("title-arma", esc(arma.label));
     setText("title-llt", esc(llt.label));
-    setText("spec-arma", esc(arma.specification));
-    setText("spec-llt", esc(llt.specification));
+    specLine("spec-arma", armaSpec(arma), arma.specification);
+    specLine("spec-llt", lltSpec(llt), llt.specification);
 
     fanChart("chart-forecast-arma", arma);
     fanChart("chart-forecast-llt", llt);

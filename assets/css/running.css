@@ -444,6 +444,8 @@
 
 /* The model equation, as written. Monospace because it is notation, and muted
    because a reader who does not want it should be able to slide past it. */
+/* Monospace is the fallback shape -- the ASCII specification string, shown
+   when MathJax never arrives. */
 .viz-spec {
   margin: 0.5em 0 0;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -451,6 +453,21 @@
   line-height: 1.5;
   color: var(--text-muted);
   overflow-x: auto;
+}
+
+/* Set by forecast.js once the line holds TeX rather than ASCII. */
+.viz-spec.is-math {
+  font-family: inherit;
+  font-size: 0.82em;
+  color: var(--text-secondary);
+}
+
+/* MathJax centres display math and gives it a full line of margin either side.
+   Neither suits a specification sitting directly under a chart's note, where
+   it should read as one more line of that head block. */
+.viz-spec.is-math mjx-container[display="true"] {
+  margin: 0.15em 0 0;
+  text-align: left;
 }
 
 /* Not behind a toggle: the coefficients are the point of fitting a model. */
@@ -547,22 +564,26 @@
 
 /* -- the top band ------------------------------------------------------- */
 
-/* A fixed-width log beside a flexible column: the log's rows are short and
-   would only get looser with more width, while the chart beside it uses
-   everything it is given. Below 900px the two stack rather than squeeze. */
+/* A fixed-width log beside a flexible table: the log's rows are short and
+   would only get looser with more width, while the means table beside it
+   spreads its columns into whatever it is given. Below 900px the two stack
+   rather than squeeze. Performance over time used to live in a second column
+   here; it is a full-width figure below the band now, because a date axis
+   spanning a year needs the room. */
 .viz-band {
   display: grid;
   grid-template-columns: 340px minmax(0, 1fr);
   gap: 1.25em;
-  align-items: start;
   margin-bottom: 2em;
 }
 
-.viz-band-col {
+/* The log runs ten rows and the means table four, so the two cards are nowhere
+   near the same natural height. Stretching the short one leaves the slack
+   inside a card rather than as a ragged hole in the layout beside it, and the
+   table's own rows take the space rather than sitting in a block at the top. */
+.viz-band > .viz-figure {
   display: flex;
   flex-direction: column;
-  gap: 1.25em;
-  min-width: 0;
 }
 
 /* The band owns the spacing between its cards; the cards' own bottom margin

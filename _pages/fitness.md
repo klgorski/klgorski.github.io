@@ -61,36 +61,39 @@ classes: wide
     <div class="viz-figure-foot"><a href="#every-activity" id="recent-all-link"></a></div>
   </figure>
 
-  <div class="viz-band-col">
-
-    <figure class="viz-figure">
-      <div class="viz-figure-head">
-        <h2 class="viz-figure-title">Mean performance time by activity type</h2>
-        <p class="viz-figure-note">Averages over every session of that type in this range.</p>
-      </div>
-      <div class="viz-matrix" id="table-sport-means"></div>
-    </figure>
-
-    <figure class="viz-figure">
-      <div class="viz-figure-head">
-        <div class="viz-figure-headrow">
-          <h2 class="viz-figure-title">Performance over time</h2>
-          <div class="viz-legend" id="legend-performance"></div>
-        </div>
-        <p class="viz-figure-note">
-          One point per activity. The pace axes are reversed, so higher is faster.
-          Each sport carries its own polynomial trend line fitted to its own axis.
-        </p>
-      </div>
-      <div class="viz-canvas-wrap">
-        <canvas id="chart-performance" role="img" aria-label="Scatter of pace over time with a fitted polynomial trend line per sport. Every activity is listed in the table at the foot of the page."></canvas>
-      </div>
-      <div class="viz-figure-foot" id="fit-performance"></div>
-    </figure>
-
-  </div>
+  <figure class="viz-figure">
+    <div class="viz-figure-head">
+      <h2 class="viz-figure-title">Mean performance time by activity type</h2>
+      <p class="viz-figure-note">Averages over every session of that type in this range.</p>
+    </div>
+    <div class="viz-matrix" id="table-sport-means"></div>
+  </figure>
 
 </div><!-- /viz-band -->
+
+<!--
+  Performance over time is the widest thing on the page: one point per activity
+  against a date axis that can span a year. It used to sit in the band's right
+  column, which is the page width less a 340px log, and the months bunched up.
+  It carries data-viz-summary in its own right now -- leaving the band means it
+  is no longer inside a block that already had the attribute.
+-->
+<figure class="viz-figure" data-viz-summary>
+  <div class="viz-figure-head">
+    <div class="viz-figure-headrow">
+      <h2 class="viz-figure-title">Performance over time</h2>
+      <div class="viz-legend" id="legend-performance"></div>
+    </div>
+    <p class="viz-figure-note">
+      One point per activity. The pace axes are reversed, so higher is faster.
+      Each sport carries its own polynomial trend line fitted to its own axis.
+    </p>
+  </div>
+  <div class="viz-canvas-wrap">
+    <canvas id="chart-performance" role="img" aria-label="Scatter of pace over time with a fitted polynomial trend line per sport. Every activity is listed in the table at the foot of the page."></canvas>
+  </div>
+  <div class="viz-figure-foot" id="fit-performance"></div>
+</figure>
 
 <!--
   The forecast is a SIBLING of the summary containers, not a child of one.
