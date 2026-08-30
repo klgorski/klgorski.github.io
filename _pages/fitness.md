@@ -55,7 +55,7 @@ classes: wide
   <figure class="viz-figure">
     <div class="viz-figure-head">
       <h2 class="viz-figure-title">Recent activities</h2>
-      <p class="viz-figure-note">The last ten sessions in this range, newest first.</p>
+      <p class="viz-figure-note">The last six sessions in this range, newest first.</p>
     </div>
     <div class="viz-log" id="recent-log"></div>
     <div class="viz-figure-foot"><a href="#every-activity" id="recent-all-link"></a></div>

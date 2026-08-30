@@ -847,7 +847,11 @@
     var host = document.getElementById("recent-log");
     if (!host) return;
 
-    var rows = scoped.slice(-10).reverse();
+    // Six, not ten: the card sits beside the four-row means table, and a
+    // longer list left the band's right-hand column with a hole under it.
+    // The count is stated in the card's note in _pages/fitness.md -- change
+    // both together.
+    var rows = scoped.slice(-6).reverse();
     host.innerHTML = rows.length
       ? rows.map(function (a) {
           var p = paceOf(a);
