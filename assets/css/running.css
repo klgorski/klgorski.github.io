@@ -788,8 +788,13 @@
 }
 
 /* A sport with no activities yet keeps its row so the reader can see it is
-   tracked and empty, rather than wonder whether it is missing. */
-.viz-matrix .is-absent td {
+   tracked and empty, rather than wonder whether it is missing.
+
+   `td.is-group` is excluded because it spans its whole group: the row that
+   carries it is only the group's *first* row, so muting it greyed out
+   "Stationarity" whenever the ADF row alone came back "not run", as if none of
+   the four tests under it had been run. */
+.viz-matrix .is-absent td:not(.is-group) {
   color: var(--text-muted);
 }
 
@@ -826,6 +831,46 @@
 .viz-pill.is-pass {
   background: var(--ok-surface);
   color: var(--ok-ink);
+}
+
+/* A pass is the only status with a colour. A red pill on a table where several
+   rows are "n/a" or "not run" reads as alarm the page cannot back up, and a
+   fourth hue would mean re-running the palette validator for a signal the word
+   "Fail" already carries. It separates from the grey statuses by ink and an
+   outline instead. */
+.viz-pill.is-fail {
+  color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px var(--baseline);
+}
+
+/* -- stacked tables ----------------------------------------------------- */
+
+/* The assumption checks are one table per model, because the two models are
+   checked separately and give different answers. Each keeps its own
+   .viz-matrix box so a wide table scrolls on its own rather than dragging its
+   neighbour sideways with it. */
+.viz-matrix-block + .viz-matrix-block {
+  margin-top: 1.6em;
+}
+
+.viz-matrix-title {
+  margin: 0 0 0.2em;
+  /* 0.5em of .viz-matrix padding plus 0.7em of cell padding, so the model's
+     name starts where its table's first column does. */
+  padding: 0 1.2em;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* The lag length a test chose, or the reason it could not run: the sentence a
+   reader needs only after the verdict has surprised them, so it sits under the
+   null it qualifies rather than in a column of its own. */
+.viz-matrix-detail {
+  display: block;
+  margin-top: 0.15em;
+  font-size: 0.9em;
+  color: var(--text-muted);
 }
 
 /* -- typeset models ----------------------------------------------------- */

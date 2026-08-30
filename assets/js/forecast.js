@@ -695,6 +695,40 @@
 
   // -- assumption checks --------------------------------------------------
 
+  /* One table per model, from the checks the daily fit publishes.
+
+     The rows arrive flat and already in the order this page lists them, so
+     grouping is just "start a new group when the group name changes" -- the
+     page does not re-order them and does not re-judge them. It renders a
+     verdict it was given; the arithmetic behind it lives in
+     strava_analysis/diagnostics.py, where it can be tested. */
+  function publishedGroups(model) {
+    var table = model.assumption_checks;
+    if (!table || !table.checks || !table.checks.length) return null;
+
+    var groups = [];
+    table.checks.forEach(function (row) {
+      var last = groups.length ? groups[groups.length - 1] : null;
+      if (!last || last.group !== row.group) {
+        last = { group: row.group, tests: [] };
+        groups.push(last);
+      }
+      last.tests.push({
+        test: row.test,
+        basis: row.basis,
+        detail: row.detail,
+        statistic: blank(row.statistic) ? null : num(row.statistic, 3),
+        p: blank(row.p_value) ? null : pvalue(row.p_value),
+        status: row.status,
+      });
+    });
+    return groups;
+  }
+
+  function blank(v) {
+    return v === null || v === undefined;
+  }
+
   /* The modulus of the root of the MA lag polynomial. Worth a closed form only
      at degree one, where 1 + theta*L has its root at -1/theta; a longer
      polynomial needs a root finder, and this page would rather report "not
@@ -707,39 +741,41 @@
     return Math.abs(1 / theta);
   }
 
-  /* Only the checks the daily fit actually publishes carry a number. The rest
-     are listed as "not run" rather than dropped: a reader has to be able to
-     see that normality was never tested, not merely fail to see that it was. */
-  function assumptionGroups(model) {
+  /* What the table showed before the fit published its own checks, and what it
+     falls back to for a forecast.json written by an older publisher: the two
+     things this page can work out from the coefficients alone, and every other
+     row listed as "not run" rather than dropped. A reader has to be able to see
+     that normality was never tested, not merely fail to see that it was. */
+  function plannedGroups(model) {
     var lb = model.ljung_box;
     var modulus = maRootModulus(model);
     return [
       { group: "Stationarity", tests: [
-        { test: "Augmented Dickey–Fuller", basis: "Unit root" },
+        { test: "Augmented Dickey\u2013Fuller", basis: "Unit root" },
         { test: "KPSS", basis: "Stationarity" },
-        { test: "Phillips–Perron", basis: "Unit root, robust to serial correlation" },
-        { test: "Elliott–Rothenberg–Stock", basis: "Unit root, GLS-detrended" },
+        { test: "Phillips\u2013Perron", basis: "Unit root, robust to serial correlation" },
+        { test: "Elliott\u2013Rothenberg\u2013Stock", basis: "Unit root, GLS-detrended" },
       ] },
       { group: "No residual autocorrelation", tests: [{
-        test: "Ljung–Box Q",
+        test: "Ljung\u2013Box Q",
         basis: lb ? "No autocorrelation to lag " + lb.lags : "No autocorrelation in the residuals",
         statistic: lb ? num(lb.statistic, 3) : null,
         p: lb ? pvalue(lb.p_value) : null,
-        pass: lb && lb.p_value !== null ? lb.p_value >= 0.05 : null,
+        status: lb && lb.p_value !== null ? (lb.p_value >= 0.05 ? "pass" : "fail") : "not run",
       }] },
       { group: "Homoskedasticity", tests: [
         { test: "Engle ARCH LM", basis: "No ARCH effects" },
       ] },
       { group: "Normality of residuals", tests: [
-        { test: "Jarque–Bera", basis: "Normal residuals" },
-        { test: "Shapiro–Wilk", basis: "Normal residuals" },
+        { test: "Jarque\u2013Bera", basis: "Normal residuals" },
+        { test: "Shapiro\u2013Wilk", basis: "Normal residuals" },
       ] },
       { group: "Invertibility of the MA root", tests: [{
         test: "Root modulus",
         basis: "Criterion: modulus > 1",
         statistic: modulus === null ? null : num(modulus, 3),
         p: null,
-        pass: modulus === null ? null : modulus > 1,
+        status: modulus === null ? "not run" : (modulus > 1 ? "pass" : "fail"),
       }] },
       { group: "Parameter stability", tests: [
         { test: "CUSUM", basis: "Coefficients constant" },
@@ -750,37 +786,37 @@
     ];
   }
 
-  function renderAssumptions() {
-    var host = document.getElementById("table-assumptions");
-    if (!host) return;
+  /* "Not run" and "n/a" are different answers and both are grey: the first is
+     a gap in the evidence, the second a question the model does not pose. */
+  var PILLS = {
+    pass: { label: "Pass", cls: " is-pass" },
+    fail: { label: "Fail", cls: " is-fail" },
+    "not applicable": { label: "n/a", cls: "" },
+  };
 
-    // The residual diagnostics belong to one fit, and the ARMA model is the one
-    // that publishes them. The foot line says so rather than leaving a reader
-    // to assume the table covers both.
-    var model = byKey("log_arma") || payload.models[0];
-
+  function assumptionTable(groups) {
     var body = "";
-    assumptionGroups(model).forEach(function (group) {
+    groups.forEach(function (group) {
       group.tests.forEach(function (t, i) {
-        var known = t.pass === true || t.pass === false;
-        var pill = known
-          ? "<span class=\"viz-pill" + (t.pass ? " is-pass" : "") + "\">" + (t.pass ? "Pass" : "Fail") + "</span>"
-          : "<span class=\"viz-pill\">Not run</span>";
+        var status = t.status || "not run";
+        var pill = PILLS[status] || { label: "Not run", cls: "" };
+        var known = status === "pass" || status === "fail";
         body += "<tr" + (known ? "" : " class=\"is-absent\"") + ">" +
           (i === 0
             ? "<td class=\"is-group\" rowspan=\"" + group.tests.length + "\">" + esc(group.group) + "</td>"
             : "") +
           "<td class=\"is-text\">" + esc(t.test) + "</td>" +
-          "<td class=\"is-wrap\">" + esc(t.basis) + "</td>" +
-          "<td>" + (t.statistic || "–") + "</td>" +
-          "<td>" + (t.p || "–") + "</td>" +
-          "<td>" + pill + "</td>" +
+          "<td class=\"is-wrap\">" + esc(t.basis) +
+            (t.detail ? "<span class=\"viz-matrix-detail\">" + esc(t.detail) + "</span>" : "") +
+          "</td>" +
+          "<td>" + (blank(t.statistic) ? "\u2013" : t.statistic) + "</td>" +
+          "<td>" + (blank(t.p) ? "\u2013" : t.p) + "</td>" +
+          "<td><span class=\"viz-pill" + pill.cls + "\">" + pill.label + "</span></td>" +
           "</tr>";
       });
     });
 
-    host.innerHTML =
-      "<table><thead><tr>" +
+    return "<table><thead><tr>" +
         "<th scope=\"col\">Assumption</th>" +
         "<th scope=\"col\" class=\"is-text\">Test</th>" +
         "<th scope=\"col\" class=\"is-text\">Null / criterion</th>" +
@@ -788,8 +824,83 @@
         "<th scope=\"col\">p</th>" +
         "<th scope=\"col\">Status</th>" +
       "</tr></thead><tbody>" + body + "</tbody></table>";
+  }
 
-    setText("assumptions-note", "Residual diagnostics are on the " + esc(model.label) + " fit.");
+  /* The line under the tables, built from the same per-model decision the
+     tables were: `rendered` says which models published checks and which fell
+     back. Deriving it independently let the note describe one model while two
+     tables were on screen -- and, in the mirror case, claim nothing had been
+     published while real verdicts were being rendered above it.
+
+     Both models are checked on their own standardised one-step-ahead errors,
+     and the state-space model throws the first few away while its filter is
+     still finding the series, so the two tables are read on different numbers
+     of residuals and this says so rather than letting a reader assume one
+     sample. */
+  function residualNote(rendered) {
+    var published = rendered.filter(function (entry) { return entry.published; });
+    if (!published.length) {
+      return "This forecast was published without assumption checks; the tables list the " +
+        "ones that would be run.";
+    }
+
+    var counted = published.filter(function (entry) {
+      return entry.model.assumption_checks.residuals;
+    });
+    var alpha = published[0].model.assumption_checks.alpha || 0.05;
+    var note = "The residual tests run on each model's own standardised one-step-ahead " +
+      "forecast errors";
+
+    if (counted.length) {
+      note += " \u2014 " + counted.map(function (entry) {
+        var residuals = entry.model.assumption_checks.residuals;
+        var dropped = residuals.dropped_at_the_start;
+        return esc(entry.model.label) + ", " + esc(residuals.n) +
+          (residuals.n === 1 ? " residual" : " residuals") +
+          (dropped ? " (" + esc(dropped) + " dropped while the filter starts)" : "");
+      }).join("; ") + " \u2014 and are";
+    } else {
+      note += ", and are";
+    }
+
+    note += " read at " + esc(alpha) + ". A pass is the assumption holding, which for a " +
+      "unit-root test means rejecting the null and for the rest means keeping it. The MA " +
+      "root and Cook's distance are read off the fit and its design matrix rather than off " +
+      "the residuals.";
+
+    // A model whose checks did not publish still gets a table, of rows saying
+    // they were not run. Without this the reader is left with two tables and a
+    // note that only accounts for one of them.
+    var absent = rendered.filter(function (entry) { return !entry.published; });
+    if (absent.length) {
+      note += " No checks were published for " + absent.map(function (entry) {
+        return esc(entry.model.label);
+      }).join(" or ") + "; those rows list what would be run.";
+    }
+    return note;
+  }
+
+  function renderAssumptions() {
+    var host = document.getElementById("table-assumptions");
+    if (!host) return;
+
+    /* A table per model, because the two are checked separately and answer
+       differently: the state-space model has no MA polynomial to invert, and
+       its residuals are a shorter series than the ARMA model's. One table
+       under the ARMA model's name used to stand for both. */
+    var rendered = payload.models.map(function (model) {
+      var groups = publishedGroups(model);
+      return { model: model, groups: groups || plannedGroups(model), published: !!groups };
+    });
+
+    host.innerHTML = rendered.map(function (entry) {
+      return "<section class=\"viz-matrix-block\">" +
+        "<h4 class=\"viz-matrix-title\">" + esc(entry.model.label) + "</h4>" +
+        "<div class=\"viz-matrix\">" + assumptionTable(entry.groups) + "</div>" +
+        "</section>";
+    }).join("");
+
+    setText("assumptions-note", residualNote(rendered));
   }
 
   /* The specification under a chart title, as typeset algebra rather than the

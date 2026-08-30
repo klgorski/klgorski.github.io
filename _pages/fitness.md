@@ -211,10 +211,18 @@ classes: wide
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Assumption checks</h3>
     <p class="viz-figure-note">
-      
+      Both models are estimated under assumptions a training log is free to
+      break, so both are tested for it &mdash; one table each. A pass means the
+      assumption survived its test, not that the model is right, and a fail is
+      worth reading rather than worrying about. Normality is the row to read
+      differently between the two: the log trend's band is a residual bootstrap
+      that resamples what the sessions actually did, so it never assumed normal
+      errors in the first place, while the local linear trend's band is drawn
+      from Gaussian disturbances &mdash; a fail there does bear on the width of
+      that fan.
     </p>
   </div>
-  <div class="viz-matrix" id="table-assumptions"></div>
+  <div class="viz-matrix-stack" id="table-assumptions"></div>
   <div class="viz-figure-foot" id="assumptions-note"></div>
 </figure>
 
