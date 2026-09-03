@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-08-31T18:04:44+00:00",
+  "generated_at": "2026-09-03T15:05:16+00:00",
   "last_activity": "2026-08-31",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -145,9 +145,9 @@
           "selected": true
         },
         {
-          "bic": 41.682,
-          "converged": false,
-          "delta": 0.048,
+          "bic": 41.68,
+          "converged": true,
+          "delta": 0.045,
           "p": 0,
           "q": 1,
           "selected": false
@@ -169,71 +169,71 @@
           "selected": false
         },
         {
-          "bic": 47.468,
-          "converged": true,
-          "delta": 5.834,
-          "p": 3,
-          "q": 1,
-          "selected": false
-        },
-        {
           "bic": 47.625,
           "converged": true,
-          "delta": 5.99,
+          "delta": 5.991,
           "p": 1,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 47.681,
+          "bic": 47.715,
           "converged": false,
-          "delta": 6.046,
+          "delta": 6.081,
           "p": 1,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 47.75,
+          "bic": 48.022,
           "converged": true,
-          "delta": 6.116,
+          "delta": 6.387,
           "p": 3,
-          "q": 2,
+          "q": 1,
           "selected": false
         },
         {
-          "bic": 48.788,
+          "bic": 48.689,
           "converged": true,
-          "delta": 7.154,
+          "delta": 7.054,
           "p": 2,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 49.127,
-          "converged": true,
-          "delta": 7.493,
+          "bic": 49.126,
+          "converged": false,
+          "delta": 7.492,
           "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 50.038,
-          "converged": true,
-          "delta": 8.404,
+          "bic": 49.932,
+          "converged": false,
+          "delta": 8.297,
           "p": 2,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 52.682,
+          "bic": 50.652,
           "converged": true,
-          "delta": 11.047,
+          "delta": 9.017,
+          "p": 3,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 52.535,
+          "converged": true,
+          "delta": 10.901,
           "p": 3,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 53.54,
+          "bic": 53.539,
           "converged": true,
           "delta": 11.905,
           "p": 0,
@@ -241,8 +241,8 @@
           "selected": false
         },
         {
-          "bic": 56.522,
-          "converged": true,
+          "bic": 56.523,
+          "converged": false,
           "delta": 14.888,
           "p": 1,
           "q": 3,
@@ -257,9 +257,9 @@
           "selected": false
         },
         {
-          "bic": 60.639,
-          "converged": true,
-          "delta": 19.005,
+          "bic": 60.587,
+          "converged": false,
+          "delta": 18.953,
           "p": 2,
           "q": 3,
           "selected": false
@@ -529,8 +529,8 @@
       },
       "bootstrap_failures": 0,
       "final_state": {
-        "level": 5.725,
-        "slope": -0.01007
+        "level": 5.7249,
+        "slope": -0.01008
       },
       "fit": {
         "aic": 46.578,
@@ -539,12 +539,12 @@
       },
       "fitted": [
         4.8547,
-        4.7601,
+        4.76,
         4.9775,
         4.8878,
         5.5976,
         5.9519,
-        5.3073,
+        5.3074,
         5.0417,
         5.1029,
         5.5777,
@@ -554,8 +554,8 @@
         5.4971,
         5.9524,
         5.9365,
-        4.8171,
-        5.4202,
+        4.8172,
+        5.4201,
         5.7898,
         5.7411
       ],
@@ -563,28 +563,28 @@
       "forecast": [
         {
           "boot_median": 5.7761,
-          "hi80": 6.4428,
+          "hi80": 6.4427,
           "hi95": 6.8967,
           "lo80": 5.0178,
           "lo95": 4.5619,
-          "mean": 5.7295,
+          "mean": 5.7294,
           "step": 1
         },
         {
           "boot_median": 5.7447,
-          "hi80": 6.6152,
-          "hi95": 7.0698,
+          "hi80": 6.6153,
+          "hi95": 7.0697,
           "lo80": 4.9646,
-          "lo95": 4.4361,
+          "lo95": 4.436,
           "mean": 5.7194,
           "step": 2
         },
         {
           "boot_median": 5.7477,
           "hi80": 6.5095,
-          "hi95": 7.0949,
+          "hi95": 7.095,
           "lo80": 4.8761,
-          "lo95": 4.3368,
+          "lo95": 4.3369,
           "mean": 5.7093,
           "step": 3
         },
@@ -592,7 +592,7 @@
           "boot_median": 5.8527,
           "hi80": 6.6836,
           "hi95": 7.2204,
-          "lo80": 4.8481,
+          "lo80": 4.8484,
           "lo95": 4.1497,
           "mean": 5.6992,
           "step": 4
@@ -600,19 +600,19 @@
         {
           "boot_median": 5.8812,
           "hi80": 6.8475,
-          "hi95": 7.2431,
-          "lo80": 4.8543,
-          "lo95": 4.0584,
-          "mean": 5.6892,
+          "hi95": 7.2432,
+          "lo80": 4.8542,
+          "lo95": 4.0583,
+          "mean": 5.6891,
           "step": 5
         },
         {
           "boot_median": 5.8917,
-          "hi80": 6.8172,
+          "hi80": 6.8173,
           "hi95": 7.2673,
           "lo80": 4.7167,
-          "lo95": 3.8479,
-          "mean": 5.6791,
+          "lo95": 3.848,
+          "mean": 5.679,
           "step": 6
         }
       ],
@@ -647,18 +647,18 @@
           "ci_upper": 0.0118,
           "estimate": 0.0007,
           "name": "sigma2.trend",
-          "p_value": 0.904,
+          "p_value": 0.903,
           "std_err": 0.0057,
           "z": 0.1212
         },
         {
-          "ci_lower": -1.6713,
-          "ci_upper": 0.8845,
+          "ci_lower": -1.6714,
+          "ci_upper": 0.8846,
           "estimate": -0.3934,
           "name": "beta.distance_km",
           "p_value": 0.546,
           "std_err": 0.652,
-          "z": -0.6034
+          "z": -0.6033
         },
         {
           "ci_lower": 0.0111,
@@ -667,7 +667,7 @@
           "name": "beta.total_elevation_gain",
           "p_value": 0.0114,
           "std_err": 0.0195,
-          "z": 2.5305
+          "z": 2.5304
         }
       ],
       "selected_by": null,
