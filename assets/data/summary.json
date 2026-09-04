@@ -229,6 +229,16 @@
       "speed_kmh": 10.984,
       "sport": "Run",
       "time": "08:39"
+    },
+    {
+      "date": "2026-09-03",
+      "distance_km": 2.727,
+      "elevation_m": 16.3,
+      "moving_time_min": 15.37,
+      "pace_min_per_km": 5.636,
+      "speed_kmh": 10.645,
+      "sport": "Run",
+      "time": "08:58"
     }
   ],
   "by_sport": {
@@ -241,12 +251,12 @@
       "moving_time_min": 41.9
     },
     "Run": {
-      "avg_pace_min_per_km": 5.425,
-      "count": 20,
-      "distance_km": 56.49,
-      "elevation_m": 369.4,
-      "moving_time_hours": 5.11,
-      "moving_time_min": 306.5
+      "avg_pace_min_per_km": 5.435,
+      "count": 21,
+      "distance_km": 59.22,
+      "elevation_m": 385.7,
+      "moving_time_hours": 5.36,
+      "moving_time_min": 321.9
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -258,15 +268,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-09-03T15:04:46+00:00",
-  "last_day": "2026-08-31",
+  "generated_at": "2026-09-04T15:01:39+00:00",
+  "last_day": "2026-09-03",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 6.274,
-    "count": 23,
-    "distance_km": 65.39,
-    "elevation_m": 523.8,
-    "moving_time_hours": 6.84,
-    "moving_time_min": 410.2
+    "avg_pace_min_per_km": 6.248,
+    "count": 24,
+    "distance_km": 68.12,
+    "elevation_m": 540.1,
+    "moving_time_hours": 7.09,
+    "moving_time_min": 425.6
   }
 }
