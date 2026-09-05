@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-09-04T15:02:21+00:00",
+  "generated_at": "2026-09-05T13:56:48+00:00",
   "last_activity": "2026-09-03",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -161,16 +161,16 @@
           "selected": false
         },
         {
-          "bic": 46.323,
-          "converged": false,
-          "delta": 4.127,
+          "bic": 46.595,
+          "converged": true,
+          "delta": 4.399,
           "p": 2,
           "q": 1,
           "selected": false
         },
         {
           "bic": 46.956,
-          "converged": true,
+          "converged": false,
           "delta": 4.76,
           "p": 2,
           "q": 0,
@@ -185,51 +185,51 @@
           "selected": false
         },
         {
-          "bic": 47.978,
-          "converged": true,
-          "delta": 5.782,
+          "bic": 48.086,
+          "converged": false,
+          "delta": 5.89,
           "p": 3,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 48.601,
+          "bic": 48.66,
           "converged": true,
-          "delta": 6.405,
+          "delta": 6.464,
           "p": 1,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 49.335,
+          "bic": 49.272,
           "converged": true,
-          "delta": 7.139,
+          "delta": 7.076,
           "p": 1,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 49.878,
+          "bic": 49.453,
           "converged": true,
+          "delta": 7.257,
+          "p": 2,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 49.878,
+          "converged": false,
           "delta": 7.682,
           "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 50.834,
+          "bic": 51.918,
           "converged": true,
-          "delta": 8.638,
+          "delta": 9.722,
           "p": 3,
           "q": 3,
-          "selected": false
-        },
-        {
-          "bic": 50.919,
-          "converged": true,
-          "delta": 8.723,
-          "p": 2,
-          "q": 2,
           "selected": false
         },
         {
@@ -241,25 +241,25 @@
           "selected": false
         },
         {
-          "bic": 54.902,
+          "bic": 54.998,
           "converged": true,
-          "delta": 12.706,
+          "delta": 12.802,
           "p": 2,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 55.331,
+          "bic": 55.333,
           "converged": true,
-          "delta": 13.135,
+          "delta": 13.137,
           "p": 0,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 56.821,
+          "bic": 56.847,
           "converged": true,
-          "delta": 14.625,
+          "delta": 14.651,
           "p": 3,
           "q": 2,
           "selected": false
@@ -439,7 +439,7 @@
             "detail": "Z-tau, 3 Newey-West lag(s)",
             "group": "Stationarity",
             "p_value": 0.000244,
-            "statistic": -4.448,
+            "statistic": -4.447,
             "status": "pass",
             "test": "Phillips\u2013Perron"
           },
@@ -564,54 +564,54 @@
       "fitted_label": "Smoothed trend + effort",
       "forecast": [
         {
-          "boot_median": 5.3618,
+          "boot_median": 5.3639,
           "hi80": 6.0964,
-          "hi95": 6.691,
-          "lo80": 4.6596,
+          "hi95": 6.6911,
+          "lo80": 4.6595,
           "lo95": 4.2777,
           "mean": 5.3308,
           "step": 1
         },
         {
-          "boot_median": 5.3564,
-          "hi80": 6.0568,
+          "boot_median": 5.3639,
+          "hi80": 6.0651,
           "hi95": 6.4495,
-          "lo80": 4.6858,
+          "lo80": 4.687,
           "lo95": 4.2553,
           "mean": 5.3376,
           "step": 2
         },
         {
-          "boot_median": 5.3883,
-          "hi80": 6.2111,
-          "hi95": 6.5725,
+          "boot_median": 5.3929,
+          "hi80": 6.2219,
+          "hi95": 6.5826,
           "lo80": 4.5224,
-          "lo95": 4.098,
+          "lo95": 4.0981,
           "mean": 5.3444,
           "step": 3
         },
         {
-          "boot_median": 5.3904,
-          "hi80": 6.2365,
-          "hi95": 6.6895,
+          "boot_median": 5.3908,
+          "hi80": 6.248,
+          "hi95": 6.7033,
           "lo80": 4.5405,
           "lo95": 4.0072,
           "mean": 5.3512,
           "step": 4
         },
         {
-          "boot_median": 5.4743,
-          "hi80": 6.2705,
-          "hi95": 6.7607,
+          "boot_median": 5.4769,
+          "hi80": 6.3009,
+          "hi95": 6.7764,
           "lo80": 4.5192,
-          "lo95": 3.7644,
+          "lo95": 3.7643,
           "mean": 5.3581,
           "step": 5
         },
         {
           "boot_median": 5.4709,
-          "hi80": 6.2918,
-          "hi95": 6.9353,
+          "hi80": 6.2928,
+          "hi95": 7.024,
           "lo80": 4.4386,
           "lo95": 3.6616,
           "mean": 5.3649,
