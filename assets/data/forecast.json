@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-09-09T15:12:59+00:00",
+  "generated_at": "2026-09-09T22:21:36+00:00",
   "last_activity": "2026-09-08",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -145,17 +145,17 @@
           "selected": true
         },
         {
-          "bic": 43.762,
+          "bic": 43.794,
           "converged": true,
-          "delta": 0.87,
+          "delta": 0.902,
           "p": 0,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 44.02,
-          "converged": true,
-          "delta": 1.128,
+          "bic": 44.031,
+          "converged": false,
+          "delta": 1.139,
           "p": 1,
           "q": 1,
           "selected": false
@@ -177,27 +177,27 @@
           "selected": false
         },
         {
-          "bic": 46.616,
-          "converged": false,
-          "delta": 3.724,
-          "p": 0,
-          "q": 3,
+          "bic": 46.738,
+          "converged": true,
+          "delta": 3.846,
+          "p": 1,
+          "q": 2,
           "selected": false
         },
         {
-          "bic": 46.833,
+          "bic": 46.958,
           "converged": true,
-          "delta": 3.941,
+          "delta": 4.065,
           "p": 2,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 46.86,
+          "bic": 47.172,
           "converged": true,
-          "delta": 3.967,
-          "p": 1,
-          "q": 2,
+          "delta": 4.28,
+          "p": 0,
+          "q": 3,
           "selected": false
         },
         {
@@ -209,57 +209,57 @@
           "selected": false
         },
         {
-          "bic": 48.264,
+          "bic": 48.44,
           "converged": true,
-          "delta": 5.372,
+          "delta": 5.548,
           "p": 3,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 49.926,
+          "bic": 50.078,
           "converged": true,
-          "delta": 7.033,
-          "p": 2,
-          "q": 2,
-          "selected": false
-        },
-        {
-          "bic": 49.987,
-          "converged": true,
-          "delta": 7.095,
+          "delta": 7.185,
           "p": 1,
           "q": 3,
           "selected": false
         },
         {
+          "bic": 50.088,
+          "converged": true,
+          "delta": 7.196,
+          "p": 2,
+          "q": 2,
+          "selected": false
+        },
+        {
           "bic": 50.74,
           "converged": true,
-          "delta": 7.848,
+          "delta": 7.847,
           "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 52.865,
+          "bic": 52.895,
           "converged": true,
-          "delta": 9.973,
+          "delta": 10.003,
           "p": 3,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 53.959,
-          "converged": true,
-          "delta": 11.067,
+          "bic": 53.059,
+          "converged": false,
+          "delta": 10.167,
           "p": 2,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 56.331,
+          "bic": 55.342,
           "converged": true,
-          "delta": 13.439,
+          "delta": 12.45,
           "p": 3,
           "q": 3,
           "selected": false
@@ -311,7 +311,7 @@
           "hi80": 6.3469,
           "hi95": 7.4532,
           "lo80": 5.3442,
-          "lo95": 5.0552,
+          "lo95": 5.0551,
           "mean": 5.8489,
           "step": 2
         },
@@ -421,7 +421,7 @@
             "basis": "Unit root",
             "detail": "0 lag(s) by AIC, 19 observations used",
             "group": "Stationarity",
-            "p_value": 0.000101,
+            "p_value": 0.0001,
             "statistic": -4.659,
             "status": "pass",
             "test": "Augmented Dickey\u2013Fuller"
@@ -458,7 +458,7 @@
             "detail": "4 lag(s)",
             "group": "No residual autocorrelation",
             "p_value": 0.968,
-            "statistic": 0.553,
+            "statistic": 0.554,
             "status": "pass",
             "test": "Ljung\u2013Box Q"
           },
@@ -475,8 +475,8 @@
             "basis": "Normal residuals",
             "detail": "skew 2.05, kurtosis 7.75",
             "group": "Normality of residuals",
-            "p_value": 7.77e-08,
-            "statistic": 32.741,
+            "p_value": 7.8e-08,
+            "statistic": 32.733,
             "status": "fail",
             "test": "Jarque\u2013Bera"
           },
@@ -531,8 +531,8 @@
       },
       "bootstrap_failures": 0,
       "final_state": {
-        "level": 6.0263,
-        "slope": 0.00158
+        "level": 6.0264,
+        "slope": 0.00159
       },
       "fit": {
         "aic": 48.208,
@@ -542,13 +542,13 @@
       "fitted": [
         4.8855,
         4.793,
-        4.9864,
-        4.8987,
+        4.9863,
+        4.8986,
         5.5935,
-        5.9653,
+        5.9654,
         5.2734,
-        5.0115,
-        5.0808,
+        5.0114,
+        5.0807,
         5.5998,
         5.5157,
         5.6881,
@@ -556,7 +556,7 @@
         5.4853,
         5.9206,
         5.9103,
-        4.7964,
+        4.7963,
         5.5464,
         5.793,
         5.7596,
@@ -567,19 +567,19 @@
       "forecast": [
         {
           "boot_median": 5.7731,
-          "hi80": 6.419,
+          "hi80": 6.4191,
           "hi95": 6.7656,
-          "lo80": 5.111,
-          "lo95": 4.6758,
+          "lo80": 5.1111,
+          "lo95": 4.6759,
           "mean": 5.7645,
           "step": 1
         },
         {
-          "boot_median": 5.844,
+          "boot_median": 5.8443,
           "hi80": 6.5114,
-          "hi95": 6.8553,
+          "hi95": 6.8554,
           "lo80": 5.0458,
-          "lo95": 4.7638,
+          "lo95": 4.7637,
           "mean": 5.7661,
           "step": 2
         },
@@ -587,35 +587,35 @@
           "boot_median": 5.8971,
           "hi80": 6.5833,
           "hi95": 7.004,
-          "lo80": 5.1151,
+          "lo80": 5.115,
           "lo95": 4.7092,
-          "mean": 5.7676,
+          "mean": 5.7677,
           "step": 3
         },
         {
-          "boot_median": 5.8547,
-          "hi80": 6.6104,
+          "boot_median": 5.8553,
+          "hi80": 6.6102,
           "hi95": 7.0695,
-          "lo80": 5.0256,
-          "lo95": 4.3094,
-          "mean": 5.7692,
+          "lo80": 5.0255,
+          "lo95": 4.3095,
+          "mean": 5.7693,
           "step": 4
         },
         {
-          "boot_median": 5.8776,
+          "boot_median": 5.8762,
           "hi80": 6.6556,
-          "hi95": 7.0762,
+          "hi95": 7.0759,
           "lo80": 4.9887,
-          "lo95": 4.2015,
-          "mean": 5.7708,
+          "lo95": 4.2013,
+          "mean": 5.7709,
           "step": 5
         },
         {
           "boot_median": 5.9535,
           "hi80": 6.8007,
-          "hi95": 7.3466,
-          "lo80": 5.0684,
-          "lo95": 4.2674,
+          "hi95": 7.3467,
+          "lo80": 5.0683,
+          "lo95": 4.2675,
           "mean": 5.7724,
           "step": 6
         }
@@ -625,17 +625,17 @@
       "ljung_box": {
         "lags": 4,
         "p_value": 0.968,
-        "statistic": 0.553
+        "statistic": 0.554
       },
       "parameters": [
         {
           "ci_lower": 0.07,
-          "ci_upper": 0.3966,
+          "ci_upper": 0.3967,
           "estimate": 0.2333,
           "name": "sigma2.irregular",
           "p_value": 0.00511,
           "std_err": 0.0833,
-          "z": 2.8001
+          "z": 2.8
         },
         {
           "ci_lower": -0.1934,
@@ -656,13 +656,13 @@
           "z": 0.1083
         },
         {
-          "ci_lower": -1.3533,
-          "ci_upper": 0.3908,
+          "ci_lower": -1.3534,
+          "ci_upper": 0.3907,
           "estimate": -0.4813,
           "name": "beta.distance_km",
           "p_value": 0.279,
           "std_err": 0.4449,
-          "z": -1.0817
+          "z": -1.0818
         },
         {
           "ci_lower": 0.0158,
@@ -671,7 +671,7 @@
           "name": "beta.total_elevation_gain",
           "p_value": 0.00405,
           "std_err": 0.0173,
-          "z": 2.8741
+          "z": 2.8746
         }
       ],
       "selected_by": null,
