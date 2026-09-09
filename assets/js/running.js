@@ -705,16 +705,32 @@
       return scoped.some(function (a) { return a.sport === sport && a.pace_min_per_km; });
     });
 
+    /* This is the chart that shows every sport at once, so it is also the one
+       place a pool sport and a land sport have to share a frame. They cannot
+       share a *scale*: a swim is about 24 min/km against 4-7 for a run, which
+       on one axis pushes the land range down to a seventh of the height and
+       leaves the runs an unreadable band. Same reason renderPerformance splits
+       its axes -- pool sports go right, in min/100 m, and the axis only exists
+       on a day something has been swum. */
+    var landPresent = present.filter(function (s) { return !isPool(s); });
+    var poolPresent = present.filter(isPool);
+
     draw("chart-pace", {
       type: "scatter",
       data: {
         datasets: present.map(function (sport) {
           return {
-            label: sport,
+            // The unit only goes in the label when both scales are on screen
+            // at once; with one axis the axis title already says it, and
+            // "Run (min/km)" beside a single "pace (min/km)" axis is noise.
+            label: sport + (poolPresent.length && landPresent.length
+              ? " (min" + paceUnitOf(sport) + ")"
+              : ""),
+            yAxisID: isPool(sport) ? "y2" : "y",
             data: scoped.filter(function (a) {
               return a.sport === sport && a.pace_min_per_km;
             }).map(function (a) {
-              return { x: toDistance(a.distance_km), y: toPace(a.pace_min_per_km), raw: a };
+              return { x: toDistance(a.distance_km), y: paceOf(a), raw: a };
             }),
             backgroundColor: SPORT_COLORS[sport],
             // 10px marks with a 2px surface ring, so overlapping points stay
@@ -734,10 +750,22 @@
         scales: {
           x: axisY("distance (" + unit + ")", { grid: { color: C.gridline, drawTicks: false } }),
           y: axisY("pace (min" + paceUnit() + ")", {
+            display: landPresent.length > 0,
             beginAtZero: false,
             // Faster is a smaller number, so the axis is reversed: up means
             // quicker, which is the direction a reader expects "better" to go.
             reverse: true,
+            ticks: { color: C.muted, font: { size: 11 }, padding: 8, callback: function (v) { return pace(v); } },
+          }),
+          y2: axisY("pace (min" + poolPaceUnit() + ")", {
+            display: poolPresent.length > 0,
+            position: "right",
+            beginAtZero: false,
+            reverse: true,
+            // The left axis already rules the plot area; a second set of lines
+            // through the same marks at different heights reads as a grid
+            // that does not line up with anything.
+            grid: { drawOnChartArea: false },
             ticks: { color: C.muted, font: { size: 11 }, padding: 8, callback: function (v) { return pace(v); } },
           }),
         },
@@ -753,7 +781,7 @@
               return [
                 longDate(a.date),
                 num(toDistance(a.distance_km), 2) + " " + unit + " in " + duration(a.moving_time_min),
-                pace(toPace(a.pace_min_per_km)) + paceUnit(),
+                pace(paceOf(a)) + paceUnitOf(a.sport),
               ];
             },
           }),
