@@ -207,7 +207,11 @@
     };
   }
 
-  function streaks(activities, lastDayIso) {
+  /* `asOfIso` is the day the current streak is read against -- see asOfDay().
+     It is NOT the last activity's date: measuring the last activity against
+     itself always gives zero, which made the "no active streak" branch below
+     unreachable. */
+  function streaks(activities, asOfIso) {
     var days = [];
     activities.forEach(function (a) {
       if (days.indexOf(a.date) === -1) days.push(a.date);
@@ -223,7 +227,9 @@
     }
 
     var current = 0;
-    var since = (parseDay(lastDayIso) - parseDay(days[days.length - 1])) / 86400000;
+    var since = (parseDay(asOfIso) - parseDay(days[days.length - 1])) / 86400000;
+    // A missing or unparseable reference day makes this NaN, which fails the
+    // comparison and reports no active streak -- the safe way round.
     if (since <= 1) {
       current = 1;
       for (var j = days.length - 1; j > 0; j--) {
@@ -285,15 +291,27 @@
     return { labels: labels, values: values };
   }
 
+  /* Each window is summed from scratch rather than slid along with
+     `sum += new; sum -= old`. The sliding form is the cheaper one and it was
+     wrong here: adding and subtracting the same distances in a different order
+     leaves a residue of about -6e-17 once the window is a run of rest days,
+     and toLocaleString renders that as "-0.00". It read as a negative distance
+     in 248 of the 353 rows of the data table. Seven additions per row costs
+     nothing at any history this page will ever hold, and a sum of
+     non-negative values cannot come out below zero. */
   function rollingMean(values, window) {
-    var out = [], sum = 0;
+    var out = [];
     for (var i = 0; i < values.length; i++) {
-      sum += values[i];
-      if (i >= window) sum -= values[i - window];
       // Only emit once a full window is behind us; a "7-day average" over four
       // days of data is not one, and the ramp-in reads as a training taper
       // that never happened.
-      out.push(i >= window - 1 ? sum / window : null);
+      if (i < window - 1) {
+        out.push(null);
+        continue;
+      }
+      var sum = 0;
+      for (var j = i - window + 1; j <= i; j++) sum += values[j];
+      out.push(sum / window);
     }
     return out;
   }
@@ -389,9 +407,9 @@
 
   // -- rendering ----------------------------------------------------------
 
-  function renderTiles(scoped, lastDay) {
+  function renderTiles(scoped, asOf) {
     var t = totals(scoped);
-    var s = streaks(scoped, lastDay);
+    var s = streaks(scoped, asOf);
     var unit = distanceUnit();
 
     setText("stat-distance", num(toDistance(t.distanceKm), 1) + "<span class=\"viz-tile-unit\">" + unit + "</span>");
@@ -1264,16 +1282,31 @@
   var sportOrder = [];
   var generatedAt = null;
 
+  /* The day the "current streak" is measured against.
+     `summary.last_day` is the last activity's own date, so passing it here --
+     which is what this used to do -- asked whether the last activity happened
+     within a day of itself. It always had, so `current` was never zero and the
+     tile read "current: 1 day" over a log whose last session was months back.
+     The sync timestamp is the page's own notion of now, and it is already what
+     the masthead dates the page from, so a page that stops being rebuilt lets
+     the streak lapse rather than freezing it. Falls back to the last activity
+     only when there is no timestamp to use, which is the old behaviour and the
+     most generous reading available. */
+  function asOfDay() {
+    if (generatedAt && !isNaN(generatedAt.getTime())) return dayKey(generatedAt);
+    return summary.last_day ||
+      (summary.activities.length ? summary.activities[summary.activities.length - 1].date : null);
+  }
+
   function renderAll() {
     var scoped = inRange(summary.activities);
-    var lastDay = summary.last_day || (summary.activities.length ? summary.activities[summary.activities.length - 1].date : null);
 
     renderHeadline(scoped);
     renderRecent(scoped);
     renderSportMeans(scoped, sportOrder);
     renderPerformance(scoped, sportOrder);
 
-    renderTiles(scoped, lastDay);
+    renderTiles(scoped, asOfDay());
     renderWeekly(scoped, sportOrder);
     renderRolling(scoped);
     renderSports(scoped, sportOrder);
