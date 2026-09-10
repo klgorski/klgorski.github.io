@@ -85,8 +85,6 @@ classes: wide
       <div class="viz-legend" id="legend-performance"></div>
     </div>
     <p class="viz-figure-note">
-      One point per activity. The pace axes are reversed, so higher is faster.
-      Each sport carries its own polynomial trend line fitted to its own axis.
     </p>
   </div>
   <div class="viz-canvas-wrap">
@@ -108,7 +106,6 @@ classes: wide
 
 <p class="viz-figure-note" id="forecast-meta" style="margin-bottom:0.4em"></p>
 <p class="viz-figure-note" id="forecast-generated" style="margin-top:0;margin-bottom:1.4em"></p>
-<p class="viz-callout" id="forecast-warning" hidden></p>
 
 <div class="viz-tiles">
   <div class="viz-tile">
@@ -199,9 +196,6 @@ classes: wide
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">What the models say</h3>
     <p class="viz-figure-note">
-      The specification each chart above was fitted from, then the same
-      specification with the estimates substituted in. \(y_t\) is the response at
-      session \(t\) and \(x_t\) collects the per-session effort regressors.
     </p>
   </div>
   <div class="viz-equations" id="model-equations"></div>
@@ -211,15 +205,6 @@ classes: wide
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Assumption checks</h3>
     <p class="viz-figure-note">
-      Both models are estimated under assumptions a training log is free to
-      break, so both are tested for it &mdash; one table each. A pass means the
-      assumption survived its test, not that the model is right, and a fail is
-      worth reading rather than worrying about. Normality is the row to read
-      differently between the two: the log trend's band is a residual bootstrap
-      that resamples what the sessions actually did, so it never assumed normal
-      errors in the first place, while the local linear trend's band is drawn
-      from Gaussian disturbances &mdash; a fail there does bear on the width of
-      that fan.
     </p>
   </div>
   <div class="viz-matrix-stack" id="table-assumptions"></div>
