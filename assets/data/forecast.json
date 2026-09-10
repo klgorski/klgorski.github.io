@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-09-09T22:21:36+00:00",
+  "generated_at": "2026-09-10T15:05:10+00:00",
   "last_activity": "2026-09-08",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -145,17 +145,17 @@
           "selected": true
         },
         {
-          "bic": 43.794,
+          "bic": 43.761,
           "converged": true,
-          "delta": 0.902,
+          "delta": 0.869,
           "p": 0,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 44.031,
-          "converged": false,
-          "delta": 1.139,
+          "bic": 43.873,
+          "converged": true,
+          "delta": 0.981,
           "p": 1,
           "q": 1,
           "selected": false
@@ -170,34 +170,34 @@
         },
         {
           "bic": 45.258,
-          "converged": true,
+          "converged": false,
           "delta": 2.365,
           "p": 1,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 46.738,
+          "bic": 46.716,
+          "converged": false,
+          "delta": 3.824,
+          "p": 0,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "bic": 46.725,
           "converged": true,
-          "delta": 3.846,
+          "delta": 3.833,
           "p": 1,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 46.958,
+          "bic": 46.837,
           "converged": true,
-          "delta": 4.065,
+          "delta": 3.945,
           "p": 2,
           "q": 1,
-          "selected": false
-        },
-        {
-          "bic": 47.172,
-          "converged": true,
-          "delta": 4.28,
-          "p": 0,
-          "q": 3,
           "selected": false
         },
         {
@@ -209,57 +209,57 @@
           "selected": false
         },
         {
-          "bic": 48.44,
+          "bic": 49.257,
           "converged": true,
-          "delta": 5.548,
+          "delta": 6.365,
           "p": 3,
           "q": 1,
           "selected": false
         },
         {
-          "bic": 50.078,
+          "bic": 50.07,
           "converged": true,
-          "delta": 7.185,
+          "delta": 7.177,
           "p": 1,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 50.088,
-          "converged": true,
-          "delta": 7.196,
-          "p": 2,
-          "q": 2,
-          "selected": false
-        },
-        {
           "bic": 50.74,
           "converged": true,
-          "delta": 7.847,
+          "delta": 7.848,
           "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "bic": 52.895,
+          "bic": 52.923,
           "converged": true,
-          "delta": 10.003,
+          "delta": 10.031,
           "p": 3,
           "q": 2,
           "selected": false
         },
         {
-          "bic": 53.059,
+          "bic": 52.926,
+          "converged": true,
+          "delta": 10.034,
+          "p": 2,
+          "q": 2,
+          "selected": false
+        },
+        {
+          "bic": 53.239,
           "converged": false,
-          "delta": 10.167,
+          "delta": 10.346,
           "p": 2,
           "q": 3,
           "selected": false
         },
         {
-          "bic": 55.342,
+          "bic": 56.087,
           "converged": true,
-          "delta": 12.45,
+          "delta": 13.195,
           "p": 3,
           "q": 3,
           "selected": false
@@ -318,7 +318,7 @@
         {
           "boot_median": 5.7948,
           "hi80": 6.4683,
-          "hi95": 7.4727,
+          "hi95": 7.4728,
           "lo80": 5.3675,
           "lo95": 5.0835,
           "mean": 5.8596,
@@ -439,7 +439,7 @@
             "basis": "Unit root, robust to serial correlation",
             "detail": "Z-tau, 4 Newey-West lag(s)",
             "group": "Stationarity",
-            "p_value": 8.49e-05,
+            "p_value": 8.48e-05,
             "statistic": -4.698,
             "status": "pass",
             "test": "Phillips\u2013Perron"
@@ -475,8 +475,8 @@
             "basis": "Normal residuals",
             "detail": "skew 2.05, kurtosis 7.75",
             "group": "Normality of residuals",
-            "p_value": 7.8e-08,
-            "statistic": 32.733,
+            "p_value": 7.82e-08,
+            "statistic": 32.729,
             "status": "fail",
             "test": "Jarque\u2013Bera"
           },
@@ -484,7 +484,7 @@
             "basis": "Normal residuals",
             "detail": "W on 20 residuals",
             "group": "Normality of residuals",
-            "p_value": 0.000723,
+            "p_value": 0.000724,
             "statistic": 0.795,
             "status": "fail",
             "test": "Shapiro\u2013Wilk"
@@ -531,7 +531,7 @@
       },
       "bootstrap_failures": 0,
       "final_state": {
-        "level": 6.0264,
+        "level": 6.0265,
         "slope": 0.00159
       },
       "fit": {
@@ -540,43 +540,43 @@
         "loglik": -19.104
       },
       "fitted": [
-        4.8855,
+        4.8856,
         4.793,
-        4.9863,
+        4.9864,
         4.8986,
         5.5935,
         5.9654,
-        5.2734,
+        5.2733,
         5.0114,
         5.0807,
         5.5998,
-        5.5157,
+        5.5156,
         5.6881,
         5.7711,
         5.4853,
         5.9206,
         5.9103,
-        4.7963,
+        4.7962,
         5.5464,
-        5.793,
+        5.7931,
         5.7596,
-        5.5212,
+        5.5213,
         5.5977
       ],
       "fitted_label": "Smoothed trend + effort",
       "forecast": [
         {
-          "boot_median": 5.7731,
+          "boot_median": 5.7732,
           "hi80": 6.4191,
-          "hi95": 6.7656,
-          "lo80": 5.1111,
-          "lo95": 4.6759,
+          "hi95": 6.7657,
+          "lo80": 5.111,
+          "lo95": 4.6758,
           "mean": 5.7645,
           "step": 1
         },
         {
           "boot_median": 5.8443,
-          "hi80": 6.5114,
+          "hi80": 6.5115,
           "hi95": 6.8554,
           "lo80": 5.0458,
           "lo95": 4.7637,
@@ -588,35 +588,35 @@
           "hi80": 6.5833,
           "hi95": 7.004,
           "lo80": 5.115,
-          "lo95": 4.7092,
+          "lo95": 4.7093,
           "mean": 5.7677,
           "step": 3
         },
         {
           "boot_median": 5.8553,
-          "hi80": 6.6102,
+          "hi80": 6.6105,
           "hi95": 7.0695,
-          "lo80": 5.0255,
+          "lo80": 5.0256,
           "lo95": 4.3095,
           "mean": 5.7693,
           "step": 4
         },
         {
-          "boot_median": 5.8762,
-          "hi80": 6.6556,
+          "boot_median": 5.8775,
+          "hi80": 6.6557,
           "hi95": 7.0759,
           "lo80": 4.9887,
-          "lo95": 4.2013,
+          "lo95": 4.2012,
           "mean": 5.7709,
           "step": 5
         },
         {
           "boot_median": 5.9535,
-          "hi80": 6.8007,
+          "hi80": 6.8009,
           "hi95": 7.3467,
-          "lo80": 5.0683,
+          "lo80": 5.0511,
           "lo95": 4.2675,
-          "mean": 5.7724,
+          "mean": 5.7725,
           "step": 6
         }
       ],
@@ -635,7 +635,7 @@
           "name": "sigma2.irregular",
           "p_value": 0.00511,
           "std_err": 0.0833,
-          "z": 2.8
+          "z": 2.7999
         },
         {
           "ci_lower": -0.1934,
@@ -658,20 +658,20 @@
         {
           "ci_lower": -1.3534,
           "ci_upper": 0.3907,
-          "estimate": -0.4813,
+          "estimate": -0.4814,
           "name": "beta.distance_km",
           "p_value": 0.279,
           "std_err": 0.4449,
-          "z": -1.0818
+          "z": -1.0819
         },
         {
           "ci_lower": 0.0158,
           "ci_upper": 0.0835,
           "estimate": 0.0496,
           "name": "beta.total_elevation_gain",
-          "p_value": 0.00405,
+          "p_value": 0.00404,
           "std_err": 0.0173,
-          "z": 2.8746
+          "z": 2.8748
         }
       ],
       "selected_by": null,
