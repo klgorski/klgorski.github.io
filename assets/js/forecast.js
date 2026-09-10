@@ -396,28 +396,62 @@
     );
   }
 
+  /* The fit publishes the grid under `order_grid`, and under `bic_grid` before
+     the order search moved from BIC to AIC. Read both: the two repositories
+     deploy on their own schedules, so on the day of the switch this page and
+     the file it reads are briefly one version apart in whichever direction the
+     deploys happen to land. */
+  function orderGrid(model) {
+    var grid = model.order_grid || model.bic_grid;
+    return grid && grid.length ? grid : null;
+  }
+
+  /* Which criterion actually chose, so the column cannot claim one thing while
+     the number under it is the other. `delta` is published against whichever
+     criterion that is. */
+  function criterionOf(model) {
+    // Keyed off which grid key the payload carries rather than a fixed name: a
+    // file with `order_grid` postdates the move to AIC, one with only
+    // `bic_grid` predates it. A constant default would, on a payload missing
+    // `selected_by`, head the column with one criterion, fill it from the
+    // other, and put a `delta` describing a third beside them.
+    if (model.selected_by) return model.selected_by;
+    return model.order_grid ? "AIC" : "BIC";
+  }
+
   /* The grid is optional in the published file, and the <details> that wraps
      this table is unconditional markup. Bailing out early used to leave the
-     expander in place over an empty div -- "Show the BIC order selection"
+     expander in place over an empty div -- "Show the AIC order selection"
      opening onto nothing. Hide the wrapper instead, the same way
      renderEquations() hides its card. */
-  function bicTable(id, model) {
+  function gridTable(id, model) {
     var host = document.getElementById(id);
     var toggle = host && host.closest ? host.closest("details") : null;
-    var grid = model.bic_grid && model.bic_grid.length ? model.bic_grid : null;
+    var grid = orderGrid(model);
     if (toggle) toggle.hidden = !grid;
     if (!grid) {
       if (host) host.innerHTML = "";
       return;
     }
+    var criterion = criterionOf(model);
+    var key = criterion.toLowerCase();
+    // The <summary> is static markup, so it would otherwise go on naming
+    // whichever criterion was current when the page was last edited while the
+    // column below it named the one in the data -- the mismatch criterionOf
+    // exists to prevent, one element further out.
+    var summary = toggle ? toggle.querySelector("summary") : null;
+    if (summary) summary.textContent = "Show the " + criterion + " order selection";
     renderTable(
       id,
-      ["Order (p, q)", "BIC", "ΔBIC", "Converged"],
+      ["Order (p, q)", esc(criterion), "Δ" + esc(criterion), "Converged"],
       grid.map(function (row) {
         var name = "ARMA(" + row.p + ", " + row.q + ")" + (row.selected ? " — selected" : "");
+        // A row from before the rename carries `bic` alone; one from after
+        // carries both, and `key` picks the one that did the choosing.
+        var score = row[key] === undefined ? row.bic : row[key];
         return [
           row.selected ? "<strong>" + name + "</strong>" : name,
-          num(row.bic, 2),
+          num(score, 2),
           signed(row.delta, 2),
           row.converged ? "yes" : "no",
         ];
@@ -570,12 +604,29 @@
       ", \\qquad \\varepsilon_t \\sim \\mathrm{WN}(0, \\sigma^2) \\]";
   }
 
-  function armaFitted(model) {
-    var mu = findParam(model, ["intercept", "const"]);
-    var beta = findParam(model, ["log_t"]);
-    if (!mu || !beta) return null;
+  /* The mu in armaSpec() is the unconditional mean of the series, because the
+     u_t beside it is a zero-mean ARMA. SARIMAX's `intercept` is a different
+     quantity: it sits inside the AR recursion, so the level the series is
+     centred on is intercept / (1 - sum(phi)). The two agree only at p = 0,
+     which is the only case this page has ever been shown, and substituting the
+     raw parameter drew an equation that disagreed with the fitted line plotted
+     directly above it.
 
-    var body = "\\hat{y}_t = " + fixed(mu.estimate) + term(beta.estimate, "\\log t");
+     `level` is published for exactly this. Falling back to the intercept
+     reproduces the old reading for a payload that predates the field, which is
+     exact for the ARMA(0,q) fits every such payload carries. */
+  function armaLevel(model) {
+    if (typeof model.level === "number") return model.level;
+    var intercept = findParam(model, ["intercept", "const"]);
+    return intercept ? intercept.estimate : null;
+  }
+
+  function armaFitted(model) {
+    var mu = armaLevel(model);
+    var beta = findParam(model, ["log_t"]);
+    if (mu === null || !beta) return null;
+
+    var body = "\\hat{y}_t = " + fixed(mu) + term(beta.estimate, "\\log t");
     (payload.regressors || []).forEach(function (name) {
       var p = findParam(model, [name, "beta." + name]);
       if (p) body += term(p.estimate, texRegressor(name));
@@ -956,7 +1007,7 @@
     historyTable("table-history-llt", llt);
     paramTable("params-arma", arma);
     paramTable("params-llt", llt);
-    bicTable("table-bic", arma);
+    gridTable("table-order-grid", arma);
 
     renderHeadline();
     renderEquations();
@@ -966,9 +1017,9 @@
       "fit-arma",
       "log-likelihood " + num(arma.fit.loglik, 2) + " · AIC " + num(arma.fit.aic, 2) +
       " · BIC " + num(arma.fit.bic, 2) +
-      (arma.bic_grid && arma.bic_grid.length
-        ? " · order chosen by " + esc(arma.selected_by || "BIC") + " over " +
-          arma.bic_grid.length + " candidate orders"
+      (orderGrid(arma)
+        ? " · order chosen by " + esc(criterionOf(arma)) + " over " +
+          orderGrid(arma).length + " candidate orders"
         : "") +
       (arma.ljung_box
         ? " · Ljung–Box(" + arma.ljung_box.lags + ") " + num(arma.ljung_box.statistic, 2) +

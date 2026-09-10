@@ -158,8 +158,8 @@ classes: wide
     <div id="table-history-arma"></div>
   </details>
   <details class="viz-table-toggle">
-    <summary>Show the BIC order selection</summary>
-    <div id="table-bic"></div>
+    <summary>Show the AIC order selection</summary>
+    <div id="table-order-grid"></div>
   </details>
 </figure>
 
