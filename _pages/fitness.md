@@ -55,7 +55,6 @@ classes: wide
   <figure class="viz-figure">
     <div class="viz-figure-head">
       <h2 class="viz-figure-title">Recent activities</h2>
-      <p class="viz-figure-note">The last three sessions in this range, newest first.</p>
     </div>
     <div class="viz-log" id="recent-log"></div>
     <div class="viz-figure-foot"><a href="#every-activity" id="recent-all-link"></a></div>
@@ -64,7 +63,6 @@ classes: wide
   <figure class="viz-figure">
     <div class="viz-figure-head">
       <h2 class="viz-figure-title">Mean performance time by activity type</h2>
-      <p class="viz-figure-note">Averages over every session of that type in this range.</p>
     </div>
     <div class="viz-matrix" id="table-sport-means"></div>
   </figure>
@@ -84,8 +82,6 @@ classes: wide
       <h2 class="viz-figure-title">Performance over time</h2>
       <div class="viz-legend" id="legend-performance"></div>
     </div>
-    <p class="viz-figure-note">
-    </p>
   </div>
   <div class="viz-canvas-wrap">
     <canvas id="chart-performance" role="img" aria-label="Scatter of pace over time with a fitted polynomial trend line per sport. Every activity is listed in the table at the foot of the page."></canvas>
@@ -195,8 +191,6 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">What the models say</h3>
-    <p class="viz-figure-note">
-    </p>
   </div>
   <div class="viz-equations" id="model-equations"></div>
 </figure>
@@ -204,20 +198,16 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Assumption checks</h3>
-    <p class="viz-figure-note">
-    </p>
   </div>
   <div class="viz-matrix-stack" id="table-assumptions"></div>
   <div class="viz-figure-foot" id="assumptions-note"></div>
 </figure>
 
 <p class="viz-footnote" style="margin-top:0">
-  Coefficients are in the units the models were estimated in and do not follow the
-  km/miles toggle; only the charts and the forecast tables convert.
+  Coefficients stay in the units the models were estimated in; only the charts and
+  the forecast tables follow the km/miles toggle.
   <span id="forecast-failures"></span>
-  Both models are refitted from scratch each day, and the intervals come from
-  refitting on every bootstrap replicate, so the uncertainty in the parameters is
-  inside the band rather than assumed away.
+  Intervals come from refitting on every bootstrap replicate.
 </p>
 
 </section>
@@ -266,7 +256,7 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Distance per week</h3>
-    <p class="viz-figure-note">Weeks with no activity are shown as gaps rather than skipped, so a break in training reads as one.</p>
+    <p class="viz-figure-note">Weeks with no activity are shown as gaps.</p>
   </div>
   <div class="viz-canvas-wrap">
     <canvas id="chart-weekly" role="img" aria-label="Bar chart of distance covered each week, split by sport. The same values are in the data table below."></canvas>
@@ -280,7 +270,6 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Seven-day rolling average</h3>
-    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap">
     <canvas id="chart-rolling" role="img" aria-label="Line chart of the seven-day rolling average of daily distance. The same values are in the data table below."></canvas>
@@ -328,7 +317,6 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Time of day</h3>
-    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap is-short">
     <canvas id="chart-hour" role="img" aria-label="Bar chart of how many activities start in each hour of the day. The same values are in the data table below."></canvas>
@@ -342,7 +330,6 @@ classes: wide
 <figure class="viz-figure">
   <div class="viz-figure-head">
     <h3 class="viz-figure-title">Pace against distance</h3>
-    <p class="viz-figure-note"></p>
   </div>
   <div class="viz-canvas-wrap is-tall">
     <canvas id="chart-pace" role="img" aria-label="Scatter plot of pace against distance, one point per activity, coloured by sport. Every activity is listed in the table at the foot of the page."></canvas>
@@ -384,13 +371,11 @@ classes: wide
 
 <p class="viz-footnote">
   Synced from Strava once a day by
-  <a href="https://github.com/klgorski/Strava-Analysis-Project">a small Python package</a>
-  and a GitHub Actions workflow. The published file holds aggregate numbers only —
-  no coordinates, routes, time zones or profile details ever leave the private
-  repository. The data behind this page is two JSON files:
-  <a href="{{ '/assets/data/summary.json' | relative_url }}">summary.json</a> for the
-  training log and <a href="{{ '/assets/data/forecast.json' | relative_url }}">forecast.json</a>
-  for the fitted models.
+  <a href="https://github.com/klgorski/Strava-Analysis-Project">a small Python package</a>.
+  Aggregate numbers only — no coordinates, routes or profile details leave the private
+  repository. Behind the page:
+  <a href="{{ '/assets/data/summary.json' | relative_url }}">summary.json</a> and
+  <a href="{{ '/assets/data/forecast.json' | relative_url }}">forecast.json</a>.
 </p>
 
 </div>

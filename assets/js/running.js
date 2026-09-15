@@ -894,8 +894,7 @@
     if (!host) return;
 
     // Three, which is what it takes to match the four-row means table beside
-    // it: a log row is about 90px at the theme's font size. The count is
-    // stated in the card's note in _pages/fitness.md -- change both together.
+    // it: a log row is about 90px at the theme's font size.
     var rows = scoped.slice(-3).reverse();
     host.innerHTML = rows.length
       ? rows.map(function (a) {
@@ -1345,7 +1344,7 @@
     renderActivities(scoped);
 
     setText("viz-scope-note", scoped.length
-      ? scoped.length + (scoped.length === 1 ? " activity" : " activities") + " from " + longDate(scoped[0].date) + " to " + longDate(scoped[scoped.length - 1].date)
+      ? longDate(scoped[0].date) + " to " + longDate(scoped[scoped.length - 1].date)
       : "No activities in this range.");
   }
 

@@ -914,10 +914,7 @@
       note += ", and are";
     }
 
-    note += " read at " + esc(alpha) + ". A pass is the assumption holding, which for a " +
-      "unit-root test means rejecting the null and for the rest means keeping it. The MA " +
-      "root and Cook's distance are read off the fit and its design matrix rather than off " +
-      "the residuals.";
+    note += " read at " + esc(alpha) + ". A pass is the assumption holding.";
 
     // A model whose checks did not publish still gets a table, of rows saying
     // they were not run. Without this the reader is left with two tables and a
