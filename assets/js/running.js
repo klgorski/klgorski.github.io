@@ -28,7 +28,7 @@
     var missing = document.getElementById("viz-status");
     if (missing) {
       missing.hidden = false;
-      missing.textContent = "A script this page needs did not load, so the charts are unavailable.";
+      missing.textContent = "Part of this page didn't load, so the charts aren't available. Try refreshing.";
     }
     return;
   }
@@ -883,9 +883,9 @@
       num(toDistance(t.distanceKm), 1) + " " + distanceUnit(),
     ];
     parts.push(generatedAt
-      ? "synced from Strava, last updated " +
+      ? "pulled from Strava, last updated " +
         generatedAt.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
-      : "synced from Strava");
+      : "pulled from Strava");
     setText("viz-headline", parts.join(" · "));
   }
 
@@ -1152,13 +1152,14 @@
           tension: 0,
         });
         notes.push(
-          DEGREE_NAMES[fit.degree] + " trend fitted on " + points.length + " " +
-          sport.toLowerCase() + (points.length === 1 ? "" : "s") + " against date" +
-          (fit.r2 === null ? "" : ", R² = " + num(fit.r2, 2))
+          "The " + sport.toLowerCase() + " line is a " + DEGREE_NAMES[fit.degree].toLowerCase() +
+          " fit through " + points.length + " " + sport.toLowerCase() +
+          (points.length === 1 ? "" : "s") +
+          (fit.r2 === null ? "" : " (R² = " + num(fit.r2, 2) + ")")
         );
       } else {
         notes.push(
-          "Too few " + sport.toLowerCase() + "s in this range to fit a trend line"
+          "Not enough " + sport.toLowerCase() + "s in this range to draw a trend line"
         );
       }
 
@@ -1204,9 +1205,9 @@
     setText("legend-performance", legendHtml.join(""));
 
     if (rightSport && !hasRight) {
-      notes.push("No " + rightSport + " activities recorded yet — the right axis is reserved");
+      notes.push("No " + rightSport.toLowerCase() + "s yet, so the right axis is empty for now");
     }
-    setText("fit-performance", notes.length ? esc(notes.join(" · ")) + "." : "");
+    setText("fit-performance", notes.length ? esc(notes.join(". ")) + "." : "");
 
     draw("chart-performance", {
       type: "scatter",
@@ -1383,7 +1384,7 @@
     C = core.palette();
 
     if (typeof Chart === "undefined") {
-      fail("The charting library did not load, so the charts are unavailable. The data tables below each chart are unaffected on a reload.");
+      fail("The charts didn't load. Try refreshing the page.");
       return;
     }
 
@@ -1404,11 +1405,11 @@
       .then(function (json) {
         summary = json;
         if (!summary.activities || !summary.activities.length) {
-          fail("No activities have been published yet. The daily sync writes this file; it will fill in on the next run.");
+          fail("Nothing here yet. The first activities will appear after the next daily sync.");
           return;
         }
         if (summary.schema_version !== SCHEMA) {
-          fail("This page reads schema version " + SCHEMA + ", but the data file is version " + summary.schema_version + ". The page needs updating.");
+          fail("The data has changed format (version " + summary.schema_version + ", expected " + SCHEMA + "), so this page needs an update before it can show it.");
           return;
         }
         sportOrder = assignSportColors(summary.activities);
@@ -1421,7 +1422,7 @@
         renderAll();
       })
       .catch(function (error) {
-        fail("Could not load the training data (" + error.message + ").");
+        fail("Couldn't load the training data (" + error.message + "). Try refreshing the page.");
       });
   }
 

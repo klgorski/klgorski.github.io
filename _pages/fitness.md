@@ -200,14 +200,13 @@ classes: wide
     <h3 class="viz-figure-title">Assumption checks</h3>
   </div>
   <div class="viz-matrix-stack" id="table-assumptions"></div>
-  <div class="viz-figure-foot" id="assumptions-note"></div>
 </figure>
 
 <p class="viz-footnote" style="margin-top:0">
-  Coefficients stay in the units the models were estimated in; only the charts and
-  the forecast tables follow the km/miles toggle.
+  The shaded ranges come from refitting each model many times on resampled data.
   <span id="forecast-failures"></span>
-  Intervals come from refitting on every bootstrap replicate.
+  The km/miles switch changes the charts and forecast tables, but the coefficients stay
+  in the units the models were fitted in.
 </p>
 
 </section>
@@ -370,10 +369,10 @@ classes: wide
 </figure>
 
 <p class="viz-footnote">
-  Synced from Strava once a day by
+  Updated from Strava once a day by
   <a href="https://github.com/klgorski/Strava-Analysis-Project">a small Python package</a>.
-  Aggregate numbers only — no coordinates, routes or profile details leave the private
-  repository. Behind the page:
+  Only totals and averages end up here; routes, locations and profile details stay private.
+  The raw numbers are in
   <a href="{{ '/assets/data/summary.json' | relative_url }}">summary.json</a> and
   <a href="{{ '/assets/data/forecast.json' | relative_url }}">forecast.json</a>.
 </p>

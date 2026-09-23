@@ -484,7 +484,7 @@
       // reader will actually plan around.
       setText(
         "forecast-next-meta",
-        "80% interval " + value(convert(next.lo80), 2) + " – " +
+        "probably between " + value(convert(next.lo80), 2) + " and " +
         value(convert(next.hi80), 2) + " " + esc(u)
       );
     }
@@ -495,7 +495,7 @@
       setText(
         "forecast-trend-meta",
         nativeUnit() + " per log-session · p = " + pvalue(trend.p_value) +
-        (trend.p_value !== null && trend.p_value < 0.05 ? "" : " — not distinguishable from no trend")
+        (trend.p_value !== null && trend.p_value < 0.05 ? "" : " — too noisy to call a trend yet")
       );
     }
 
@@ -511,7 +511,7 @@
     setText(
       "forecast-sample-meta",
       esc(payload.sport_types.join("/").toLowerCase()) +
-      (payload.n_observations === 1 ? "" : "s") + " in the fitting window"
+      (payload.n_observations === 1 ? "" : "s") + " so far"
     );
   }
 
@@ -767,7 +767,6 @@
       last.tests.push({
         test: row.test,
         basis: row.basis,
-        detail: row.detail,
         statistic: blank(row.statistic) ? null : num(row.statistic, 3),
         p: blank(row.p_value) ? null : pvalue(row.p_value),
         status: row.status,
@@ -857,9 +856,7 @@
             ? "<td class=\"is-group\" rowspan=\"" + group.tests.length + "\">" + esc(group.group) + "</td>"
             : "") +
           "<td class=\"is-text\">" + esc(t.test) + "</td>" +
-          "<td class=\"is-wrap\">" + esc(t.basis) +
-            (t.detail ? "<span class=\"viz-matrix-detail\">" + esc(t.detail) + "</span>" : "") +
-          "</td>" +
+          "<td class=\"is-wrap\">" + esc(t.basis) + "</td>" +
           "<td>" + (blank(t.statistic) ? "\u2013" : t.statistic) + "</td>" +
           "<td>" + (blank(t.p) ? "\u2013" : t.p) + "</td>" +
           "<td><span class=\"viz-pill" + pill.cls + "\">" + pill.label + "</span></td>" +
@@ -877,57 +874,6 @@
       "</tr></thead><tbody>" + body + "</tbody></table>";
   }
 
-  /* The line under the tables, built from the same per-model decision the
-     tables were: `rendered` says which models published checks and which fell
-     back. Deriving it independently let the note describe one model while two
-     tables were on screen -- and, in the mirror case, claim nothing had been
-     published while real verdicts were being rendered above it.
-
-     Both models are checked on their own standardised one-step-ahead errors,
-     and the state-space model throws the first few away while its filter is
-     still finding the series, so the two tables are read on different numbers
-     of residuals and this says so rather than letting a reader assume one
-     sample. */
-  function residualNote(rendered) {
-    var published = rendered.filter(function (entry) { return entry.published; });
-    if (!published.length) {
-      return "This forecast was published without assumption checks; the tables list the " +
-        "ones that would be run.";
-    }
-
-    var counted = published.filter(function (entry) {
-      return entry.model.assumption_checks.residuals;
-    });
-    var alpha = published[0].model.assumption_checks.alpha || 0.05;
-    var note = "The residual tests run on each model's own standardised one-step-ahead " +
-      "forecast errors";
-
-    if (counted.length) {
-      note += " \u2014 " + counted.map(function (entry) {
-        var residuals = entry.model.assumption_checks.residuals;
-        var dropped = residuals.dropped_at_the_start;
-        return esc(entry.model.label) + ", " + esc(residuals.n) +
-          (residuals.n === 1 ? " residual" : " residuals") +
-          (dropped ? " (" + esc(dropped) + " dropped while the filter starts)" : "");
-      }).join("; ") + " \u2014 and are";
-    } else {
-      note += ", and are";
-    }
-
-    note += " read at " + esc(alpha) + ". A pass is the assumption holding.";
-
-    // A model whose checks did not publish still gets a table, of rows saying
-    // they were not run. Without this the reader is left with two tables and a
-    // note that only accounts for one of them.
-    var absent = rendered.filter(function (entry) { return !entry.published; });
-    if (absent.length) {
-      note += " No checks were published for " + absent.map(function (entry) {
-        return esc(entry.model.label);
-      }).join(" or ") + "; those rows list what would be run.";
-    }
-    return note;
-  }
-
   function renderAssumptions() {
     var host = document.getElementById("table-assumptions");
     if (!host) return;
@@ -936,19 +882,13 @@
        differently: the state-space model has no MA polynomial to invert, and
        its residuals are a shorter series than the ARMA model's. One table
        under the ARMA model's name used to stand for both. */
-    var rendered = payload.models.map(function (model) {
-      var groups = publishedGroups(model);
-      return { model: model, groups: groups || plannedGroups(model), published: !!groups };
-    });
-
-    host.innerHTML = rendered.map(function (entry) {
+    host.innerHTML = payload.models.map(function (model) {
+      var groups = publishedGroups(model) || plannedGroups(model);
       return "<section class=\"viz-matrix-block\">" +
-        "<h4 class=\"viz-matrix-title\">" + esc(entry.model.label) + "</h4>" +
-        "<div class=\"viz-matrix\">" + assumptionTable(entry.groups) + "</div>" +
+        "<h4 class=\"viz-matrix-title\">" + esc(model.label) + "</h4>" +
+        "<div class=\"viz-matrix\">" + assumptionTable(groups) + "</div>" +
         "</section>";
     }).join("");
-
-    setText("assumptions-note", residualNote(rendered));
   }
 
   /* The specification under a chart title, as typeset algebra rather than the
@@ -1045,17 +985,18 @@
 
     setText(
       "forecast-meta",
-      "Fitted to " + payload.n_observations + " " + esc(payload.sport_types.join("/")) + " activities, " +
-      longDate(payload.first_activity) + " to " + longDate(payload.last_activity) + ". " +
-      settings.steps + " sessions forecast at " + effort + ", from " +
-      settings.bootstrap_replicates.toLocaleString() + " bootstrap replicates."
+      "Both models learn from " + payload.n_observations + " " +
+      esc(payload.sport_types.join("/").toLowerCase()) + "s between " +
+      longDate(payload.first_activity) + " and " + longDate(payload.last_activity) +
+      ", then look " + settings.steps + " sessions ahead, assuming each one is like the last few (" +
+      effort + ")."
     );
 
     var generated = payload.generated_at ? new Date(payload.generated_at) : null;
     setText(
       "forecast-generated",
       generated
-        ? "Models refitted " + generated.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
+        ? "Last refitted " + generated.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
         : ""
     );
 
@@ -1073,7 +1014,7 @@
     setText(
       "forecast-failures",
       failures
-        ? failures + " bootstrap replicate" + (failures === 1 ? "" : "s") + " failed to refit and were dropped."
+        ? failures + (failures === 1 ? " refit" : " refits") + " failed and were left out."
         : ""
     );
   }
