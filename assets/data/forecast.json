@@ -8,14 +8,14 @@
     ],
     "bootstrap_replicates": 500,
     "future_effort": {
-      "distance_km": 3.583,
-      "total_elevation_gain": 17.0
+      "distance_km": 3.614,
+      "total_elevation_gain": 32.0
     },
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-09-26T15:03:33+00:00",
-  "last_activity": "2026-09-24",
+  "generated_at": "2026-09-27T00:25:04+00:00",
+  "last_activity": "2026-09-26",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
   "models": [
@@ -25,10 +25,10 @@
         "checks": [
           {
             "basis": "Unit root",
-            "detail": "0 lag(s) by AIC, 28 observations used",
+            "detail": "0 lag(s) by AIC, 29 observations used",
             "group": "Stationarity",
-            "p_value": 7.74e-06,
-            "statistic": -5.227,
+            "p_value": 2.12e-06,
+            "statistic": -5.496,
             "status": "pass",
             "test": "Augmented Dickey\u2013Fuller"
           },
@@ -37,16 +37,16 @@
             "detail": "3 lag(s), Newey-West; p is greater than 0.1, at the edge of the lookup table",
             "group": "Stationarity",
             "p_value": 0.1,
-            "statistic": 0.102,
+            "statistic": 0.096,
             "status": "pass",
             "test": "KPSS"
           },
           {
             "basis": "Unit root, robust to serial correlation",
-            "detail": "Z-tau, 5 Newey-West lag(s)",
+            "detail": "Z-tau, 6 Newey-West lag(s)",
             "group": "Stationarity",
-            "p_value": 7.07e-06,
-            "statistic": -5.246,
+            "p_value": 1.18e-06,
+            "statistic": -5.614,
             "status": "pass",
             "test": "Phillips\u2013Perron"
           },
@@ -54,44 +54,44 @@
             "basis": "Unit root, GLS-detrended",
             "detail": "GLS-demeaned, 0 lag(s) by AIC",
             "group": "Stationarity",
-            "p_value": 5.46e-07,
-            "statistic": -5.188,
+            "p_value": 9.52e-08,
+            "statistic": -5.572,
             "status": "pass",
             "test": "Elliott\u2013Rothenberg\u2013Stock"
           },
           {
-            "basis": "No autocorrelation to lag 5",
-            "detail": "5 lag(s)",
+            "basis": "No autocorrelation to lag 6",
+            "detail": "6 lag(s)",
             "group": "No residual autocorrelation",
-            "p_value": 0.884,
-            "statistic": 1.741,
+            "p_value": 0.918,
+            "statistic": 2.021,
             "status": "pass",
             "test": "Ljung\u2013Box Q"
           },
           {
             "basis": "No ARCH effects",
-            "detail": "LM statistic, 5 lag(s)",
+            "detail": "LM statistic, 6 lag(s)",
             "group": "Homoskedasticity",
-            "p_value": 0.758,
-            "statistic": 2.625,
+            "p_value": 0.899,
+            "statistic": 2.216,
             "status": "pass",
             "test": "Engle ARCH LM"
           },
           {
             "basis": "Normal residuals",
-            "detail": "skew 1.70, kurtosis 7.50",
+            "detail": "skew 1.74, kurtosis 7.73",
             "group": "Normality of residuals",
-            "p_value": 4.47e-09,
-            "statistic": 38.45,
+            "p_value": 4.42e-10,
+            "statistic": 43.079,
             "status": "fail",
             "test": "Jarque\u2013Bera"
           },
           {
             "basis": "Normal residuals",
-            "detail": "W on 29 residuals",
+            "detail": "W on 30 residuals",
             "group": "Normality of residuals",
-            "p_value": 0.00128,
-            "statistic": 0.861,
+            "p_value": 0.000874,
+            "statistic": 0.857,
             "status": "fail",
             "test": "Shapiro\u2013Wilk"
           },
@@ -106,19 +106,19 @@
           },
           {
             "basis": "Coefficients constant",
-            "detail": "sup|CUSUM| over 29 demeaned residuals, 5 estimated parameters",
+            "detail": "sup|CUSUM| over 30 demeaned residuals, 5 estimated parameters",
             "group": "Parameter stability",
-            "p_value": 0.984,
-            "statistic": 0.461,
+            "p_value": 0.987,
+            "statistic": 0.45,
             "status": "pass",
             "test": "CUSUM"
           },
           {
             "basis": "Criterion: max D < 4/n",
-            "detail": "largest at session 5 of 29; 1 over the 4/n = 0.138 threshold (auxiliary OLS on the model's mean function)",
+            "detail": "largest at session 5 of 30; 1 over the 4/n = 0.133 threshold (auxiliary OLS on the model's mean function)",
             "group": "No influential outliers",
             "p_value": null,
-            "statistic": 0.504,
+            "statistic": 0.523,
             "status": "fail",
             "test": "Cook's distance"
           }
@@ -131,111 +131,112 @@
         },
         "residuals": {
           "dropped_at_the_start": 0,
-          "n": 29,
+          "n": 30,
           "source": "standardised one-step-ahead forecast errors"
         }
       },
       "bootstrap_failures": 0,
       "fit": {
-        "aic": 45.399,
-        "bic": 52.236,
-        "loglik": -17.7
+        "aic": 45.656,
+        "bic": 52.662,
+        "loglik": -17.828
       },
       "fitted": [
         null,
-        4.6877,
-        4.9456,
-        4.929,
-        5.5171,
-        5.8264,
-        5.3215,
-        5.1302,
-        5.1973,
-        5.6023,
-        5.5562,
-        5.7404,
-        5.8075,
-        5.591,
-        5.9611,
-        5.9696,
-        5.1089,
-        5.6554,
-        5.9287,
-        5.9175,
-        5.7255,
-        5.8877,
-        5.6948,
-        5.8865,
-        5.5947,
-        5.792,
-        5.9677,
-        6.15,
-        5.5663
+        4.6895,
+        4.9453,
+        4.9324,
+        5.5173,
+        5.8302,
+        5.3205,
+        5.1317,
+        5.2003,
+        5.6114,
+        5.5633,
+        5.7326,
+        5.8044,
+        5.5913,
+        5.9546,
+        5.9628,
+        5.1062,
+        5.6754,
+        5.9222,
+        5.9119,
+        5.7293,
+        5.8554,
+        5.6966,
+        5.8738,
+        5.5948,
+        5.7963,
+        5.9329,
+        6.1391,
+        5.5575,
+        6.0419
       ],
       "fitted_label": "Fitted (one step ahead)",
       "forecast": [
         {
-          "boot_median": 5.5529,
-          "hi80": 6.12,
-          "hi95": 6.4147,
-          "lo80": 5.0554,
-          "lo95": 4.8215,
-          "mean": 5.5888,
+          "boot_median": 6.1106,
+          "hi80": 6.6835,
+          "hi95": 7.7164,
+          "lo80": 5.6707,
+          "lo95": 5.5346,
+          "mean": 6.1644,
           "step": 1
         },
         {
-          "boot_median": 5.5584,
-          "hi80": 6.1153,
-          "hi95": 6.5876,
-          "lo80": 5.0746,
-          "lo95": 4.8863,
-          "mean": 5.6005,
+          "boot_median": 6.0997,
+          "hi80": 6.6848,
+          "hi95": 7.5599,
+          "lo80": 5.6787,
+          "lo95": 5.497,
+          "mean": 6.1758,
           "step": 2
         },
         {
-          "boot_median": 5.5536,
-          "hi80": 6.1712,
-          "hi95": 7.2785,
-          "lo80": 5.0804,
-          "lo95": 4.7901,
-          "mean": 5.6117,
+          "boot_median": 6.1039,
+          "hi80": 6.7061,
+          "hi95": 7.8382,
+          "lo80": 5.6834,
+          "lo95": 5.4764,
+          "mean": 6.1867,
           "step": 3
         },
         {
-          "boot_median": 5.6091,
-          "hi80": 6.2088,
-          "hi95": 7.0779,
-          "lo80": 5.0622,
-          "lo95": 4.8072,
-          "mean": 5.6226,
+          "boot_median": 6.1212,
+          "hi80": 6.6794,
+          "hi95": 7.1166,
+          "lo80": 5.699,
+          "lo95": 5.4669,
+          "mean": 6.1974,
           "step": 4
         },
         {
-          "boot_median": 5.5785,
-          "hi80": 6.1529,
-          "hi95": 6.6647,
-          "lo80": 5.0754,
-          "lo95": 4.8847,
-          "mean": 5.6332,
+          "boot_median": 6.1304,
+          "hi80": 6.688,
+          "hi95": 7.7577,
+          "lo80": 5.6939,
+          "lo95": 5.4551,
+          "mean": 6.2077,
           "step": 5
         },
         {
-          "boot_median": 5.5872,
-          "hi80": 6.2253,
-          "hi95": 7.0794,
-          "lo80": 5.07,
-          "lo95": 4.8149,
-          "mean": 5.6435,
+          "boot_median": 6.1574,
+          "hi80": 6.7312,
+          "hi95": 7.2014,
+          "lo80": 5.75,
+          "lo95": 5.5128,
+          "mean": 6.2178,
           "step": 6
         }
       ],
       "key": "log_arma",
       "label": "Log trend, ARMA(0,0) errors",
-      "level": 4.9347,
+      "level": 4.9757,
       "ljung_box": {
-        "lags": 5,
-        "p_value": 0.884,
-        "statistic": 1.741
+        "lags": 6,
+        "p_value": 0.918,
+        "statistic": 2.021
       },
       "order": {
         "p": 0,
@@ -243,8 +244,8 @@
       },
       "order_grid": [
         {
-          "aic": 45.399,
-          "bic": 52.236,
+          "aic": 45.656,
+          "bic": 52.662,
           "converged": true,
           "delta": 0.0,
           "p": 0,
@@ -252,186 +253,186 @@
           "selected": true
         },
         {
-          "aic": 47.285,
-          "bic": 55.489,
-          "converged": false,
-          "delta": 1.886,
+          "aic": 46.591,
+          "bic": 56.4,
+          "converged": true,
+          "delta": 0.935,
+          "p": 1,
+          "q": 1,
+          "selected": false
+        },
+        {
+          "aic": 47.507,
+          "bic": 55.914,
+          "converged": true,
+          "delta": 1.851,
           "p": 0,
           "q": 1,
           "selected": false
         },
         {
-          "aic": 47.317,
-          "bic": 55.521,
-          "converged": false,
-          "delta": 1.918,
+          "aic": 47.549,
+          "bic": 55.956,
+          "converged": true,
+          "delta": 1.893,
           "p": 1,
           "q": 0,
           "selected": false
         },
         {
-          "aic": 48.094,
-          "bic": 59.033,
+          "aic": 48.131,
+          "bic": 59.34,
           "converged": true,
-          "delta": 2.695,
+          "delta": 2.474,
           "p": 1,
           "q": 2,
           "selected": false
         },
         {
-          "aic": 48.22,
-          "bic": 57.791,
+          "aic": 48.153,
+          "bic": 59.363,
           "converged": true,
-          "delta": 2.82,
-          "p": 1,
+          "delta": 2.497,
+          "p": 2,
           "q": 1,
           "selected": false
         },
         {
-          "aic": 48.269,
-          "bic": 59.207,
+          "aic": 48.934,
+          "bic": 58.743,
           "converged": true,
-          "delta": 2.87,
-          "p": 0,
-          "q": 3,
-          "selected": false
-        },
-        {
-          "aic": 48.749,
-          "bic": 58.32,
-          "converged": true,
-          "delta": 3.349,
+          "delta": 3.278,
           "p": 0,
           "q": 2,
           "selected": false
         },
         {
-          "aic": 48.837,
-          "bic": 58.408,
+          "aic": 49.038,
+          "bic": 58.846,
           "converged": true,
-          "delta": 3.438,
+          "delta": 3.382,
           "p": 2,
           "q": 0,
           "selected": false
         },
         {
-          "aic": 49.037,
-          "bic": 59.976,
+          "aic": 49.816,
+          "bic": 65.229,
           "converged": true,
-          "delta": 3.638,
-          "p": 2,
-          "q": 1,
+          "delta": 4.16,
+          "p": 3,
+          "q": 3,
           "selected": false
         },
         {
-          "aic": 50.287,
-          "bic": 62.592,
+          "aic": 49.853,
+          "bic": 62.463,
           "converged": true,
-          "delta": 4.887,
+          "delta": 4.197,
           "p": 3,
           "q": 1,
           "selected": false
         },
         {
-          "aic": 50.709,
-          "bic": 61.648,
+          "aic": 50.897,
+          "bic": 62.107,
           "converged": true,
-          "delta": 5.31,
+          "delta": 5.241,
           "p": 3,
           "q": 0,
           "selected": false
         },
         {
-          "aic": 51.042,
-          "bic": 64.715,
+          "aic": 51.355,
+          "bic": 63.966,
           "converged": true,
-          "delta": 5.643,
-          "p": 3,
-          "q": 2,
-          "selected": false
-        },
-        {
-          "aic": 51.053,
-          "bic": 63.358,
-          "converged": true,
-          "delta": 5.653,
+          "delta": 5.699,
           "p": 2,
           "q": 2,
           "selected": false
         },
         {
-          "aic": 52.822,
-          "bic": 67.863,
+          "aic": 51.452,
+          "bic": 65.464,
           "converged": true,
-          "delta": 7.423,
+          "delta": 5.796,
           "p": 3,
-          "q": 3,
+          "q": 2,
           "selected": false
         },
         {
-          "aic": 52.973,
-          "bic": 66.646,
+          "aic": 51.573,
+          "bic": 64.183,
           "converged": true,
-          "delta": 7.574,
-          "p": 2,
-          "q": 3,
-          "selected": false
-        },
-        {
-          "aic": 63.363,
-          "bic": 75.668,
-          "converged": true,
-          "delta": 17.963,
+          "delta": 5.916,
           "p": 1,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "aic": 51.647,
+          "bic": 65.659,
+          "converged": true,
+          "delta": 5.991,
+          "p": 2,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "aic": 54.756,
+          "bic": 65.965,
+          "converged": true,
+          "delta": 9.1,
+          "p": 0,
           "q": 3,
           "selected": false
         }
       ],
       "parameters": [
         {
-          "ci_lower": 3.615,
-          "ci_upper": 6.2544,
-          "estimate": 4.9347,
+          "ci_lower": 3.7123,
+          "ci_upper": 6.2391,
+          "estimate": 4.9757,
           "name": "intercept",
-          "p_value": 2.32e-13,
-          "std_err": 0.6733,
-          "z": 7.3288
+          "p_value": 1.17e-14,
+          "std_err": 0.6446,
+          "z": 7.7189
         },
         {
-          "ci_lower": 0.0595,
-          "ci_upper": 0.6502,
-          "estimate": 0.3548,
+          "ci_lower": 0.0722,
+          "ci_upper": 0.641,
+          "estimate": 0.3566,
           "name": "log_t",
-          "p_value": 0.0185,
-          "std_err": 0.1507,
-          "z": 2.3545
+          "p_value": 0.014,
+          "std_err": 0.1451,
+          "z": 2.4573
         },
         {
-          "ci_lower": -0.9583,
-          "ci_upper": 0.2792,
-          "estimate": -0.3395,
+          "ci_lower": -0.9474,
+          "ci_upper": 0.2392,
+          "estimate": -0.3541,
           "name": "distance_km",
-          "p_value": 0.282,
-          "std_err": 0.3157,
-          "z": -1.0754
+          "p_value": 0.242,
+          "std_err": 0.3027,
+          "z": -1.1697
         },
         {
-          "ci_lower": 0.0042,
-          "ci_upper": 0.0739,
-          "estimate": 0.039,
+          "ci_lower": 0.0053,
+          "ci_upper": 0.0724,
+          "estimate": 0.0389,
           "name": "total_elevation_gain",
-          "p_value": 0.0281,
-          "std_err": 0.0178,
-          "z": 2.1952
+          "p_value": 0.0232,
+          "std_err": 0.0171,
+          "z": 2.2702
         },
         {
-          "ci_lower": 0.091,
-          "ci_upper": 0.3059,
-          "estimate": 0.1984,
+          "ci_lower": 0.0925,
+          "ci_upper": 0.2919,
+          "estimate": 0.1922,
           "name": "sigma2",
-          "p_value": 0.000295,
-          "std_err": 0.0548,
-          "z": 3.6196
+          "p_value": 0.000158,
+          "std_err": 0.0509,
+          "z": 3.7784
         }
       ],
       "selected_by": "AIC",
@@ -443,10 +444,10 @@
         "checks": [
           {
             "basis": "Unit root",
-            "detail": "0 lag(s) by AIC, 26 observations used",
+            "detail": "0 lag(s) by AIC, 27 observations used",
             "group": "Stationarity",
-            "p_value": 4.4e-05,
-            "statistic": -4.848,
+            "p_value": 1.26e-05,
+            "statistic": -5.124,
             "status": "pass",
             "test": "Augmented Dickey\u2013Fuller"
           },
@@ -455,7 +456,7 @@
             "detail": "0 lag(s), Newey-West; p is greater than 0.1, at the edge of the lookup table",
             "group": "Stationarity",
             "p_value": 0.1,
-            "statistic": 0.174,
+            "statistic": 0.158,
             "status": "pass",
             "test": "KPSS"
           },
@@ -463,8 +464,8 @@
             "basis": "Unit root, robust to serial correlation",
             "detail": "Z-tau, 5 Newey-West lag(s)",
             "group": "Stationarity",
-            "p_value": 4.35e-05,
-            "statistic": -4.85,
+            "p_value": 1.26e-05,
+            "statistic": -5.124,
             "status": "pass",
             "test": "Phillips\u2013Perron"
           },
@@ -472,8 +473,8 @@
             "basis": "Unit root, GLS-detrended",
             "detail": "GLS-demeaned, 0 lag(s) by AIC",
             "group": "Stationarity",
-            "p_value": 1.54e-06,
-            "statistic": -4.954,
+            "p_value": 6.25e-07,
+            "statistic": -5.158,
             "status": "pass",
             "test": "Elliott\u2013Rothenberg\u2013Stock"
           },
@@ -481,8 +482,8 @@
             "basis": "No autocorrelation to lag 5",
             "detail": "5 lag(s)",
             "group": "No residual autocorrelation",
-            "p_value": 0.947,
-            "statistic": 1.175,
+            "p_value": 0.936,
+            "statistic": 1.29,
             "status": "pass",
             "test": "Ljung\u2013Box Q"
           },
@@ -490,26 +491,26 @@
             "basis": "No ARCH effects",
             "detail": "LM statistic, 5 lag(s)",
             "group": "Homoskedasticity",
-            "p_value": 0.282,
-            "statistic": 6.259,
+            "p_value": 0.267,
+            "statistic": 6.424,
             "status": "pass",
             "test": "Engle ARCH LM"
           },
           {
             "basis": "Normal residuals",
-            "detail": "skew 1.59, kurtosis 6.34",
+            "detail": "skew 1.62, kurtosis 6.57",
             "group": "Normality of residuals",
-            "p_value": 6.31e-06,
-            "statistic": 23.947,
+            "p_value": 1.32e-06,
+            "statistic": 27.076,
             "status": "fail",
             "test": "Jarque\u2013Bera"
           },
           {
             "basis": "Normal residuals",
-            "detail": "W on 27 residuals",
+            "detail": "W on 28 residuals",
             "group": "Normality of residuals",
-            "p_value": 0.00254,
-            "statistic": 0.867,
+            "p_value": 0.00233,
+            "statistic": 0.869,
             "status": "fail",
             "test": "Shapiro\u2013Wilk"
           },
@@ -524,19 +525,19 @@
           },
           {
             "basis": "Coefficients constant",
-            "detail": "sup|CUSUM| over 27 demeaned residuals, 5 estimated parameters",
+            "detail": "sup|CUSUM| over 28 demeaned residuals, 5 estimated parameters",
             "group": "Parameter stability",
-            "p_value": 0.788,
-            "statistic": 0.652,
+            "p_value": 0.826,
+            "statistic": 0.628,
             "status": "pass",
             "test": "CUSUM"
           },
           {
             "basis": "Criterion: max D < 4/n",
-            "detail": "largest at session 5 of 29; 3 over the 4/n = 0.138 threshold (auxiliary OLS on the model's mean function)",
+            "detail": "largest at session 5 of 30; 2 over the 4/n = 0.133 threshold (auxiliary OLS on the model's mean function)",
             "group": "No influential outliers",
             "p_value": null,
-            "statistic": 0.244,
+            "statistic": 0.25,
             "status": "fail",
             "test": "Cook's distance"
           }
@@ -549,105 +550,106 @@
         },
         "residuals": {
           "dropped_at_the_start": 2,
-          "n": 27,
+          "n": 28,
           "source": "standardised one-step-ahead forecast errors"
         }
       },
       "bootstrap_failures": 0,
       "final_state": {
-        "level": 6.5462,
-        "slope": 0.03687
+        "level": 6.6593,
+        "slope": 0.03697
       },
       "fit": {
-        "aic": 56.184,
-        "bic": 62.663,
-        "loglik": -23.092
+        "aic": 56.745,
+        "bic": 63.406,
+        "loglik": -23.373
       },
       "fitted": [
-        4.9202,
-        4.8282,
-        4.9848,
-        4.8981,
-        5.5047,
-        5.835,
-        5.2103,
-        4.9824,
-        5.0532,
-        5.5345,
-        5.4713,
-        5.6256,
-        5.7248,
-        5.4958,
-        5.9021,
-        5.9208,
-        4.9613,
-        5.6897,
-        5.9148,
-        5.9209,
-        5.7538,
-        5.8169,
-        5.747,
-        5.9297,
-        5.6646,
-        5.9281,
-        5.9987,
-        6.3228,
-        5.6839
+        4.9211,
+        4.8346,
+        4.9868,
+        4.9053,
+        5.5066,
+        5.8427,
+        5.2092,
+        4.9849,
+        5.0579,
+        5.5493,
+        5.4826,
+        5.6125,
+        5.7194,
+        5.4956,
+        5.891,
+        5.9089,
+        4.9552,
+        5.7216,
+        5.9032,
+        5.9107,
+        5.7588,
+        5.7625,
+        5.7485,
+        5.9075,
+        5.6631,
+        5.9337,
+        5.94,
+        6.3038,
+        5.6678,
+        6.0992
       ],
       "fitted_label": "Smoothed trend + effort",
       "forecast": [
         {
-          "boot_median": 5.8185,
-          "hi80": 6.4273,
-          "hi95": 6.6849,
-          "lo80": 5.2208,
-          "lo95": 4.9072,
-          "mean": 5.7346,
+          "boot_median": 6.3822,
+          "hi80": 7.0745,
+          "hi95": 7.3227,
+          "lo80": 5.8165,
+          "lo95": 5.4987,
+          "mean": 6.4002,
           "step": 1
         },
         {
-          "boot_median": 5.8451,
-          "hi80": 6.4824,
-          "hi95": 6.8074,
-          "lo80": 5.1717,
-          "lo95": 4.8127,
-          "mean": 5.7715,
+          "boot_median": 6.4634,
+          "hi80": 7.1303,
+          "hi95": 7.4132,
+          "lo80": 5.796,
+          "lo95": 5.47,
+          "mean": 6.4371,
           "step": 2
         },
         {
-          "boot_median": 5.8081,
-          "hi80": 6.6142,
-          "hi95": 7.1061,
-          "lo80": 5.1681,
-          "lo95": 4.8204,
-          "mean": 5.8084,
+          "boot_median": 6.501,
+          "hi80": 7.1452,
+          "hi95": 7.4576,
+          "lo80": 5.8892,
+          "lo95": 5.5827,
+          "mean": 6.4741,
           "step": 3
         },
         {
-          "boot_median": 5.8726,
-          "hi80": 6.5972,
-          "hi95": 7.2218,
-          "lo80": 5.1981,
-          "lo95": 4.8813,
-          "mean": 5.8452,
+          "boot_median": 6.5517,
+          "hi80": 7.2645,
+          "hi95": 7.747,
+          "lo80": 5.8921,
+          "lo95": 5.454,
+          "mean": 6.511,
           "step": 4
         },
         {
-          "boot_median": 5.9971,
-          "hi80": 6.7129,
-          "hi95": 7.201,
-          "lo80": 5.3051,
-          "lo95": 4.9924,
-          "mean": 5.8821,
+          "boot_median": 6.5528,
+          "hi80": 7.2981,
+          "hi95": 7.678,
+          "lo80": 5.9133,
+          "lo95": 5.4918,
+          "mean": 6.548,
           "step": 5
         },
         {
-          "boot_median": 6.0257,
-          "hi80": 6.8342,
-          "hi95": 7.3906,
-          "lo80": 5.3164,
-          "lo95": 4.7762,
-          "mean": 5.919,
+          "boot_median": 6.6421,
+          "hi80": 7.3494,
+          "hi95": 7.9518,
+          "lo80": 5.9622,
+          "lo95": 5.5482,
+          "mean": 6.585,
           "step": 6
         }
       ],
@@ -655,26 +657,26 @@
       "label": "Local linear trend",
       "ljung_box": {
         "lags": 5,
-        "p_value": 0.947,
-        "statistic": 1.175
+        "p_value": 0.936,
+        "statistic": 1.29
       },
       "parameters": [
         {
-          "ci_lower": 0.098,
-          "ci_upper": 0.3333,
-          "estimate": 0.2156,
+          "ci_lower": 0.1005,
+          "ci_upper": 0.3175,
+          "estimate": 0.209,
           "name": "sigma2.irregular",
-          "p_value": 0.000327,
-          "std_err": 0.06,
-          "z": 3.5926
+          "p_value": 0.000159,
+          "std_err": 0.0553,
+          "z": 3.7759
         },
         {
-          "ci_lower": -0.076,
-          "ci_upper": 0.076,
+          "ci_lower": -0.0656,
+          "ci_upper": 0.0656,
           "estimate": 0.0,
           "name": "sigma2.level",
           "p_value": 1.0,
-          "std_err": 0.0388,
+          "std_err": 0.0335,
           "z": 0.0
         },
         {
@@ -687,29 +689,29 @@
           "z": 0.0
         },
         {
-          "ci_lower": -1.0855,
-          "ci_upper": 0.1932,
-          "estimate": -0.4462,
+          "ci_lower": -1.0464,
+          "ci_upper": 0.1052,
+          "estimate": -0.4706,
           "name": "beta.distance_km",
-          "p_value": 0.171,
-          "std_err": 0.3262,
-          "z": -1.3678
+          "p_value": 0.109,
+          "std_err": 0.2938,
+          "z": -1.602
         },
         {
-          "ci_lower": 0.0142,
-          "ci_upper": 0.074,
-          "estimate": 0.0441,
+          "ci_lower": 0.0148,
+          "ci_upper": 0.0729,
+          "estimate": 0.0439,
           "name": "beta.total_elevation_gain",
-          "p_value": 0.00383,
-          "std_err": 0.0153,
-          "z": 2.8915
+          "p_value": 0.00306,
+          "std_err": 0.0148,
+          "z": 2.9616
         }
       ],
       "selected_by": null,
       "specification": "y_t = level_t + gamma'x_t + eps_t;  level_{t+1} = level_t + slope_t + eta_t;  slope_{t+1} = slope_t + zeta_t"
     }
   ],
-  "n_observations": 29,
+  "n_observations": 30,
   "observed": [
     {
       "date": "2025-09-23",
@@ -913,6 +915,13 @@
       "elevation_m": 17.0,
       "step": 29,
       "value": 6.12
+    },
+    {
+      "date": "2026-09-26",
+      "distance_km": 5.574,
+      "elevation_m": 47.0,
+      "step": 30,
+      "value": 5.96
     }
   ],
   "regressors": [
@@ -924,6 +933,5 @@
     "Run"
   ],
   "time_index": "activity",
-  "unit_kind": "pace_min_per_km",
-  "warning": "Fitted to 29 activities. Below about 30 the AIC ordering, the ARMA coefficients and the state-space variances are all weakly identified. Read the intervals, not the point estimates."
+  "unit_kind": "pace_min_per_km"
 }
