@@ -434,6 +434,27 @@
       "speed_kmh": 10.069,
       "sport": "Run",
       "time": "09:54"
+    },
+    {
+      "avg_heartrate": 132.7,
+      "date": "2026-09-27",
+      "distance_km": 0.0,
+      "elevation_m": 0.0,
+      "moving_time_min": 35.58,
+      "speed_kmh": 0.0,
+      "sport": "Ride",
+      "time": "10:54"
+    },
+    {
+      "avg_heartrate": 131.6,
+      "date": "2026-09-28",
+      "distance_km": 0.914,
+      "elevation_m": 0.0,
+      "moving_time_min": 23.13,
+      "pace_min_per_km": 25.299,
+      "speed_kmh": 2.372,
+      "sport": "Swim",
+      "time": "09:05"
     }
   ],
   "by_sport": {
@@ -447,11 +468,11 @@
     },
     "Ride": {
       "avg_pace_min_per_km": null,
-      "count": 2,
+      "count": 3,
       "distance_km": 0.0,
       "elevation_m": 0.0,
-      "moving_time_hours": 2.09,
-      "moving_time_min": 125.6
+      "moving_time_hours": 2.69,
+      "moving_time_min": 161.2
     },
     "Run": {
       "avg_pace_min_per_km": 5.616,
@@ -462,12 +483,12 @@
       "moving_time_min": 530.2
     },
     "Swim": {
-      "avg_pace_min_per_km": 26.333,
-      "count": 7,
-      "distance_km": 7.37,
+      "avg_pace_min_per_km": 26.22,
+      "count": 8,
+      "distance_km": 8.28,
       "elevation_m": 0.0,
-      "moving_time_hours": 3.23,
-      "moving_time_min": 194.0
+      "moving_time_hours": 3.62,
+      "moving_time_min": 217.2
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -479,15 +500,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-09-27T00:24:01+00:00",
-  "last_day": "2026-09-26",
+  "generated_at": "2026-09-28T17:30:40+00:00",
+  "last_day": "2026-09-28",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 8.616,
-    "count": 42,
-    "distance_km": 110.68,
+    "avg_pace_min_per_km": 9.071,
+    "count": 44,
+    "distance_km": 111.6,
     "elevation_m": 790.4,
-    "moving_time_hours": 15.89,
-    "moving_time_min": 953.6
+    "moving_time_hours": 16.87,
+    "moving_time_min": 1012.4
   }
 }
