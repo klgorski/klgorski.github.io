@@ -14,7 +14,7 @@
     "seed": 0,
     "steps": 6
   },
-  "generated_at": "2026-09-29T16:57:07+00:00",
+  "generated_at": "2026-09-30T16:54:00+00:00",
   "last_activity": "2026-09-29",
   "metric": "pace_min_per_km",
   "metric_label": "Pace (min/km)",
@@ -187,7 +187,7 @@
         },
         {
           "boot_median": 6.1658,
-          "hi80": 6.7393,
+          "hi80": 6.7392,
           "hi95": 7.7242,
           "lo80": 5.757,
           "lo95": 5.581,
@@ -223,7 +223,7 @@
         },
         {
           "boot_median": 6.181,
-          "hi80": 6.7521,
+          "hi80": 6.752,
           "hi95": 7.5538,
           "lo80": 5.7254,
           "lo95": 5.4886,
@@ -254,10 +254,10 @@
           "selected": true
         },
         {
-          "aic": 47.524,
-          "bic": 57.562,
+          "aic": 47.519,
+          "bic": 57.557,
           "converged": true,
-          "delta": 1.641,
+          "delta": 1.636,
           "p": 1,
           "q": 1,
           "selected": false
@@ -281,10 +281,10 @@
           "selected": false
         },
         {
-          "aic": 48.917,
-          "bic": 60.389,
+          "aic": 48.951,
+          "bic": 60.423,
           "converged": true,
-          "delta": 3.034,
+          "delta": 3.067,
           "p": 1,
           "q": 2,
           "selected": false
@@ -308,48 +308,57 @@
           "selected": false
         },
         {
-          "aic": 49.499,
-          "bic": 60.971,
+          "aic": 49.498,
+          "bic": 60.969,
           "converged": true,
-          "delta": 3.615,
+          "delta": 3.614,
           "p": 2,
           "q": 1,
           "selected": false
         },
         {
-          "aic": 49.954,
-          "bic": 61.426,
+          "aic": 49.866,
+          "bic": 62.772,
           "converged": true,
-          "delta": 4.071,
-          "p": 0,
-          "q": 3,
-          "selected": false
-        },
-        {
-          "aic": 50.737,
-          "bic": 63.643,
-          "converged": true,
-          "delta": 4.854,
+          "delta": 3.983,
           "p": 2,
           "q": 2,
           "selected": false
         },
         {
-          "aic": 50.886,
-          "bic": 63.792,
+          "aic": 50.177,
+          "bic": 61.649,
           "converged": true,
-          "delta": 5.003,
+          "delta": 4.294,
+          "p": 0,
+          "q": 3,
+          "selected": false
+        },
+        {
+          "aic": 51.027,
+          "bic": 63.933,
+          "converged": true,
+          "delta": 5.144,
           "p": 1,
           "q": 3,
           "selected": false
         },
         {
-          "aic": 51.118,
-          "bic": 64.024,
-          "converged": true,
-          "delta": 5.235,
+          "aic": 51.132,
+          "bic": 64.038,
+          "converged": false,
+          "delta": 5.248,
           "p": 3,
           "q": 1,
+          "selected": false
+        },
+        {
+          "aic": 51.25,
+          "bic": 65.59,
+          "converged": true,
+          "delta": 5.367,
+          "p": 3,
+          "q": 2,
           "selected": false
         },
         {
@@ -362,28 +371,19 @@
           "selected": false
         },
         {
-          "aic": 51.532,
-          "bic": 65.872,
+          "aic": 51.297,
+          "bic": 65.637,
           "converged": true,
-          "delta": 5.649,
+          "delta": 5.414,
           "p": 2,
           "q": 3,
           "selected": false
         },
         {
-          "aic": 51.752,
-          "bic": 66.092,
+          "aic": 53.166,
+          "bic": 68.94,
           "converged": true,
-          "delta": 5.869,
-          "p": 3,
-          "q": 2,
-          "selected": false
-        },
-        {
-          "aic": 52.935,
-          "bic": 68.709,
-          "converged": true,
-          "delta": 7.051,
+          "delta": 7.283,
           "p": 3,
           "q": 3,
           "selected": false
@@ -603,7 +603,7 @@
         {
           "boot_median": 6.4463,
           "hi80": 7.0297,
-          "hi95": 7.3946,
+          "hi95": 7.3947,
           "lo80": 5.8786,
           "lo95": 5.6022,
           "mean": 6.4574,
@@ -623,7 +623,7 @@
           "hi80": 7.1589,
           "hi95": 7.496,
           "lo80": 5.9119,
-          "lo95": 5.5574,
+          "lo95": 5.5573,
           "mean": 6.5294,
           "step": 3
         },
@@ -641,16 +641,16 @@
           "hi80": 7.2998,
           "hi95": 7.737,
           "lo80": 5.9515,
-          "lo95": 5.6261,
+          "lo95": 5.5925,
           "mean": 6.6014,
           "step": 5
         },
         {
-          "boot_median": 6.5983,
+          "boot_median": 6.5985,
           "hi80": 7.2687,
           "hi95": 7.9644,
-          "lo80": 5.9961,
-          "lo95": 5.6693,
+          "lo80": 5.995,
+          "lo95": 5.6643,
           "mean": 6.6374,
           "step": 6
         }
