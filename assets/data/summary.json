@@ -701,6 +701,27 @@
       "speed_kmh": 9.41,
       "sport": "Run",
       "time": "08:55"
+    },
+    {
+      "avg_heartrate": 110.1,
+      "date": "2026-10-18",
+      "distance_km": 0.0,
+      "elevation_m": 0.0,
+      "moving_time_min": 20.85,
+      "speed_kmh": 0.0,
+      "sport": "Ride",
+      "time": "10:52"
+    },
+    {
+      "avg_heartrate": 127.7,
+      "date": "2026-10-19",
+      "distance_km": 1.257,
+      "elevation_m": 0.0,
+      "moving_time_min": 29.23,
+      "pace_min_per_km": 23.251,
+      "speed_kmh": 2.581,
+      "sport": "Swim",
+      "time": "08:38"
     }
   ],
   "by_sport": {
@@ -714,11 +735,11 @@
     },
     "Ride": {
       "avg_pace_min_per_km": null,
-      "count": 10,
+      "count": 11,
       "distance_km": 0.0,
       "elevation_m": 0.0,
-      "moving_time_hours": 10.51,
-      "moving_time_min": 630.7
+      "moving_time_hours": 10.86,
+      "moving_time_min": 651.5
     },
     "Run": {
       "avg_pace_min_per_km": 5.751,
@@ -729,12 +750,12 @@
       "moving_time_min": 758.7
     },
     "Swim": {
-      "avg_pace_min_per_km": 26.388,
-      "count": 15,
-      "distance_km": 16.01,
+      "avg_pace_min_per_km": 26.159,
+      "count": 16,
+      "distance_km": 17.26,
       "elevation_m": 0.0,
-      "moving_time_hours": 7.04,
-      "moving_time_min": 422.4
+      "moving_time_hours": 7.53,
+      "moving_time_min": 451.6
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -746,15 +767,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-10-18T14:42:08+00:00",
-  "last_day": "2026-10-17",
+  "generated_at": "2026-10-19T17:36:32+00:00",
+  "last_day": "2026-10-19",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 12.214,
-    "count": 67,
-    "distance_km": 156.83,
+    "avg_pace_min_per_km": 12.434,
+    "count": 69,
+    "distance_km": 158.08,
     "elevation_m": 1092.4,
-    "moving_time_hours": 31.92,
-    "moving_time_min": 1915.5
+    "moving_time_hours": 32.76,
+    "moving_time_min": 1965.6
   }
 }
