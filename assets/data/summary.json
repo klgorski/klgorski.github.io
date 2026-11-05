@@ -882,6 +882,28 @@
       "speed_kmh": 0.0,
       "sport": "Workout",
       "time": "10:52"
+    },
+    {
+      "avg_heartrate": 124.3,
+      "date": "2026-11-04",
+      "distance_km": 1.372,
+      "elevation_m": 0.0,
+      "moving_time_min": 31.33,
+      "pace_min_per_km": 22.844,
+      "speed_kmh": 2.628,
+      "sport": "Swim",
+      "time": "15:07"
+    },
+    {
+      "avg_heartrate": 139.4,
+      "date": "2026-11-05",
+      "distance_km": 3.551,
+      "elevation_m": 26.0,
+      "moving_time_min": 21.93,
+      "pace_min_per_km": 6.176,
+      "speed_kmh": 9.716,
+      "sport": "Run",
+      "time": "07:30"
     }
   ],
   "by_sport": {
@@ -902,20 +924,20 @@
       "moving_time_min": 1098.8
     },
     "Run": {
-      "avg_pace_min_per_km": 5.808,
-      "count": 44,
-      "distance_km": 158.72,
-      "elevation_m": 1156.0,
-      "moving_time_hours": 15.36,
-      "moving_time_min": 921.8
+      "avg_pace_min_per_km": 5.816,
+      "count": 45,
+      "distance_km": 162.27,
+      "elevation_m": 1182.0,
+      "moving_time_hours": 15.73,
+      "moving_time_min": 943.7
     },
     "Swim": {
-      "avg_pace_min_per_km": 25.62,
-      "count": 21,
-      "distance_km": 23.34,
+      "avg_pace_min_per_km": 25.466,
+      "count": 22,
+      "distance_km": 24.71,
       "elevation_m": 0.0,
-      "moving_time_hours": 9.96,
-      "moving_time_min": 597.9
+      "moving_time_hours": 10.49,
+      "moving_time_min": 629.2
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -935,15 +957,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-11-04T18:44:20+00:00",
-  "last_day": "2026-11-03",
+  "generated_at": "2026-11-05T18:51:58+00:00",
+  "last_day": "2026-11-05",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 14.432,
-    "count": 84,
-    "distance_km": 190.96,
-    "elevation_m": 1310.4,
-    "moving_time_hours": 45.93,
-    "moving_time_min": 2755.9
+    "avg_pace_min_per_km": 14.341,
+    "count": 86,
+    "distance_km": 195.88,
+    "elevation_m": 1336.4,
+    "moving_time_hours": 46.82,
+    "moving_time_min": 2809.2
   }
 }
