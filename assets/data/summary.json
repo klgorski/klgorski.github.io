@@ -904,6 +904,27 @@
       "speed_kmh": 9.716,
       "sport": "Run",
       "time": "07:30"
+    },
+    {
+      "avg_heartrate": 135.9,
+      "date": "2026-11-06",
+      "distance_km": 0.0,
+      "elevation_m": 0.0,
+      "moving_time_min": 54.53,
+      "speed_kmh": 0.0,
+      "sport": "Ride",
+      "time": "10:55"
+    },
+    {
+      "avg_heartrate": 130.5,
+      "date": "2026-11-06",
+      "distance_km": 1.349,
+      "elevation_m": 0.0,
+      "moving_time_min": 29.05,
+      "pace_min_per_km": 21.539,
+      "speed_kmh": 2.786,
+      "sport": "Swim",
+      "time": "15:12"
     }
   ],
   "by_sport": {
@@ -917,11 +938,11 @@
     },
     "Ride": {
       "avg_pace_min_per_km": null,
-      "count": 15,
+      "count": 16,
       "distance_km": 0.0,
       "elevation_m": 0.0,
-      "moving_time_hours": 18.31,
-      "moving_time_min": 1098.8
+      "moving_time_hours": 19.22,
+      "moving_time_min": 1153.3
     },
     "Run": {
       "avg_pace_min_per_km": 5.816,
@@ -932,12 +953,12 @@
       "moving_time_min": 943.7
     },
     "Swim": {
-      "avg_pace_min_per_km": 25.466,
-      "count": 22,
-      "distance_km": 24.71,
+      "avg_pace_min_per_km": 25.262,
+      "count": 23,
+      "distance_km": 26.06,
       "elevation_m": 0.0,
-      "moving_time_hours": 10.49,
-      "moving_time_min": 629.2
+      "moving_time_hours": 10.97,
+      "moving_time_min": 658.3
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -957,15 +978,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-11-06T18:08:42+00:00",
-  "last_day": "2026-11-05",
+  "generated_at": "2026-11-07T16:55:56+00:00",
+  "last_day": "2026-11-06",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 14.341,
-    "count": 86,
-    "distance_km": 195.88,
+    "avg_pace_min_per_km": 14.667,
+    "count": 88,
+    "distance_km": 197.23,
     "elevation_m": 1336.4,
-    "moving_time_hours": 46.82,
-    "moving_time_min": 2809.2
+    "moving_time_hours": 48.21,
+    "moving_time_min": 2892.8
   }
 }
