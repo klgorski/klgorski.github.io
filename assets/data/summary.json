@@ -1000,6 +1000,28 @@
       "speed_kmh": 9.997,
       "sport": "Run",
       "time": "09:31"
+    },
+    {
+      "avg_heartrate": 127.2,
+      "date": "2026-11-16",
+      "distance_km": 1.395,
+      "elevation_m": 0.0,
+      "moving_time_min": 32.15,
+      "pace_min_per_km": 23.055,
+      "speed_kmh": 2.603,
+      "sport": "Swim",
+      "time": "15:09"
+    },
+    {
+      "avg_heartrate": 160.6,
+      "date": "2026-11-17",
+      "distance_km": 4.801,
+      "elevation_m": 0.0,
+      "moving_time_min": 27.48,
+      "pace_min_per_km": 5.725,
+      "speed_kmh": 10.48,
+      "sport": "Run",
+      "time": "11:10"
     }
   ],
   "by_sport": {
@@ -1020,20 +1042,20 @@
       "moving_time_min": 1384.4
     },
     "Run": {
-      "avg_pace_min_per_km": 5.823,
-      "count": 48,
-      "distance_km": 179.43,
+      "avg_pace_min_per_km": 5.821,
+      "count": 49,
+      "distance_km": 184.23,
       "elevation_m": 1295.0,
-      "moving_time_hours": 17.42,
-      "moving_time_min": 1044.9
+      "moving_time_hours": 17.87,
+      "moving_time_min": 1072.4
     },
     "Swim": {
-      "avg_pace_min_per_km": 25.057,
-      "count": 25,
-      "distance_km": 28.41,
+      "avg_pace_min_per_km": 24.963,
+      "count": 26,
+      "distance_km": 29.81,
       "elevation_m": 0.0,
-      "moving_time_hours": 11.87,
-      "moving_time_min": 711.9
+      "moving_time_hours": 12.4,
+      "moving_time_min": 744.1
     },
     "Walk": {
       "avg_pace_min_per_km": 10.049,
@@ -1053,15 +1075,15 @@
     }
   },
   "first_day": "2025-09-11",
-  "generated_at": "2026-11-16T21:07:50+00:00",
-  "last_day": "2026-11-14",
+  "generated_at": "2026-11-17T19:56:31+00:00",
+  "last_day": "2026-11-17",
   "schema_version": 2,
   "totals": {
-    "avg_pace_min_per_km": 15.127,
-    "count": 95,
-    "distance_km": 216.74,
+    "avg_pace_min_per_km": 14.974,
+    "count": 97,
+    "distance_km": 222.94,
     "elevation_m": 1449.4,
-    "moving_time_hours": 54.64,
-    "moving_time_min": 3278.7
+    "moving_time_hours": 55.64,
+    "moving_time_min": 3338.3
   }
 }
